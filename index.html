@@ -72,6 +72,10 @@ h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter
 .hud b{color:var(--estrela);font-size:18px;letter-spacing:.04em}
 .bar{flex:1;height:5px;border-radius:5px;background:var(--bg2);overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:var(--c);transition:width .4s}
+#mini .mvg{transform-origin:180px 75px;transition:transform 1.1s cubic-bezier(.3,.7,.2,1)}
+#mini .mvf{transform-origin:180px 75px;animation:mvf 14s ease-in-out infinite alternate}
+@keyframes mvf{from{transform:translate(-2.5px,1.5px) rotate(-.8deg)}to{transform:translate(2.5px,-1.5px) rotate(.8deg)}}
+@media(prefers-reduced-motion:reduce){#mini .mvf{animation:none}}
 #mini{width:100%;height:auto;display:block;border-radius:14px;background:radial-gradient(ellipse at 50% 50%,#142B55 0%,#0A1730 80%);border:1px solid var(--line)}
 .prompt{font:700 22px/1.15 var(--display);letter-spacing:.06em;text-transform:uppercase;text-align:center;margin:4px 0 0}
 .hint{text-align:center;font-size:13.5px;color:var(--dim);margin:-6px 0 0;min-height:1.3em}
@@ -379,11 +383,12 @@ function onQuem(e){
 var mini={};
 function buildMini(){
   var svg=$('#mini');svg.innerHTML='';mini={nodes:[],lit:{}};
-  mini.edges={};mini.lines=S('g',{});svg.appendChild(mini.lines);
+  mini.k=0;mini.g=S('g',{'class':'mvg'});mini.f=S('g',{'class':'mvf'});mini.g.appendChild(mini.f);svg.appendChild(mini.g);
+  mini.edges={};mini.lines=S('g',{});mini.f.appendChild(mini.lines);
   for(var i=0;i<N;i++){
     var p=mapMini(i);
     var c=S('circle',{cx:p[0],cy:p[1],r:2.1,'class':'bs'});
-    svg.appendChild(c);mini.nodes.push(c);
+    mini.f.appendChild(c);mini.nodes.push(c);
   }
 }
 /* a constelação da pessoa: as estrelas escolhidas ligadas às vizinhas mais próximas (sem cruzar linhas) */
@@ -427,6 +432,8 @@ function choose(side){
   var n=mini.nodes[w];n.classList.add('on');n.setAttribute('r',3.4);
   mini.lit[w]=1;
   syncEdges(mini,mapMini);
+  mini.k++;var a=mini.k*2.4;
+  mini.g.style.transform='translate('+(Math.sin(a)*7).toFixed(1)+'px,'+(Math.cos(a*.8)*4).toFixed(1)+'px) rotate('+(Math.sin(a*.6)*3).toFixed(2)+'deg) scale('+(1+mini.k*.0025).toFixed(4)+')';
   setTimeout(function(){
     G.i++;
     if(G.i>=ROUNDS){$('#dbar').style.width='100%';showFinal()}else renderDuel();
