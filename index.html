@@ -429,6 +429,7 @@ function choose(side){
   $('#opt'+(side?'B':'A')).classList.add('win');
   $('#opt'+(side?'A':'B')).classList.add('lose');
   G.duelos.push([p[0],p[1],w]);G.path.push(w);
+  postVoto(G.i,p[0],p[1],w);
   var n=mini.nodes[w];n.classList.add('on');n.setAttribute('r',3.4);
   mini.lit[w]=1;
   syncEdges(mini,mapMini);
@@ -493,6 +494,13 @@ function postLive(body){
     headers:hdrs({'Content-Type':'application/json',Prefer:'return=minimal'}),
     body:JSON.stringify(body)}).then(function(r){clearTimeout(to);if(!r.ok)throw new Error('http '+r.status)},function(e){clearTimeout(to);throw e});
 }
+var SESSAO=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c=='x'?r:(r&3|8)).toString(16)});
+function postVoto(i,a,b,w){ /* cada escolha segue logo para o ecrã; falhar aqui nunca trava a pessoa */
+  if(DEMO||!who.zona)return;
+  try{fetch(CFG.url+'/rest/v1/votos_vivos',{method:'POST',keepalive:true,
+    headers:hdrs({'Content-Type':'application/json',Prefer:'return=minimal'}),
+    body:JSON.stringify({sessao:SESSAO,zona:+who.zona,duelo:i,estrela_a:a,estrela_b:b,vencedora:w})}).catch(function(){})}catch(e){}
+}
 function send(){
   if(sent)return;
   status('','A enviar para o céu…');
@@ -520,7 +528,7 @@ function startProj(){
   var url=location.href.split('#')[0];
   $("#qrt").textContent="";
   loadQR(url);
-  if(DEMO)startDemo();else{pollLive();PJ.pollT=setInterval(pollLive,2500)}
+  if(DEMO)startDemo();else{pollLive();PJ.pollT=setInterval(pollLive,1500)}
 }
 function newAgg(){var a=[];for(var i=0;i<N;i++)a.push({a:0,w:0});return a}
 function fit(){
