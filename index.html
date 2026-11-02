@@ -183,7 +183,7 @@ h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter
 .vp.lead{color:#FFD58A;text-shadow:0 0 28px rgba(255,213,138,.55)}
 .vp .vpc{display:block;font-style:normal;font-weight:400;font-size:.52em;color:var(--dim);margin-top:.35em;letter-spacing:.04em;min-height:1.2em}
 .vp.lead .vpc{color:#FFE7B0}
-#vst{position:absolute;left:50%;translate:-50% 0;top:196px;font:700 15px var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--luz);display:none;white-space:nowrap}
+#vst{position:absolute;left:1090px;translate:-50% 0;top:150px;font:700 15px var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--luz);display:none;white-space:nowrap}
 #proj.vm #vst{display:block}
 #proj.vm .hint2{opacity:0}
 #ptoast{position:absolute;left:50%;translate:-50% 0;bottom:96px;padding:10px 20px;border-radius:12px;background:rgba(10,23,48,.94);border:1px solid var(--luz);color:#F4F1E8;font-size:17px;opacity:0;transition:opacity .3s;pointer-events:none}
@@ -722,7 +722,7 @@ function drawVote(){
     o.pc.textContent=VP.pct?(Math.round(sh*100)+'% · '+v+(v===1?' voto':' votos')):'';
   });
   var tie=tot>0&&n>1;
-  $('#vst').textContent=(VP.state==='aberta'?'Votação aberta · vota no telemóvel':'Votação encerrada')+(tot?' · '+tot+(tot===1?' voto':' votos'):'')+(VP.state!=='aberta'&&tie?' · empate':'');
+  $('#vst').textContent=(VP.state==='aberta'?'Votação aberta':'Votação encerrada')+(tot?' · '+tot+(tot===1?' voto':' votos'):'')+(VP.state!=='aberta'&&tie?' · empate':'');
 }
 function stopVote(){
   if(!VP.on||VP.state!=='aberta')return;
@@ -921,6 +921,8 @@ function init(){
   $('#optA').addEventListener('click',function(){choose(0)});
   $('#optB').addEventListener('click',function(){choose(1)});
   $('#retry').addEventListener('click',function(){sent=false;send()});
+  $('#vlist').addEventListener('click',function(e){var b=e.target.closest('.vo');if(!b||b.disabled||VT.estado!=='aberta'||VT.voted!==null)return;VT.pick=+b.dataset.i;renderVote()});
+  $('#vgo').addEventListener('click',castVote);
   window.addEventListener('hashchange',route);
   route();
 }
