@@ -172,6 +172,34 @@ h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter
 .rev .fl{display:none}
 .pp h2{font-size:25px;line-height:1.1;color:#F4F1E8;margin-bottom:4px}
 .pp small{display:block;color:var(--dim);font-size:15px;margin-bottom:12px}
+#vz{position:absolute;inset:0;pointer-events:none;display:none}
+#proj.vm #vz{display:block}
+#proj.vm #gal{opacity:.2;transition:opacity .8s}
+#proj.vm .pp,#proj.vm .pt,#proj.vm .pq{opacity:0!important;pointer-events:none}
+#gal{transition:opacity .8s}
+.vp{position:absolute;left:0;top:0;width:470px;text-align:center;color:#F4F1E8;font-weight:700;line-height:1.14;
+  font-size:26px;transition:font-size .9s cubic-bezier(.3,.7,.2,1),color .6s,opacity .6s,text-shadow .6s;text-shadow:0 0 18px rgba(10,23,48,.9);will-change:transform}
+.vp b{display:inline-grid;place-items:center;width:1.15em;height:1.15em;border-radius:50%;background:var(--luz);color:#0A1730;font:700 .62em var(--display);margin-right:.4em;vertical-align:.12em}
+.vp.lead{color:#FFD58A;text-shadow:0 0 28px rgba(255,213,138,.55)}
+.vp .vpc{display:block;font-style:normal;font-weight:400;font-size:.52em;color:var(--dim);margin-top:.35em;letter-spacing:.04em;min-height:1.2em}
+.vp.lead .vpc{color:#FFE7B0}
+#vst{position:absolute;left:50%;translate:-50% 0;top:196px;font:700 15px var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--luz);display:none;white-space:nowrap}
+#proj.vm #vst{display:block}
+#proj.vm .hint2{opacity:0}
+#ptoast{position:absolute;left:50%;translate:-50% 0;bottom:96px;padding:10px 20px;border-radius:12px;background:rgba(10,23,48,.94);border:1px solid var(--luz);color:#F4F1E8;font-size:17px;opacity:0;transition:opacity .3s;pointer-events:none}
+#ptoast.on{opacity:1}
+#pcode{position:absolute;inset:0;background:rgba(5,10,24,.78);display:none;place-items:center;z-index:9}
+#pcode.on{display:grid}
+#pcode div{padding:30px 38px;border-radius:20px;background:#0A1730;border:1.5px solid var(--luz);text-align:center;color:#F4F1E8}
+#pcode small{display:block;color:var(--dim);margin-bottom:12px;font-size:16px}
+#pcode input{font:700 30px var(--display);letter-spacing:.3em;text-align:center;width:220px;padding:10px;border-radius:12px;border:1.5px solid var(--line);background:#142B55;color:#fff;text-transform:uppercase}
+#s-voto h2{font-size:25px;line-height:1.15}
+#vlist{display:grid;gap:10px}
+.vo{display:flex;gap:12px;align-items:flex-start;text-align:left;border:2px solid var(--line);background:var(--bg2);color:var(--estrela);border-radius:16px;padding:14px;font:700 17px/1.2 var(--body,inherit);width:100%}
+.vo b{flex:none;width:32px;height:32px;border-radius:50%;background:var(--luz);color:#0A1730;display:grid;place-items:center;font:700 17px var(--display)}
+.vo.pick{border-color:var(--luz);background:color-mix(in srgb,var(--luz) 18%,var(--bg2))}
+.vo.done{border-color:var(--luz);box-shadow:0 0 24px color-mix(in srgb,var(--luz) 45%,transparent)}
+.vo:disabled:not(.done){opacity:.45}
 #proj.rev .pq,#proj.rev .hint2,#proj.rev .pl{opacity:0}
 #proj .pq,#proj .hint2,#proj .pl{transition:opacity .6s}
 .pp ol{list-style:none;margin:0;padding:0;display:grid;gap:9px}
@@ -249,6 +277,16 @@ h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter
     <div class="logo pd" role="img" aria-label="Um dia a sorte muda e a gente muda a sorte"></div>
   </section>
 
+  <section class="step" id="s-voto">
+    <div class="eyebrow" id="vz2"></div>
+    <h2>O que mais nos custa?</h2>
+    <p class="mut" id="vmsg">Escolhe uma só. Só tens um voto.</p>
+    <div id="vlist"></div>
+    <button class="btn" id="vgo" disabled>Votar</button>
+    <div class="spacer"></div>
+    <div class="logo pf" role="img" aria-label="Um dia a sorte muda e a gente muda a sorte · 2026-2029"></div>
+  </section>
+
   <section class="step" id="s-final">
     <div class="eyebrow" id="fz"></div>
     <h2>A tua constelação do <span class="imp" role="img" aria-label="Impossível"></span></h2>
@@ -279,8 +317,10 @@ h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter
     <div class="pt" id="tick"></div>
     <div class="pz" id="zbar"></div>
     <div class="logo pl" role="img" aria-label="Um dia a sorte muda e a gente muda a sorte · 2026-2029"></div>
-    <div class="hint2">R · revelar a constelação &nbsp;·&nbsp; 0–6 · zonas &nbsp;·&nbsp; F · ecrã inteiro</div>
+    <div class="hint2">R · revelar &nbsp;·&nbsp; V · votação &nbsp;·&nbsp; S · parar &nbsp;·&nbsp; I · % &nbsp;·&nbsp; 0–6 · zonas &nbsp;·&nbsp; F · ecrã inteiro</div>
     <div class="pdemo" id="pdemo" hidden>Demonstração · votos simulados · <a href="#jogar" style="color:#0A1730">voltar ao telemóvel</a></div>
+    <div id="vz"></div><div id="vst"></div><div id="ptoast"></div>
+    <div id="pcode"><div><small>Código para abrir a votação</small><input id="pcin" type="text" autocomplete="off" maxlength="12" spellcheck="false"></div></div>
     <div class="empty-msg" id="empty">À espera das primeiras estrelas</div>
     <aside class="pp" id="panel"><h2>A Constelação do <span class="imp" role="img" aria-label="Impossível"></span></h2><small id="pps"></small><ol id="pol"></ol></aside>
   </div>
@@ -340,6 +380,7 @@ function mst(ids,map){
 var who={zona:0,agr:'',seccao:'',anos:''};
 var G=null;
 function go(step){
+  curStep=step;
   document.querySelectorAll('#phone .step').forEach(function(s){s.classList.toggle('on',s.id==='s-'+step)});
   window.scrollTo(0,0);
 }
@@ -441,7 +482,7 @@ function choose(side){
   },520);
 }
 function showFinal(){
-  go('final');
+  go('final');startVotePoll();
   var z=zonaById[who.zona];
   $('#fz').textContent='Zona '+z.n;
   var svg=$('#fsky');svg.innerHTML='';
@@ -494,7 +535,45 @@ function postLive(body){
     headers:hdrs({'Content-Type':'application/json',Prefer:'return=minimal'}),
     body:JSON.stringify(body)}).then(function(r){clearTimeout(to);if(!r.ok)throw new Error('http '+r.status)},function(e){clearTimeout(to);throw e});
 }
-var SESSAO=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c=='x'?r:(r&3|8)).toString(16)});
+function uuid(){return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c=='x'?r:(r&3|8)).toString(16)})}
+var SESSAO=uuid();
+var DEV=store.get('ceu_dev')||(function(){var v=uuid();store.set('ceu_dev',v);return v})();
+var curStep='intro';
+/* ----- votação final no telemóvel ----- */
+var VT={estado:'fechada',ronda:0,est:[],pick:-1,voted:null,timer:null,key:''};
+function startVotePoll(){if(DEMO||VT.timer)return;votePoll();VT.timer=setInterval(votePoll,2000)}
+function votePoll(){
+  if(!who.zona)return;
+  api('votacao?select=estado,estrelas,ronda&zona=eq.'+who.zona).then(function(r){
+    var v=r[0];if(!v)return;
+    var ch=v.estado!==VT.estado||v.ronda!==VT.ronda;
+    VT.estado=v.estado;VT.ronda=v.ronda;VT.est=v.estrelas||[];
+    var vv=store.get('ceu_voto_'+who.zona+'_'+VT.ronda);VT.voted=vv===null?null:+vv;
+    if(ch)VT.pick=-1;
+    if(ch)renderVote();
+    if(VT.estado==='aberta'&&curStep==='final')go('voto');
+  }).catch(function(){});
+}
+function renderVote(){
+  var z=zonaById[who.zona];$('#vz2').textContent=z?'Zona '+z.n:'';
+  var open=VT.estado==='aberta'&&VT.voted===null;
+  var L=$('#vlist');L.innerHTML='';
+  VT.est.forEach(function(id,k){
+    var b=document.createElement('button');b.className='vo'+(VT.pick===id?' pick':'')+(VT.voted===id?' done':'');b.dataset.i=id;b.disabled=!open;
+    b.innerHTML='<b>'+(k+1)+'</b><span></span>';b.lastChild.textContent=D.difs[id].x;L.appendChild(b);
+  });
+  $('#vgo').disabled=!(open&&VT.pick>=0);$('#vgo').hidden=VT.voted!==null||VT.estado!=='aberta';
+  $('#vmsg').textContent=VT.voted!==null?'Voto registado. Olha para o ecrã.':VT.estado==='aberta'?'Escolhe uma só. Só tens um voto.':'A votação terminou. Obrigado!';
+}
+function castVote(){
+  if(VT.pick<0||VT.estado!=='aberta'||VT.voted!==null)return;
+  var id=VT.pick,ron=VT.ronda;$('#vgo').disabled=true;
+  fetch(CFG.url+'/rest/v1/votos_finais',{method:'POST',headers:hdrs({'Content-Type':'application/json',Prefer:'return=minimal'}),
+    body:JSON.stringify({sessao:DEV,zona:+who.zona,ronda:ron,estrela:id})}).then(function(r){
+    if(r.ok||r.status===409){store.set('ceu_voto_'+who.zona+'_'+ron,String(id));VT.voted=id;renderVote()}
+    else{$('#vmsg').textContent='Não consegui registar. Tenta outra vez.';$('#vgo').disabled=false}
+  }).catch(function(){$('#vmsg').textContent='Sem rede. Tenta outra vez.';$('#vgo').disabled=false});
+}
 function postVoto(i,a,b,w){ /* cada escolha segue logo para o ecrã; falhar aqui nunca trava a pessoa */
   if(DEMO||!who.zona)return;
   try{fetch(CFG.url+'/rest/v1/votos_vivos',{method:'POST',keepalive:true,
@@ -568,10 +647,98 @@ function setFilter(f){
 }
 function onKey(e){
   if($('#proj').hidden)return;
+  if(document.activeElement&&document.activeElement.tagName==='INPUT')return;
   var k=e.key.toLowerCase();
   if(k==='r')toggleRev();
-  else if(/^[0-6]$/.test(k))setFilter(+k);
+  else if(k==='v')startVote();
+  else if(k==='s')stopVote();
+  else if(k==='i'){VP.pct=!VP.pct;drawVote()}
+  else if(k==='escape')closeVote();
+  else if(/^[0-6]$/.test(k)){if(!VP.on)setFilter(+k)}
   else if(k==='f'){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(x){}}
+}
+/* ----- votação final no ecrã ----- */
+var VP={on:false,state:'',zona:0,ids:[],votes:{},pct:false,els:[],raf:0,code:'',demoT:0,toastT:0};
+var ANCH=[[300,330],[800,330],[1300,330],[300,610],[800,610],[1300,610]];
+function toast(t){var e=$('#ptoast');e.textContent=t;e.classList.add('on');clearTimeout(VP.toastT);VP.toastT=setTimeout(function(){e.classList.remove('on')},3200)}
+function askCode(cb){
+  var o=$('#pcode'),i=$('#pcin');i.value='';o.classList.add('on');setTimeout(function(){i.focus()},50);
+  i.onkeydown=function(e){
+    if(e.key==='Enter'){var v=i.value.trim();o.classList.remove('on');i.blur();if(v)cb(v)}
+    else if(e.key==='Escape'){o.classList.remove('on');i.blur()}
+    e.stopPropagation();
+  };
+}
+function ctl(acao,ids){
+  if(DEMO)return Promise.resolve();
+  return fetch(CFG.url+'/rest/v1/rpc/ceu_controlo',{method:'POST',headers:hdrs({'Content-Type':'application/json'}),
+    body:JSON.stringify({codigo:VP.code,p_zona:VP.zona||PJ.filter,acao:acao,p_estrelas:ids||[]})}).then(function(r){
+    if(r.ok)return;
+    return r.text().then(function(t){var e=new Error(t);e.bad=/codigo/i.test(t);throw e});
+  });
+}
+function startVote(){
+  if(VP.on)return;
+  if(!PJ.filter){toast('Escolhe primeiro uma zona (teclas 1 a 6)');return}
+  var ids=(PJ.top6||[]).slice();
+  if(ids.length<2){toast('Ainda há poucas respostas nesta zona');return}
+  var run=function(){
+    VP.zona=PJ.filter;
+    ctl('abrir',ids).then(function(){enterVote(ids)},function(e){
+      if(e.bad){VP.code='';toast('Código errado');askCode(function(c){VP.code=c;run()})}
+      else toast('Não consegui abrir a votação. Verifica a rede.');
+    });
+  };
+  if(DEMO||VP.code)run();else askCode(function(c){VP.code=c;run()});
+}
+function enterVote(ids){
+  VP.on=true;VP.state='aberta';VP.ids=ids;VP.votes={};ids.forEach(function(i){VP.votes[i]=0});
+  var z=$('#vz');z.innerHTML='';VP.els=[];
+  ids.forEach(function(id,k){
+    var d=document.createElement('div');d.className='vp';d.innerHTML='<b>'+(k+1)+'</b><span></span><i class="vpc"></i>';
+    d.querySelector('span').textContent=D.difs[id].x;z.appendChild(d);
+    VP.els.push({el:d,pc:d.querySelector('.vpc'),ax:ANCH[k][0],ay:ANCH[k][1],ph:k*1.7});
+  });
+  $('#proj').classList.add('vm');
+  drawVote();cancelAnimationFrame(VP.raf);VP.raf=requestAnimationFrame(driftVote);
+  if(DEMO){clearInterval(VP.demoT);VP.demoT=setInterval(function(){if(VP.state!=='aberta')return;var i=ids[Math.floor(Math.pow(Math.random(),1.8)*ids.length)];VP.votes[i]++;drawVote()},650)}
+}
+function driftVote(t){
+  if(!VP.on)return;
+  VP.els.forEach(function(o){
+    var dx=Math.sin(t*0.00042+o.ph)*38,dy=Math.cos(t*0.00033+o.ph*1.3)*24;
+    o.el.style.transform='translate('+(o.ax+dx-235).toFixed(1)+'px,'+(o.ay+dy).toFixed(1)+'px) translateY(-50%)';
+  });
+  VP.raf=requestAnimationFrame(driftVote);
+}
+function drawVote(){
+  if(!VP.on)return;
+  var tot=0;VP.ids.forEach(function(i){tot+=VP.votes[i]||0});
+  var mx=-1,n=0;VP.ids.forEach(function(i){var v=VP.votes[i]||0;if(v>mx){mx=v;n=1}else if(v===mx)n++});
+  VP.els.forEach(function(o,k){
+    var id=VP.ids[k],v=VP.votes[id]||0,sh=tot?v/tot:1/VP.ids.length;
+    o.el.style.fontSize=Math.min(50,24+44*sh).toFixed(1)+'px';
+    o.el.classList.toggle('lead',tot>0&&v===mx&&n===1);
+    o.pc.textContent=VP.pct?(Math.round(sh*100)+'% · '+v+(v===1?' voto':' votos')):'';
+  });
+  var tie=tot>0&&n>1;
+  $('#vst').textContent=(VP.state==='aberta'?'Votação aberta · vota no telemóvel':'Votação encerrada')+(tot?' · '+tot+(tot===1?' voto':' votos'):'')+(VP.state!=='aberta'&&tie?' · empate':'');
+}
+function stopVote(){
+  if(!VP.on||VP.state!=='aberta')return;
+  ctl('parar').then(function(){VP.state='parada';clearInterval(VP.demoT);pollVotes(true);drawVote()},function(){toast('Não consegui encerrar. Tenta outra vez.')});
+}
+function closeVote(){
+  if(!VP.on)return;
+  var fin=function(){VP.on=false;clearInterval(VP.demoT);cancelAnimationFrame(VP.raf);$('#proj').classList.remove('vm');$('#vz').innerHTML=''};
+  ctl('fechar').then(fin,fin);
+}
+function pollVotes(force){
+  if(DEMO||!VP.on||(VP.state!=='aberta'&&!force))return;
+  api('ceu_votos_finais?select=estrela,votos&zona=eq.'+VP.zona).then(function(r){
+    var v={};VP.ids.forEach(function(i){v[i]=0});r.forEach(function(x){if(x.estrela in v)v[x.estrela]=x.votos});
+    VP.votes=v;drawVote();
+  }).catch(function(){});
 }
 function toggleRev(){PJ.rev=!PJ.rev;$('#proj').classList.toggle('rev',PJ.rev);renderSky()}
 function ranking(){
@@ -588,8 +755,6 @@ function renderSky(){
   var rates=arr.map(function(s){return rate(s.a,s.w)});
   var mn=Math.min.apply(null,rates),mx=Math.max.apply(null,rates),span=mx-mn;
   var zc=PJ.filter?zonaById[PJ.filter].c:null;
-  var top={};
-  if(has)rk.slice(0,7).forEach(function(x,k){top[x.i]=k+1});
   /* a escolha da maioria em cada escolha (as escolhas são as mesmas para todos) */
   var lit={};
   D.duels.forEach(function(p){
@@ -597,6 +762,10 @@ function renderSky(){
     var ra=rate(A.a,A.w),rb=rate(B.a,B.w);
     if(ra>rb)lit[p[0]]=1;else if(rb>ra)lit[p[1]]=1;
   });
+  /* as 6 que mais custam: dentro das acesas, as que a maioria escolheu com mais força */
+  var top={};
+  PJ.top6=has?Object.keys(lit).map(Number).sort(function(x,y){return rate(arr[y].a,arr[y].w)-rate(arr[x].a,arr[x].w)||x-y}).slice(0,6):[];
+  PJ.top6.forEach(function(i,k){top[i]=k+1});
   PJ.nodes.forEach(function(n,i){
     var on=!!lit[i];
     n.co.style.transform='scale('+(on?2.3:.6)+')';
@@ -617,12 +786,12 @@ function renderSky(){
     }
   }
   var rv=$('#rv');
-  var sig=(has&&PJ.rev)?PJ.filter+':'+rk.slice(0,7).map(function(x){return x.i}).join(','):'';
+  var sig=(has&&PJ.rev)?PJ.filter+':'+PJ.top6.join(','):'';
   if(sig!==PJ.revSig){
    PJ.revSig=sig;rv.innerHTML='';
    if(sig){
     var ol=$('#pol');
-    ol.innerHTML=rk.slice(0,7).map(function(x,k){return '<li><b>'+(k+1)+'</b><div>'+D.difs[x.i].x+'<em>'+D.themes[D.difs[x.i].t].n+'</em></div></li>'}).join('');
+    ol.innerHTML=PJ.top6.map(function(i,k){return '<li><b>'+(k+1)+'</b><div>'+D.difs[i].x+'<em>'+D.themes[D.difs[i].t].n+'</em></div></li>'}).join('');
    }
   }
   if(sig)$('#pps').textContent=(PJ.filter?'Zona '+zonaById[PJ.filter].n+' · ':'Todas as zonas · ')+tot+' dirigentes';
@@ -711,6 +880,7 @@ function api(path){
   return fetch(CFG.url+'/rest/v1/'+path,{headers:hdrs()}).then(function(r){if(!r.ok)throw new Error('http '+r.status);return r.json()});
 }
 function pollLive(){
+  pollVotes();
   Promise.all([
     api('ceu_agregado?select=zona,estrela,aparicoes,vitorias'),
     api('ceu_recentes?select=id,zona,caminho&order=id.desc&limit=30'),
