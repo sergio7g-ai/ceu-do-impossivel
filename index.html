@@ -108,6 +108,11 @@ h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter
 .pills{display:flex;flex-wrap:wrap;gap:8px}
 .pill{border:1.5px solid var(--c);border-radius:999px;padding:7px 14px;font:700 14px/1 var(--display);letter-spacing:.1em;text-transform:uppercase;background:color-mix(in srgb,var(--c) 16%,transparent)}
 .mut{color:var(--muted);margin:0;font-size:15px}
+.pt{display:flex;flex-direction:column;gap:10px;width:100%}
+.pt .tm{border-left:3px solid var(--c);padding:2px 0 2px 12px}
+.pt .tm b{display:block;font:700 12px/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--c);margin-bottom:4px}
+.pt .tm span{display:block;font-size:15px;line-height:1.3;color:var(--estrela)}
+.pt .tm span+span{margin-top:3px}
 .stat{display:flex;align-items:center;gap:10px;min-height:28px;font-weight:600}
 .stat i{width:10px;height:10px;border-radius:50%;background:var(--luz);animation:pulse 1.1s infinite}
 .stat.ok i{background:var(--z5);animation:none}
@@ -507,8 +512,15 @@ function showFinal(){
     g.appendChild(S('circle',{cx:p[0],cy:p[1],r:1.4,fill:'#fff'}));
     svg.appendChild(g);
   }
-  $('#ftxt').textContent='Em cada tema, escolheste o que mais te custa. Agora vamos ver o que mais custa a todos.';
-  $('#pills').innerHTML='';
+  $('#ftxt').textContent='Isto é o que mais te custa em cada tema. Agora vamos ver o que mais custa a todos.';
+  var pt=$('#pills');pt.className='pt';pt.innerHTML='';
+  D.themes.forEach(function(th,ti){
+    var ch=G.path.filter(function(id){return D.difs[id].t===ti});if(!ch.length)return;
+    var box=document.createElement('div');box.className='tm';box.style.setProperty('--c',z.c);
+    var h=document.createElement('b');h.textContent=th.n;box.appendChild(h);
+    ch.forEach(function(id){var sp=document.createElement('span');sp.textContent=D.difs[id].x;box.appendChild(sp)});
+    pt.appendChild(box);
+  });
   $('#demoTag2').hidden=!DEMO;
   send();
 }
