@@ -225,6 +225,10 @@ h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter
 #qr2{width:112px;height:112px;background:#fff;border-radius:9px;padding:6px;display:grid;place-items:center}
 #qr2 svg{width:100%;height:100%;display:block}
 #proj.rev .pq2,#proj.vm .pq2{opacity:0;pointer-events:none}
+#proj .pq{z-index:6;cursor:pointer;transform-origin:100% 0;transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1)}
+#proj .pq2{transform-origin:0 0}
+#proj.qb .pq{transform:scale(2.7)}
+#proj.qx .pq{opacity:0!important;pointer-events:none!important}
 #proj .pq2{transition:opacity .6s}
 #cam{position:absolute;inset:0;z-index:12;display:none;background:#050B1A;padding:44px 120px 30px}
 #cam.on{display:block}
@@ -379,7 +383,7 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:min(15vw,90
     <div class="pt" id="tick"></div>
     <div class="pz" id="zbar"></div>
     <div class="logo pl" role="img" aria-label="Um dia a sorte muda e a gente muda a sorte · 2026-2029"></div>
-    <div class="hint2">R · revelar &nbsp;·&nbsp; V · votação &nbsp;·&nbsp; S · parar &nbsp;·&nbsp; I · % &nbsp;·&nbsp; C · caminheiros &nbsp;·&nbsp; 0–4 · encontros &nbsp;·&nbsp; F · ecrã inteiro</div>
+    <div class="hint2">R · revelar &nbsp;·&nbsp; V · votação &nbsp;·&nbsp; S · parar &nbsp;·&nbsp; I · % &nbsp;·&nbsp; Q · QR maiores &nbsp;·&nbsp; C · caminheiros &nbsp;·&nbsp; 0–4 · encontros &nbsp;·&nbsp; F · ecrã inteiro</div>
     <div class="pdemo" id="pdemo" hidden>Demonstração · votos simulados · <a href="#jogar" style="color:#0A1730">voltar ao telemóvel</a></div>
     <div id="cam"><h2>O que mais preocupa<br>os caminheiros</h2><div class="ct"><b id="cn">0</b><span>caminheiros</span></div><ol id="col"></ol></div>
     <div id="vz"></div><div id="vst"></div><div id="ptoast"></div>
@@ -681,6 +685,7 @@ function startProj(){
   window.addEventListener('resize',fit);
   document.addEventListener('keydown',onKey);
   $('#pdemo').hidden=!DEMO;
+  document.querySelectorAll('#proj .pq').forEach(function(q){q.addEventListener('click',function(){$('#proj').classList.add('qx');$('#proj').classList.remove('qb')})});
   var url=location.href.split('#')[0];
   $("#qrt").textContent="";
   loadQR(url);loadQR2();
@@ -734,6 +739,7 @@ function onKey(e){
   else if(k==='s')stopVote();
   else if(k==='i'){VP.pct=!VP.pct;drawVote()}
   else if(k==='c')toggleCam();
+  else if(k==='q'){var pj=$('#proj');if(pj.classList.contains('qx')){pj.classList.remove('qx','qb')}else pj.classList.toggle('qb')}
   else if(k==='escape'){if($('#cam').classList.contains('on'))toggleCam();else closeVote()}
   else if(/^[0-4]$/.test(k))setFilter(+k)
   else if(k==='f'){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(x){}}
