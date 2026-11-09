@@ -227,7 +227,9 @@ h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter
 #proj.rev .pq2,#proj.vm .pq2{opacity:0;pointer-events:none}
 #proj .pq{z-index:6;cursor:pointer;transform-origin:100% 0;transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1)}
 #proj .pq2{transform-origin:0 0}
-#proj.qb .pq{transform:scale(2.7)}
+#proj.qb .pq{transform:scale(3)}
+#qdim{position:absolute;inset:-1200px;background:rgba(5,11,26,.78);opacity:0;pointer-events:none;transition:opacity .6s;z-index:5}
+#proj.qb #qdim{opacity:1;pointer-events:auto}
 #proj.qx .pq{opacity:0!important;pointer-events:none!important}
 #proj .pq2{transition:opacity .6s}
 #cam{position:absolute;inset:0;z-index:12;display:none;background:#050B1A;padding:44px 120px 30px}
@@ -369,6 +371,7 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:min(15vw,90
 <main id="proj" hidden>
   <div class="hills"></div>
   <div id="stage">
+    <div id="qdim"></div>
     <svg id="sky" viewBox="0 0 1600 900" aria-label="O céu de 66 dificuldades">
       <defs>
         <radialGradient id="glow"><stop offset="0" stop-color="#FFE7B0" stop-opacity=".9"/><stop offset=".35" stop-color="#FFD58A" stop-opacity=".28"/><stop offset="1" stop-color="#FFD58A" stop-opacity="0"/></radialGradient>
@@ -383,7 +386,7 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:min(15vw,90
     <div class="pt" id="tick"></div>
     <div class="pz" id="zbar"></div>
     <div class="logo pl" role="img" aria-label="Um dia a sorte muda e a gente muda a sorte · 2026-2029"></div>
-    <div class="hint2">R · revelar &nbsp;·&nbsp; V · votação &nbsp;·&nbsp; S · parar &nbsp;·&nbsp; I · % &nbsp;·&nbsp; Q · QR maiores &nbsp;·&nbsp; C · caminheiros &nbsp;·&nbsp; 0–4 · encontros &nbsp;·&nbsp; F · ecrã inteiro</div>
+    <div class="hint2">R · revelar &nbsp;·&nbsp; V · votação &nbsp;·&nbsp; S · parar &nbsp;·&nbsp; I · % &nbsp;·&nbsp; Q · QR codes &nbsp;·&nbsp; C · caminheiros &nbsp;·&nbsp; 0–4 · encontros &nbsp;·&nbsp; F · ecrã inteiro</div>
     <div class="pdemo" id="pdemo" hidden>Demonstração · votos simulados · <a href="#jogar" style="color:#0A1730">voltar ao telemóvel</a></div>
     <div id="cam"><h2>O que mais preocupa<br>os caminheiros</h2><div class="ct"><b id="cn">0</b><span>caminheiros</span></div><ol id="col"></ol></div>
     <div id="vz"></div><div id="vst"></div><div id="ptoast"></div>
@@ -685,7 +688,8 @@ function startProj(){
   window.addEventListener('resize',fit);
   document.addEventListener('keydown',onKey);
   $('#pdemo').hidden=!DEMO;
-  document.querySelectorAll('#proj .pq').forEach(function(q){q.addEventListener('click',function(){$('#proj').classList.add('qx');$('#proj').classList.remove('qb')})});
+  $('#proj').classList.add('qx');
+  document.querySelectorAll('#proj .pq,#qdim').forEach(function(q){q.addEventListener('click',toggleQR)});
   var url=location.href.split('#')[0];
   $("#qrt").textContent="";
   loadQR(url);loadQR2();
@@ -739,7 +743,7 @@ function onKey(e){
   else if(k==='s')stopVote();
   else if(k==='i'){VP.pct=!VP.pct;drawVote()}
   else if(k==='c')toggleCam();
-  else if(k==='q'){var pj=$('#proj');if(pj.classList.contains('qx')){pj.classList.remove('qx','qb')}else pj.classList.toggle('qb')}
+  else if(k==='q')toggleQR()
   else if(k==='escape'){if($('#cam').classList.contains('on'))toggleCam();else closeVote()}
   else if(/^[0-4]$/.test(k))setFilter(+k)
   else if(k==='f'){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(x){}}
@@ -1065,6 +1069,7 @@ function camSend(){
   })();
 }
 /* ecrã: tecla C mostra as preocupações gerais dos caminheiros */
+function toggleQR(){var pj=$('#proj'),open=pj.classList.contains('qb');pj.classList.toggle('qb',!open);pj.classList.toggle('qx',open)}
 function toggleCam(){
   var o=$('#cam'),on=!o.classList.contains('on');o.classList.toggle('on',on);
   clearInterval(CM.T);
