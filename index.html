@@ -293,7 +293,8 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:min(15vw,90
     <span class="demo-tag" id="demoTag3" hidden>Demonstração · as respostas ficam só neste aparelho</span>
     <div class="eyebrow">Núcleo de Guimarães · Caminheiros</div>
     <h2>O que mais te preocupa?</h2>
-    <div class="blk"><h3>O teu agrupamento</h3><div class="chips agr" id="cachips"></div></div>
+    <div class="blk"><h3>O teu encontro</h3><div class="chips" id="cezchips"></div></div>
+    <div class="blk" id="cbAgr" hidden><h3>O teu agrupamento</h3><div class="chips agr" id="cachips"></div></div>
     <div class="blk"><h3>Quantos caminheiros há no teu Clã?</h3><div class="chips" id="cnchips"></div></div>
     <div class="spacer"></div>
     <div class="sticky"><button class="btn" id="camNext" disabled>Continuar</button></div>
@@ -403,7 +404,8 @@ function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()
 var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 var themeOf=D.difs.map(function(d){return d.t});
 var zonaById={};D.zonas.forEach(function(z){zonaById[z.id]=z});
-var ZP=D.zonas.filter(function(z){return z.agr.length});
+var ZP=D.zonas.slice();
+var EMPTY='<p class="hint">Os agrupamentos deste encontro ainda não estão definidos.</p>';
 
 /* ----- 66 estrelas em posições fixas, iguais para todos; as ligações nascem das escolhas ----- */
 var PTS=D.pts;
@@ -472,7 +474,7 @@ function pickZona(id){
   who.zona=id;who.agr='';
   var z=zonaById[who.zona];setAccent(z.c);
   sel($('#zchips'),'data-z',who.zona);
-  $('#achips').innerHTML=z.agr.map(function(a){return '<button class="chip" type="button" data-a="'+a[0]+' · '+a[1]+'"><span><b>'+a[0]+'</b> '+a[1]+'</span></button>'}).join('');
+  $('#achips').innerHTML=!z.agr.length?EMPTY:z.agr.map(function(a){return '<button class="chip" type="button" data-a="'+a[0]+' · '+a[1]+'"><span><b>'+a[0]+'</b> '+a[1]+'</span></button>'}).join('');
   $('#bAgr').hidden=false;$('#bSec').hidden=true;$('#bAnos').hidden=true;
 }
 function checkReady(){$('#goDuelo').disabled=!(who.zona&&who.agr&&who.seccao&&who.anos)}
@@ -1013,14 +1015,17 @@ function startCam(){
   if(CM.started){go(curStep==='camf'?'camf':curStep.indexOf('cam')===0?curStep:'camq');return}
   CM.started=true;CM.items=camItems();
   $('#demoTag3').hidden=!DEMO;
-  var ags=[];ZP.forEach(function(z){z.agr.forEach(function(a){ags.push(a)})});
-  ags.sort(function(a,b){return a[1].localeCompare(b[1],'pt')});
-  $('#cachips').innerHTML=ags.map(function(a){return '<button class="chip" type="button" data-a="'+a[0]+' · '+a[1]+'"><span><b>'+a[0]+'</b> '+a[1]+'</span></button>'}).join('');
+  $('#cezchips').innerHTML=ZP.map(function(z){return '<button class="chip" type="button" data-z="'+z.id+'" style="--c:'+z.c+'"><i></i><span>'+z.n+'</span></button>'}).join('');
   var ns='';for(var i=1;i<=10;i++)ns+='<button class="chip" type="button" data-n="'+i+'">'+(i===10?'10 ou mais':i)+'</button>';
   $('#cnchips').innerHTML=ns;
   $('#s-camq').addEventListener('click',function(e){
     var b=e.target.closest('.chip');if(!b)return;
-    if(b.dataset.a){CM.agr=b.dataset.a;sel($('#cachips'),'data-a',CM.agr)}
+    if(b.dataset.z){
+      var z=zonaById[+b.dataset.z];CM.agr='';sel($('#cezchips'),'data-z',z.id);
+      $('#cachips').innerHTML=!z.agr.length?EMPTY:z.agr.map(function(a){return '<button class="chip" type="button" data-a="'+a[0]+' · '+a[1]+'"><span><b>'+a[0]+'</b> '+a[1]+'</span></button>'}).join('');
+      $('#cbAgr').hidden=false;
+    }
+    else if(b.dataset.a){CM.agr=b.dataset.a;sel($('#cachips'),'data-a',CM.agr)}
     else if(b.dataset.n){CM.n=+b.dataset.n;sel($('#cnchips'),'data-n',CM.n)}
     $('#camNext').disabled=!(CM.agr&&CM.n);
   });
