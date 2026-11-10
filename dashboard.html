@@ -518,7 +518,7 @@ function drawFicha(){
       var items=[]; DATA.cam.forEach(function(ar,ai){ar[1].forEach(function(t,k){items.push({t:t,a:ar[0],p:cs.pts[ai*2+k]})})});
       items.sort(function(a,b){return b.p-a.p}); items=items.filter(function(x){return x.p>0}).slice(0,5);
       h+=cenCards(C).split('<div class="card">').slice(1).map(function(x){return '<div class="card">'+x}).join('');
-      h+='<div class="card"><h3>Afirmações mais escolhidas</h3><ol class="dl">'+items.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.t)+'<small>'+esc(x.a)+'</small></span><span class="p">'+x.p+' pts</span></li>'}).join('')+'</ol><p class="note">1.ª escolha vale 3 pontos, 2.ª vale 2, 3.ª vale 1.</p></div>';
+      h+='<div class="card"><h3>Afirmações mais escolhidas</h3><ol class="dl">'+items.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.t)+'<small>'+esc(x.a)+'</small></span><span class="p">'+x.p+(x.p===1?' pt':' pts')+'</span></li>'}).join('')+'</ol><p class="note">1.ª escolha vale 3 pontos, 2.ª vale 2, 3.ª vale 1.</p></div>';
     }
   }
   el.innerHTML=h+'</div>';
