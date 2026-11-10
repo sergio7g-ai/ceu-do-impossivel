@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel · Entre as Estrelas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Nunito+Sans:wght@400;600;800&display=swap">
+<style>
+:root{--navy:#0A1730;--navy2:#10244A;--blue:#1C3A6B;--gold:#FFD58A;--goldd:#B5791A;--ice:#9FC3FF;--bg:#F3F5FA;--card:#fff;--ink:#14213D;--mut:#4F5D7A;--line:#D8DEEB;--ok:#1C3A6B;
+ --disp:'Josefin Sans',system-ui,sans-serif;--body:'Nunito Sans',system-ui,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.45 var(--body)}
+h1,h2,h3{font-family:var(--disp);margin:0;letter-spacing:.01em}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--goldd);outline-offset:2px}
+.hide{display:none!important}
+/* acesso */
+#gate{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--navy)}
+#gate .box{width:100%;max-width:380px;text-align:center;color:#F4F1E8}
+#gate img{width:150px;height:auto;margin:0 auto 12px;display:block}
+#gate h1{font-size:26px;margin-bottom:6px}
+#gate p{color:#C9D5EE;margin:0 0 20px}
+#gate input{width:100%;height:52px;border-radius:14px;border:2px solid #34528F;background:#10244A;color:#fff;padding:0 16px;font-size:18px;text-align:center;letter-spacing:.12em}
+#gate button{margin-top:12px;width:100%;height:52px;border:0;border-radius:14px;background:var(--gold);color:var(--navy);font-weight:800;font-size:16px;cursor:pointer}
+#gate button[disabled]{opacity:.6}
+#gerr{min-height:22px;margin-top:10px;color:#FFB3B3;font-weight:600}
+/* topo */
+header.top{background:var(--navy);color:#F4F1E8;padding:14px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+header.top img{width:44px;height:auto}
+header.top h1{font-size:22px;flex:1;min-width:200px}
+header.top h1 small{display:block;font:600 13px var(--body);color:#C9D5EE;margin-top:2px}
+details.agr summary.btn{background:transparent;color:#F4F1E8;border:2px solid #34528F;border-radius:12px;padding:0 16px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{min-height:44px;padding:0 16px;border-radius:12px;border:2px solid #34528F;background:transparent;color:#F4F1E8;font-weight:700;cursor:pointer}
+.btn:hover{background:#17306100;border-color:var(--gold)}
+.btn.p{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+main{max-width:1240px;margin:0 auto;padding:16px 16px 60px}
+/* filtros */
+.filt{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:14px;position:sticky;top:0;z-index:5;box-shadow:0 4px 14px #0a173014}
+.frow{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:flex-start}
+.fg{display:grid;gap:6px}
+.fg>label,.fg>span.l{font:700 12px var(--body);color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:40px;padding:0 14px;border-radius:999px;border:2px solid var(--line);background:#fff;font-weight:700;cursor:pointer;color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.chip.z[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+details.agr{position:relative}
+details.agr summary{list-style:none;min-height:40px;display:inline-flex;align-items:center;gap:8px;padding:0 14px;border:2px solid var(--line);border-radius:12px;background:#fff;font-weight:700;cursor:pointer}
+details.agr summary::-webkit-details-marker{display:none}
+details.agr .pop{position:absolute;z-index:20;margin-top:6px;width:min(360px,86vw);max-height:340px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px;box-shadow:0 12px 30px #0a173033}
+.pop label{display:flex;align-items:center;gap:10px;min-height:40px;padding:0 8px;border-radius:8px;cursor:pointer}
+.pop label:hover{background:var(--bg)}
+.pop input{width:20px;height:20px;accent-color:var(--blue)}
+.pop .gh{font:700 12px var(--body);color:var(--mut);text-transform:uppercase;letter-spacing:.06em;padding:8px 8px 2px}
+.pop .acts{display:flex;gap:8px;padding:4px 8px 8px;position:sticky;top:0;background:#fff}
+.linkb{background:none;border:0;color:var(--blue);font-weight:800;text-decoration:underline;cursor:pointer;min-height:36px;padding:0 6px}
+#fsum{font-weight:600;color:var(--mut);font-size:14px}
+/* blocos */
+section.blk{margin-top:22px}
+section.blk>h2{font-size:21px;margin:0 0 4px}
+section.blk>p.sub{margin:0 0 12px;color:var(--mut)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.kpi b{display:block;font:700 34px/1.1 var(--disp);color:var(--navy)}
+.kpi span{color:var(--mut);font-weight:600;font-size:14px}
+.kpi.g{border-top:5px solid var(--gold)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;break-inside:avoid}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.card h3{font-size:17px;margin-bottom:10px}
+/* barras */
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:minmax(120px,38%) 1fr auto;gap:10px;align-items:center;font-size:14px}
+.bar .t{overflow-wrap:anywhere}
+.bar .tr{height:16px;background:#E6EBF5;border-radius:8px;position:relative;overflow:hidden}
+.bar .fi{position:absolute;left:0;top:0;bottom:0;background:var(--blue);border-radius:8px}
+.bar .mk{position:absolute;top:-2px;bottom:-2px;width:3px;background:var(--goldd)}
+.bar .v{font-weight:800;min-width:48px;text-align:right}
+.leg{font-size:13px;color:var(--mut);margin-top:8px;display:flex;gap:14px;flex-wrap:wrap}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--blue);vertical-align:-1px;margin-right:4px}
+.leg i.m{width:3px;height:14px;background:var(--goldd);border-radius:0}
+/* tabelas */
+.tw{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font:700 12px var(--body);color:var(--mut);text-transform:uppercase;letter-spacing:.05em;background:#F8FAFD;position:sticky;top:0}
+th[data-k]{cursor:pointer}
+th[data-k]:hover{color:var(--navy)}
+td.n,th.n{text-align:right}
+tr.zero td{color:#7B879F}
+tbody tr:hover{background:#F8FAFD}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;background:#E6EBF5;font-weight:700;font-size:12px;margin-right:4px}
+.heat td.c{text-align:center;min-width:78px;font-weight:700;border-left:1px solid #fff}
+.heat th.c{white-space:normal;min-width:78px;max-width:100px;text-align:center;line-height:1.2}
+.heat td.c.top{outline:2px solid var(--navy);outline-offset:-2px}
+.note{font-size:13px;color:var(--mut);margin-top:8px}
+.empty{padding:22px;text-align:center;color:var(--mut)}
+select.big{min-height:44px;border:2px solid var(--line);border-radius:12px;padding:0 12px;background:#fff;font-weight:700;max-width:100%}
+.dl{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.dl li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.dl li:last-child{border-bottom:0}
+.dl .r{font:700 18px var(--disp);color:var(--goldd);min-width:24px}
+.dl small{display:block;color:var(--mut)}
+.dl .p{font-weight:800}
+#printline{display:none}
+@media (max-width:640px){header.top h1{font-size:19px}.bar{grid-template-columns:1fr auto;}.bar .tr{grid-column:1/3;order:3}.filt{position:static}}
+@media print{
+ @page{size:A4 landscape;margin:11mm}
+ body{background:#fff;font-size:12px}
+ #gate,.btns,.filt,details.agr,.noprint,select.big{display:none!important}
+ header.top{background:#fff;color:#000;padding:0 0 8px;border-bottom:3px solid var(--navy)}
+ header.top h1 small{color:#333}
+ header.top img{width:36px}
+ #printline{display:block;margin:8px 0;font-size:12px}
+ .kpi,.card,.tw{box-shadow:none;break-inside:avoid}
+ section.blk{margin-top:14px}
+ .tw{overflow:visible}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ th{position:static}
+}
+</style>
+</head>
+<body>
+<div id="gate">
+ <form class="box" id="gform" autocomplete="off">
+  <img src="data:image/png;base64,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" alt="Entre as Estrelas">
+  <h1>Painel</h1>
+  <p>Introduz o código de acesso para ver os resultados.</p>
+  <input id="gcode" type="password" inputmode="text" aria-label="Código de acesso" autocomplete="off" autocapitalize="characters">
+  <button id="gbtn" type="submit">Entrar</button>
+  <div id="gerr" role="alert"></div>
+ </form>
+</div>
+
+<div id="app" class="hide">
+ <header class="top">
+  <img id="hlogo" alt="">
+  <h1>Entre as Estrelas · Painel<small id="upd">…</small></h1>
+  <div class="btns">
+   <button class="btn" id="bref" type="button">Atualizar</button>
+   <details class="agr" id="dexp"><summary class="btn" style="border-color:#34528F;color:#F4F1E8">Exportar CSV ▾</summary>
+    <div class="pop" style="right:0;color:var(--ink)">
+     <label style="cursor:pointer"><button class="linkb" data-csv="resumo" type="button">Resumo por agrupamento</button></label>
+     <label style="cursor:pointer"><button class="linkb" data-csv="dif" type="button">Dificuldades dos dirigentes</button></label>
+     <label style="cursor:pointer"><button class="linkb" data-csv="cam" type="button">Preocupações dos caminheiros</button></label>
+    </div></details>
+   <button class="btn p" id="bprint" type="button">Imprimir / PDF</button>
+  </div>
+ </header>
+ <main>
+  <div class="filt" aria-label="Filtros">
+   <div class="frow">
+    <div class="fg"><span class="l">Quem</span><div class="chips" id="fq" role="group" aria-label="Quem"></div></div>
+    <div class="fg"><span class="l">Encontro</span><div class="chips" id="fz" role="group" aria-label="Encontro"></div></div>
+    <div class="fg"><span class="l">Agrupamento</span>
+     <details class="agr" id="dagr"><summary id="sagr">Todos</summary><div class="pop" id="pagr"></div></details></div>
+    <div class="fg"><span class="l">Secção <em style="text-transform:none;font-weight:600">(dirigentes)</em></span><div class="chips" id="fs" role="group" aria-label="Secção"></div></div>
+    <div class="fg"><span class="l">Anos como dirigente</span><div class="chips" id="fy" role="group" aria-label="Anos"></div></div>
+   </div>
+   <div><span id="fsum"></span> <button class="linkb noprint" id="fclr" type="button">Limpar filtros</button></div>
+  </div>
+  <p id="printline"></p>
+
+  <div class="kpis" id="kpis"></div>
+
+  <section class="blk" id="s-resp">
+   <h2>Quem respondeu</h2>
+   <p class="sub">Todos os agrupamentos, mesmo os que ainda não responderam. Clica num título para ordenar.</p>
+   <div class="tw"><table id="tresp"></table></div>
+   <p class="note" id="nresp"></p>
+  </section>
+
+  <section class="blk" id="s-ficha">
+   <h2>Ficha de um agrupamento</h2>
+   <p class="sub">As dificuldades e preocupações deste agrupamento, com a média de todos os que estão nos filtros como referência.</p>
+   <div class="noprint" style="margin-bottom:12px"><select class="big" id="sficha" aria-label="Agrupamento"></select></div>
+   <div id="ficha"></div>
+  </section>
+
+  <section class="blk" id="s-comp">
+   <h2>Comparar agrupamentos</h2>
+   <p class="sub">Dirigentes: % de duelos em que cada tema foi escolhido como o que mais custa. Mais escuro = custa mais. O contorno marca o tema que mais custa em cada agrupamento.</p>
+   <div class="tw heat"><table id="theat"></table></div>
+   <p class="note">A média é 50% por definição de duelo; o que interessa é a diferença entre temas e entre agrupamentos. Com poucas respostas os valores oscilam muito: vê o n de cada linha.</p>
+   <h3 style="margin:18px 0 8px;font-size:17px">Caminheiros: % que pôs a área entre as 3 que mais preocupam</h3>
+   <div class="tw heat"><table id="tcheat"></table></div>
+  </section>
+
+  <section class="blk" id="s-geral">
+   <h2>No conjunto</h2>
+   <p class="sub">Tudo o que está nos filtros, somado.</p>
+   <div class="grid2">
+    <div class="card"><h3>Dificuldades dos dirigentes, por tema</h3><div class="bars" id="gtemas"></div></div>
+    <div class="card"><h3>As 10 dificuldades que mais custam</h3><ol class="dl" id="gtop"></ol></div>
+    <div class="card"><h3>Preocupações dos caminheiros</h3><div class="bars" id="gcam"></div></div>
+    <div class="card"><h3>Respostas por secção</h3><div class="bars" id="gsec"></div></div>
+   </div>
+  </section>
+ </main>
+</div>
+
+<script>
+var CFG={"url":"https://qkjakaxufkyvpplzzmfh.supabase.co","key":"sb_publishable_36f8PITfrKqa4O2-tNlelw_NIuldxpL"}, DATA={"themes":["Preparar","Aprender fazendo","Guias e patrulhas","Jovens","Progresso","Equipa e tempo","Formação e apoio","Lei, Promessa e fé","Natureza e comunidade","Tradição e identidade","Material e dinheiro"],"difs":[{"t":0,"x":"Preparar uma reunião semanal que não saia sempre igual"},{"t":0,"x":"Manter o ritmo e a atenção dos jovens durante a reunião"},{"t":0,"x":"Planear uma atividade de fim de semana de ponta a ponta"},{"t":0,"x":"Ter um plano B quando chove ou faltam jovens"},{"t":0,"x":"Ter um Plano Anual de Unidade que se trabalhe a sério"},{"t":0,"x":"Planear pela intenção educativa e não só pela diversão ou pela logística"},{"t":1,"x":"Motivar a secção a sonhar um projeto ambicioso"},{"t":1,"x":"Deixar que escolham o projeto sem decidir por eles"},{"t":1,"x":"Viver as fases do método do projeto sem saltar nenhuma"},{"t":1,"x":"Manter o painel do projeto vivo ao longo do ano"},{"t":1,"x":"Fazer uma avaliação honesta no fim de cada atividade"},{"t":1,"x":"Transformar os erros dos jovens em aprendizagem"},{"t":2,"x":"Preparar o Conselho de Guias com os próprios guias"},{"t":2,"x":"Fazer do Conselho de Guias um espaço de decisão e não só de informação"},{"t":2,"x":"Ajudar a secção a eleger bons guias sem escolher por eles"},{"t":2,"x":"Formar os guias para liderarem a patrulha"},{"t":2,"x":"Acompanhar guias que perderam a motivação"},{"t":2,"x":"Conseguir que os guias façam o que combinámos"},{"t":3,"x":"Motivar os jovens que andam desligados"},{"t":3,"x":"Lidar com o telemóvel nas reuniões"},{"t":3,"x":"Gerir o comportamento do grupo durante as atividades"},{"t":3,"x":"Falar com os pais quando há um problema"},{"t":3,"x":"Integrar um jovem que acabou de chegar"},{"t":3,"x":"Incluir jovens com dificuldades ou necessidades especiais"},{"t":4,"x":"Ligar cada atividade aos objetivos do Sistema de Progresso"},{"t":4,"x":"Escolher objetivos adequados a cada jovem"},{"t":4,"x":"Acompanhar o progresso de cada jovem, um a um"},{"t":4,"x":"Registar o progresso e as noites de campo sem criar papelada"},{"t":4,"x":"Reconhecer o progresso em público de forma que valha a pena"},{"t":4,"x":"Motivar os jovens a trabalhar as especialidades"},{"t":5,"x":"Arranjar tempo para preparar as atividades, entre o trabalho e os estudos"},{"t":5,"x":"Conciliar o escutismo com a família e a vida pessoal"},{"t":5,"x":"Distribuir tarefas entre os dirigentes da equipa"},{"t":5,"x":"Ter dirigentes suficientes em cada atividade"},{"t":5,"x":"Manter a equipa de dirigentes unida e motivada"},{"t":5,"x":"Integrar um dirigente novo na equipa"},{"t":6,"x":"Perceber o que o Núcleo pode fazer por mim"},{"t":6,"x":"Contar com o Assistente na vida da secção"},{"t":6,"x":"Dar conta da burocracia (censos, plano, relatório e contas)"},{"t":6,"x":"Manter as fichas, autorizações e seguros dos jovens em dia"},{"t":6,"x":"Sentir segurança pedagógica com a formação que tenho"},{"t":6,"x":"Fazer formação sem gastar mais fins de semana"},{"t":7,"x":"Transformar a Lei em atitudes do dia a dia, e não em recitações"},{"t":7,"x":"Dar sentido verdadeiro à Promessa e às cerimónias"},{"t":7,"x":"Animar a fé de forma intencional na secção"},{"t":7,"x":"Preparar-me pessoalmente para falar de fé com os jovens"},{"t":7,"x":"Dar sentido aos símbolos e aos ritos sem ser encenação"},{"t":7,"x":"Criar momentos de reflexão e silêncio nas atividades"},{"t":8,"x":"Fazer atividades ao ar livre apesar dos custos e da logística"},{"t":8,"x":"Ensinar técnicas de campismo e de vida ao ar livre aos jovens"},{"t":8,"x":"Passar do serviço pontual a uma ligação real com a comunidade"},{"t":8,"x":"Criar parcerias com a paróquia e as instituições locais"},{"t":8,"x":"Dar a conhecer o escutismo à comunidade e atrair novos jovens"},{"t":8,"x":"Envolver os pais nas atividades da secção"},{"t":9,"x":"Manter vivos o grito e a bandeirola da patrulha ao longo do ano"},{"t":9,"x":"Que todos tenham e usem a vara pessoal"},{"t":9,"x":"Fazer formaturas com sentido e não só por rotina"},{"t":9,"x":"Trabalhar o imaginário da secção em todas as atividades"},{"t":9,"x":"Manter o Livro de Ouro vivo"},{"t":9,"x":"Passar as tradições da patrulha aos mais novos"},{"t":10,"x":"Ter material de campismo completo e em bom estado"},{"t":10,"x":"Cuidar e arrumar o material depois de cada atividade"},{"t":10,"x":"Fazer angariações de fundos sem esgotar os pais"},{"t":10,"x":"Cobrar quotas e atividades sem excluir ninguém"},{"t":10,"x":"Gerir a caixa da patrulha com os guias"},{"t":10,"x":"Ter um orçamento claro para cada atividade"}],"cam":[["Voz e decisão",["Falamos muito, mas as nossas ideias raramente chegam a decisões reais","Os caminheiros ainda não têm voz e voto onde se decide"]],["Fé e Igreja",["Sinto-me distante da posição da Igreja em temas como a afetividade e a sexualidade","Não sei como viver a fé no dia a dia sem parecer imposta"]],["Tempo e vida fora",["Com a faculdade ou o trabalho, quase não tenho tempo para o Clã","O Clã exige muito e a vida lá fora não deixa acompanhar"]],["Pressão para ser dirigente",["Sinto pressão para ser dirigente antes de acabar o meu caminho como caminheiro","Faltam dirigentes no agrupamento e isso acaba por recair sobre nós"]],["A Partida",["Sair do escutismo depois da Partida é visto como abandonar","A Partida devia lançar-me para a vida e não só para ser dirigente"]],["Clã pequeno",["No nosso Clã somos poucos e as mesmas pessoas acumulam todos os cargos","Com poucos no Clã, as ideias repetem-se e custa manter a motivação"]]],"zonas":[{"id":1,"n":"1.º Encontro","agr":["87 · Barco","316 · Sande S. Martinho","323 · Sta. Eufémia Prazins","365 · Corvite","454 · Longos","666 · Taipas","830 · Sto. Estêvão Briteiros","882 · Sto. Tirso Prazins","883 · Sta. Leocádia Briteiros","1130 · S. Salvador Briteiros","1259 · S. Clemente Sande"]},{"id":2,"n":"2.º Encontro","agr":[]},{"id":3,"n":"3.º Encontro","agr":[]},{"id":4,"n":"4.º Encontro","agr":[]}],"seccoes":{"alcateia":"Alcateia","expedicao":"Expedição","comunidade":"Comunidade","cla":"Clã","varias":"Várias secções"},"anos":{"0-1":"Menos de 1 ano","1-2":"1 a 2 anos","3-5":"3 a 5 anos","6+":"Mais de 5 anos"}}, DEMO=false;
+var $=function(s){return document.querySelector(s)};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var ST={q:'todos',z:{},a:{},s:{},y:{}}, RAW=null, CODE='', SORT={k:'nome',d:1};
+var SEC=DATA.seccoes, ANO=DATA.anos;
+var N_DIF=DATA.difs.length, N_TEMA=DATA.themes.length, N_AREA=DATA.cam.length;
+
+/* agrupamentos conhecidos por encontro */
+var AGR_ZONA={};  DATA.zonas.forEach(function(z){z.agr.forEach(function(a){AGR_ZONA[a]=z.id})});
+function zonaDe(r){ if(r.z) return r.z; return AGR_ZONA[r.a]||0 }
+var ZNOME={}; DATA.zonas.forEach(function(z){ZNOME[z.id]=z.n});
+ZNOME[5]='5.º Encontro'; ZNOME[6]='6.º Encontro';
+
+function hdrs(){var h={apikey:CFG.key,'Content-Type':'application/json'}; if(/^eyJ/.test(CFG.key))h.Authorization='Bearer '+CFG.key; return h}
+function load(code){
+  if(DEMO) return new Promise(function(res,rej){ setTimeout(function(){ code==='demo'?res(demoData()):rej(new Error('codigo errado')) },300)});
+  return fetch(CFG.url+'/rest/v1/rpc/dash_dados',{method:'POST',headers:hdrs(),body:JSON.stringify({p_codigo:code})})
+   .then(function(r){ if(!r.ok) return r.json().catch(function(){return{}}).then(function(j){ throw new Error((j&&j.message)||('http '+r.status)) }); return r.json() });
+}
+
+/* ---------- acesso ---------- */
+$('#gform').addEventListener('submit',function(e){
+  e.preventDefault(); var c=$('#gcode').value.trim(); if(!c) return;
+  $('#gbtn').disabled=true; $('#gerr').textContent='';
+  load(c).then(function(d){ CODE=c; try{sessionStorage.setItem('dash_c',c)}catch(x){} start(d) })
+   .catch(function(err){ $('#gerr').textContent=/codigo errado/.test(err.message)?'Código errado.':'Não consegui ligar. Tenta outra vez.'; $('#gbtn').disabled=false; $('#gcode').select() });
+});
+(function(){ var c=''; try{c=sessionStorage.getItem('dash_c')||''}catch(x){} if(c){ load(c).then(function(d){CODE=c;start(d)}).catch(function(){}) } })();
+
+function start(d){
+  RAW=d; $('#hlogo').src=document.querySelector('#gate img').src; $('#gate').classList.add('hide'); $('#app').classList.remove('hide');
+  $('#upd').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+  if(!$('#fq').children.length) buildFilters();
+  renderAll();
+}
+$('#bref').addEventListener('click',function(){ var b=this; b.disabled=true; load(CODE).then(function(d){RAW=d;start(d)}).catch(function(){alert('Não consegui atualizar.')}).then(function(){b.disabled=false}) });
+$('#bprint').addEventListener('click',function(){window.print()});
+
+/* ---------- filtros ---------- */
+function chip(cls,label,key,group){ return '<button type="button" class="chip '+cls+'" data-g="'+group+'" data-k="'+esc(key)+'" aria-pressed="false">'+esc(label)+'</button>' }
+function allAgr(){
+  var m={}; DATA.zonas.forEach(function(z){z.agr.forEach(function(a){m[a]=zonaDe({a:a})})});
+  RAW.respostas.concat(RAW.caminheiros).forEach(function(r){ if(!(r.a in m)) m[r.a]=zonaDe(r) });
+  return m;
+}
+function buildFilters(){
+  $('#fq').innerHTML=[['todos','Todos'],['dir','Dirigentes'],['cam','Caminheiros']].map(function(x){return chip('q',x[1],x[0],'q')}).join('');
+  var zs=DATA.zonas.map(function(z){return z.id}); [5,6].forEach(function(i){ if(RAW.respostas.concat(RAW.caminheiros).some(function(r){return zonaDe(r)===i})) zs.push(i) });
+  $('#fz').innerHTML=zs.map(function(i){return chip('z',ZNOME[i],i,'z')}).join('');
+  $('#fs').innerHTML=Object.keys(SEC).map(function(k){return chip('s',SEC[k],k,'s')}).join('');
+  $('#fy').innerHTML=Object.keys(ANO).map(function(k){return chip('y',ANO[k],k,'y')}).join('');
+  document.querySelector('.filt').addEventListener('click',function(e){
+    var b=e.target.closest('.chip'); if(!b) return; var g=b.dataset.g,k=b.dataset.k;
+    if(g==='q'){ ST.q=k } else { ST[g][k]=!ST[g][k]; if(!ST[g][k]) delete ST[g][k] }
+    syncChips(); renderAll();
+  });
+  $('#fclr').addEventListener('click',function(){ ST={q:'todos',z:{},a:{},s:{},y:{}}; syncChips(); renderAll() });
+  buildAgrPop(); syncChips();
+}
+function buildAgrPop(){
+  var m=allAgr(), by={};
+  Object.keys(m).forEach(function(a){ (by[m[a]]=by[m[a]]||[]).push(a) });
+  var h='<div class="acts"><button class="linkb" type="button" data-act="all">Todos</button><button class="linkb" type="button" data-act="none">Limpar</button></div>';
+  Object.keys(by).sort(function(a,b){return a-b}).forEach(function(z){
+    h+='<div class="gh">'+esc(ZNOME[z]||'Sem encontro')+'</div>';
+    by[z].sort(function(a,b){return parseInt(a)-parseInt(b)}).forEach(function(a){ h+='<label><input type="checkbox" data-a="'+esc(a)+'"> '+esc(a)+'</label>' });
+  });
+  $('#pagr').innerHTML=h;
+  $('#pagr').addEventListener('change',function(e){ var a=e.target.dataset.a; if(!a)return; if(e.target.checked) ST.a[a]=1; else delete ST.a[a]; syncChips(); renderAll() });
+  $('#pagr').addEventListener('click',function(e){ var t=e.target.dataset.act; if(!t) return; ST.a={}; if(t==='all'){ Object.keys(allAgr()).forEach(function(a){ST.a[a]=1}) } syncChips(); renderAll() });
+}
+function syncChips(){
+  document.querySelectorAll('.filt .chip').forEach(function(b){ var g=b.dataset.g,k=b.dataset.k; b.setAttribute('aria-pressed', g==='q'?String(ST.q===k):String(!!ST[g][k])) });
+  document.querySelectorAll('#pagr input').forEach(function(i){ i.checked=!!ST.a[i.dataset.a] });
+  var n=Object.keys(ST.a).length; $('#sagr').textContent=n?(n===1?Object.keys(ST.a)[0]:n+' agrupamentos'):'Todos';
+}
+function has(o){return Object.keys(o).length>0}
+function descFiltros(){
+  var p=[]; p.push(ST.q==='dir'?'Dirigentes':ST.q==='cam'?'Caminheiros':'Dirigentes e caminheiros');
+  if(has(ST.z)) p.push('Encontro: '+Object.keys(ST.z).map(function(i){return ZNOME[i]}).join(', '));
+  if(has(ST.a)) p.push('Agrupamento: '+Object.keys(ST.a).join(', '));
+  if(has(ST.s)) p.push('Secção: '+Object.keys(ST.s).map(function(k){return SEC[k]}).join(', '));
+  if(has(ST.y)) p.push('Anos: '+Object.keys(ST.y).map(function(k){return ANO[k]}).join(', '));
+  return p.join(' · ');
+}
+
+/* ---------- dados filtrados ---------- */
+function fR(){ return RAW.respostas.filter(function(r){
+  return (!has(ST.z)||ST.z[zonaDe(r)]) && (!has(ST.a)||ST.a[r.a]) && (!has(ST.s)||ST.s[r.s]) && (!has(ST.y)||ST.y[r.y]) }) }
+function fC(){ return RAW.caminheiros.filter(function(r){
+  return (!has(ST.z)||ST.z[zonaDe(r)]) && (!has(ST.a)||ST.a[r.a]) }) }
+function showDir(){return ST.q!=='cam'} function showCam(){return ST.q!=='dir'}
+
+function duelStats(rs){
+  var ap=new Array(N_DIF).fill(0), wi=new Array(N_DIF).fill(0);
+  rs.forEach(function(r){ (r.d||[]).forEach(function(du){ ap[du[0]]++; ap[du[1]]++; wi[du[2]]++ }) });
+  return {ap:ap,wi:wi};
+}
+function temaRates(st){
+  var ap=new Array(N_TEMA).fill(0), wi=new Array(N_TEMA).fill(0);
+  DATA.difs.forEach(function(df,i){ ap[df.t]+=st.ap[i]; wi[df.t]+=st.wi[i] });
+  return ap.map(function(a,i){ return a?wi[i]/a:null });
+}
+function camStats(cs){
+  var pts=new Array(N_AREA*2).fill(0), pos=[[0,0,0]].concat([]); var porItem=[]; for(var i=0;i<N_AREA*2;i++)porItem.push([0,0,0]);
+  var areaPts=new Array(N_AREA).fill(0), areaPeople=new Array(N_AREA).fill(0);
+  cs.forEach(function(c){ var seen={};
+    (c.o||[]).forEach(function(it,p){ var w=3-p; pts[it]+=w; porItem[it][p]++; var a=Math.floor(it/2); areaPts[a]+=w; if(!seen[a]){seen[a]=1;areaPeople[a]++} }) });
+  return {pts:pts,por:porItem,areaPts:areaPts,areaPeople:areaPeople,n:cs.length};
+}
+function median(a){ if(!a.length) return null; a=a.slice().sort(function(x,y){return x-y}); var m=a.length>>1; return a.length%2?a[m]:(a[m-1]+a[m])/2 }
+function pct(x,d){ return x==null?'–':(x*100).toFixed(d||0)+'%' }
+
+/* resumo por agrupamento */
+function resumo(){
+  var all=allAgr(), R=fR(), C=fC(), rows={};
+  var wantAgr=function(a){return !has(ST.a)||ST.a[a]}, wantZ=function(a){return !has(ST.z)||ST.z[all[a]]};
+  Object.keys(all).forEach(function(a){ if(wantAgr(a)&&wantZ(a)) rows[a]={nome:a,z:all[a],dir:0,sec:{},cam:0,ns:[]} });
+  R.forEach(function(r){ var x=rows[r.a]; if(!x) return; x.dir++; x.sec[r.s]=(x.sec[r.s]||0)+1 });
+  C.forEach(function(c){ var x=rows[c.a]; if(!x) return; x.cam++; x.ns.push(c.n) });
+  return Object.keys(rows).map(function(a){ var x=rows[a]; x.n=median(x.ns); x.cob=x.n?Math.min(1,x.cam/x.n):null; return x });
+}
+
+/* ---------- desenho ---------- */
+function renderAll(){
+  $('#fsum').textContent=descFiltros(); $('#printline').textContent='Filtros: '+descFiltros()+' · '+$('#upd').textContent;
+  var R=fR(), C=fC(), RS=resumo();
+  var agrCom=RS.filter(function(x){return x.dir||x.cam}).length;
+  var k=[];
+  if(showDir()) k.push(['g',R.length,'dirigentes responderam']);
+  if(showCam()) k.push(['g',C.length,'caminheiros responderam']);
+  k.push(['',agrCom+' / '+RS.length,'agrupamentos com resposta']);
+  if(showDir()) k.push(['',RS.filter(function(x){return x.dir}).length,'agrupamentos com dirigentes']);
+  if(showCam()) k.push(['',RS.filter(function(x){return x.cam}).length,'agrupamentos com caminheiros']);
+  $('#kpis').innerHTML=k.map(function(x){return '<div class="kpi '+x[0]+'"><b>'+x[1]+'</b><span>'+x[2]+'</span></div>'}).join('');
+  drawResp(RS); drawGeral(R,C); drawComp(R,C,RS); drawFichaSel(RS);
+  ['#s-resp','#s-comp'].forEach(function(s){});
+}
+
+function drawResp(RS){
+  var cols=[['nome','Agrupamento'],['z','Encontro']];
+  if(showDir()){ cols.push(['dir','Dirigentes','n']); Object.keys(SEC).forEach(function(k){cols.push(['sec_'+k,SEC[k],'n'])}) }
+  if(showCam()){ cols.push(['cam','Caminheiros','n'],['n','Clã (n.º indicado)','n'],['cob','Cobertura do clã','n']) }
+  var key=SORT.k;
+  RS.sort(function(a,b){ var va,vb;
+    if(key.indexOf('sec_')===0){ va=a.sec[key.slice(4)]||0; vb=b.sec[key.slice(4)]||0 }
+    else { va=a[key]; vb=b[key] }
+    if(va==null) va=-1; if(vb==null) vb=-1;
+    if(typeof va==='string') return va.localeCompare(vb,'pt',{numeric:true})*SORT.d;
+    return (va-vb)*SORT.d });
+  var h='<thead><tr>'+cols.map(function(c){return '<th data-k="'+c[0]+'" class="'+(c[2]||'')+'" scope="col">'+esc(c[1])+(SORT.k===c[0]?(SORT.d>0?' ▲':' ▼'):'')+'</th>'}).join('')+'</tr></thead><tbody>';
+  RS.forEach(function(x){
+    var zero=!(showDir()&&x.dir)&&!(showCam()&&x.cam);
+    h+='<tr class="'+(zero?'zero':'')+'"><td>'+esc(x.nome)+'</td><td>'+esc(ZNOME[x.z]||'–')+'</td>';
+    if(showDir()){ h+='<td class="n"><b>'+x.dir+'</b></td>'; Object.keys(SEC).forEach(function(k){h+='<td class="n">'+(x.sec[k]||'·')+'</td>'}) }
+    if(showCam()){ h+='<td class="n"><b>'+x.cam+'</b></td><td class="n">'+(x.n==null?'–':(x.n>=10?'10 ou mais':x.n))+'</td><td class="n">'+(x.cob==null?'–':x.cam+' de ~'+x.n+' ('+pct(x.cob)+')')+'</td>' }
+    h+='</tr>';
+  });
+  var tot={dir:0,cam:0}; RS.forEach(function(x){tot.dir+=x.dir;tot.cam+=x.cam});
+  h+='</tbody>'; $('#tresp').innerHTML=h;
+  $('#nresp').textContent=showCam()?'Cobertura do clã = caminheiros que responderam ÷ mediana do tamanho do clã indicado por eles ("10 ou mais" conta como 10, por isso a cobertura de clãs grandes pode ficar subestimada ou chegar a 100%).':'';
+  $('#tresp thead').addEventListener('click',function(e){ var t=e.target.closest('th'); if(!t)return; var k=t.dataset.k; if(SORT.k===k)SORT.d*=-1; else{SORT.k=k;SORT.d=(k==='nome'||k==='z')?1:-1} renderAll() });
+}
+
+function bars(items,opts){ /* items:[{t,v(0..1 fraction of max),label,m}] */
+  opts=opts||{}; var mx=opts.max||Math.max.apply(null,items.map(function(i){return i.v}).concat([0.0001]));
+  return items.map(function(i){ return '<div class="bar"><span class="t">'+esc(i.t)+'</span><span class="tr"><span class="fi" style="width:'+Math.max(2,i.v/mx*100)+'%"></span>'+(i.m!=null?'<span class="mk" style="left:calc('+(i.m/mx*100)+'% - 1px)"></span>':'')+'</span><span class="v">'+i.label+'</span></div>' }).join('');
+}
+
+function drawGeral(R,C){
+  if(!showDir()){ $('#gtemas').innerHTML='<div class="empty">Escondido pelo filtro "Quem".</div>'; $('#gtop').innerHTML=''; $('#gsec').innerHTML=''; }
+  else{
+    var st=duelStats(R), tr=temaRates(st);
+    if(!R.length){ $('#gtemas').innerHTML='<div class="empty">Sem respostas de dirigentes nestes filtros.</div>'; $('#gtop').innerHTML='' }
+    else{
+      var it=tr.map(function(v,i){return {t:DATA.themes[i],v:v||0,label:pct(v)}}).sort(function(a,b){return b.v-a.v});
+      $('#gtemas').innerHTML=bars(it,{max:Math.max(0.75,it[0].v)});
+      var dr=DATA.difs.map(function(df,i){return {i:i,t:df.t,x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0,ap:st.ap[i]}}).sort(function(a,b){return b.r-a.r}).slice(0,10);
+      $('#gtop').innerHTML=dr.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.x)+'<small>'+esc(DATA.themes[x.t])+'</small></span><span class="p">'+pct(x.r)+'</span></li>'}).join('');
+    }
+    var sc={}; R.forEach(function(r){sc[r.s]=(sc[r.s]||0)+1});
+    var si=Object.keys(SEC).map(function(k){return {t:SEC[k],v:sc[k]||0,label:String(sc[k]||0)}});
+    $('#gsec').innerHTML=R.length?bars(si):'<div class="empty">Sem respostas.</div>';
+  }
+  if(!showCam()){ $('#gcam').innerHTML='<div class="empty">Escondido pelo filtro "Quem".</div>' }
+  else if(!C.length){ $('#gcam').innerHTML='<div class="empty">Sem respostas de caminheiros nestes filtros.</div>' }
+  else{
+    var cs=camStats(C), it2=DATA.cam.map(function(a,i){return {t:a[0],v:cs.areaPeople[i]/C.length,label:pct(cs.areaPeople[i]/C.length)}}).sort(function(a,b){return b.v-a.v});
+    $('#gcam').innerHTML=bars(it2,{max:1})+'<p class="note">% das pessoas que puseram a área entre as 3 que mais as preocupam.</p>';
+  }
+}
+
+function shade(v,lo,hi){ /* azul navy sequencial; devolve [bg,fg] */
+  var t=hi>lo?(v-lo)/(hi-lo):0.5; t=Math.max(0,Math.min(1,t));
+  var a=[232,238,250], b=[28,58,107]; var c=a.map(function(x,i){return Math.round(x+(b[i]-x)*t)});
+  return ['rgb('+c.join(',')+')', t>0.5?'#fff':'#14213D'];
+}
+function drawComp(R,C,RS){
+  var tb=$('#theat'), tc=$('#tcheat');
+  if(!showDir()){ tb.innerHTML='<tbody><tr><td class="empty">Escondido pelo filtro "Quem".</td></tr></tbody>' }
+  else{
+    var rows=RS.filter(function(x){return x.dir}).map(function(x){ var rs=R.filter(function(r){return r.a===x.nome}); return {nome:x.nome,n:rs.length,tr:temaRates(duelStats(rs))} });
+    if(!rows.length){ tb.innerHTML='<tbody><tr><td class="empty">Sem respostas de dirigentes nestes filtros.</td></tr></tbody>' }
+    else{
+      var all=[]; rows.forEach(function(r){r.tr.forEach(function(v){if(v!=null)all.push(v)})}); var lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
+      var h='<thead><tr><th scope="col">Agrupamento</th><th class="n" scope="col">n</th>'+DATA.themes.map(function(t){return '<th class="c" scope="col">'+esc(t)+'</th>'}).join('')+'</tr></thead><tbody>';
+      rows.sort(function(a,b){return b.n-a.n}).forEach(function(r){
+        var mxv=Math.max.apply(null,r.tr.map(function(v){return v==null?-1:v}));
+        h+='<tr><td>'+esc(r.nome)+'</td><td class="n">'+r.n+'</td>'+r.tr.map(function(v){ if(v==null)return '<td class="c">–</td>'; var s=shade(v,lo,hi); return '<td class="c'+(v===mxv?' top':'')+'" style="background:'+s[0]+';color:'+s[1]+'">'+pct(v)+'</td>' }).join('')+'</tr>';
+      });
+      var all2=temaRates(duelStats(R));
+      h+='<tr style="font-weight:800;border-top:2px solid var(--navy)"><td>Todos nos filtros</td><td class="n">'+R.length+'</td>'+all2.map(function(v){var s=shade(v||0,lo,hi);return '<td class="c" style="background:'+s[0]+';color:'+s[1]+'">'+pct(v)+'</td>'}).join('')+'</tr></tbody>';
+      tb.innerHTML=h;
+    }
+  }
+  if(!showCam()){ tc.innerHTML='<tbody><tr><td class="empty">Escondido pelo filtro "Quem".</td></tr></tbody>' }
+  else{
+    var rc=RS.filter(function(x){return x.cam}).map(function(x){ var cs=C.filter(function(c){return c.a===x.nome}); var st=camStats(cs); return {nome:x.nome,n:cs.length,v:st.areaPeople.map(function(p){return p/cs.length})} });
+    if(!rc.length){ tc.innerHTML='<tbody><tr><td class="empty">Sem respostas de caminheiros nestes filtros.</td></tr></tbody>' }
+    else{
+      var h2='<thead><tr><th scope="col">Agrupamento</th><th class="n" scope="col">n</th>'+DATA.cam.map(function(a){return '<th class="c" scope="col">'+esc(a[0])+'</th>'}).join('')+'</tr></thead><tbody>';
+      rc.sort(function(a,b){return b.n-a.n}).forEach(function(r){
+        var mxv=Math.max.apply(null,r.v);
+        h2+='<tr><td>'+esc(r.nome)+'</td><td class="n">'+r.n+'</td>'+r.v.map(function(v){var s=shade(v,0,1);return '<td class="c'+(v===mxv?' top':'')+'" style="background:'+s[0]+';color:'+s[1]+'">'+pct(v)+'</td>'}).join('')+'</tr>';
+      });
+      var sa=camStats(C); h2+='<tr style="font-weight:800;border-top:2px solid var(--navy)"><td>Todos nos filtros</td><td class="n">'+C.length+'</td>'+sa.areaPeople.map(function(p){var v=C.length?p/C.length:0;var s=shade(v,0,1);return '<td class="c" style="background:'+s[0]+';color:'+s[1]+'">'+pct(v)+'</td>'}).join('')+'</tr></tbody>';
+      tc.innerHTML=h2;
+    }
+  }
+}
+
+/* ficha */
+var FICHA='';
+function drawFichaSel(RS){
+  var opts=RS.slice().sort(function(a,b){return a.nome.localeCompare(b.nome,'pt',{numeric:true})});
+  var sel=$('#sficha'); var cur=FICHA;
+  if(!opts.some(function(x){return x.nome===cur})){ var best=opts.slice().sort(function(a,b){return (b.dir+b.cam)-(a.dir+a.cam)})[0]; cur=best?best.nome:'' }
+  FICHA=cur;
+  sel.innerHTML=opts.map(function(x){return '<option value="'+esc(x.nome)+'"'+(x.nome===cur?' selected':'')+'>'+esc(x.nome)+' ('+x.dir+' dir. · '+x.cam+' cam.)</option>'}).join('');
+  drawFicha();
+}
+$('#sficha').addEventListener('change',function(){FICHA=this.value;drawFicha()});
+function drawFicha(){
+  var a=FICHA, el=$('#ficha'); if(!a){ el.innerHTML='<div class="empty card">Escolhe um agrupamento.</div>'; return }
+  var Rall=fR(), Call=fC(), R=Rall.filter(function(r){return r.a===a}), C=Call.filter(function(c){return c.a===a});
+  var h='<div class="kpis" style="margin:0 0 14px">';
+  var rs=resumo().filter(function(x){return x.nome===a})[0]||{};
+  if(showDir()) h+='<div class="kpi g"><b>'+R.length+'</b><span>dirigentes responderam</span></div>';
+  if(showCam()) h+='<div class="kpi g"><b>'+C.length+'</b><span>caminheiros responderam'+(rs.n?' (clã de '+(rs.n>=10?'10 ou mais':rs.n)+(rs.cob!=null?' · '+pct(rs.cob):'')+')':'')+'</span></div>';
+  h+='</div><div class="grid2">';
+  if(showDir()){
+    if(!R.length) h+='<div class="card"><h3>Dificuldades dos dirigentes</h3><div class="empty">Ainda sem respostas de dirigentes.</div></div>';
+    else{
+      var st=duelStats(R), tr=temaRates(st), ref=temaRates(duelStats(Rall));
+      var it=tr.map(function(v,i){return {t:DATA.themes[i],v:v||0,label:pct(v),m:ref[i]}}).sort(function(a,b){return b.v-a.v});
+      h+='<div class="card"><h3>Temas que mais custam</h3><div class="bars">'+bars(it,{max:Math.max(0.75,it[0].v)})+'</div><div class="leg"><span><i></i>este agrupamento</span><span><i class="m"></i>média nos filtros</span></div></div>';
+      var dr=DATA.difs.map(function(df,i){return {t:df.t,x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0,ap:st.ap[i]}}).sort(function(a,b){return b.r-a.r||b.ap-a.ap}).slice(0,10);
+      h+='<div class="card"><h3>As 10 dificuldades que mais custam</h3><ol class="dl">'+dr.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.x)+'<small>'+esc(DATA.themes[x.t])+'</small></span><span class="p">'+pct(x.r)+'</span></li>'}).join('')+'</ol></div>';
+      var sc={}; R.forEach(function(r){sc[r.s]=(sc[r.s]||0)+1});
+      h+='<div class="card"><h3>Dirigentes por secção</h3><div class="bars">'+bars(Object.keys(SEC).map(function(k){return {t:SEC[k],v:sc[k]||0,label:String(sc[k]||0)}}))+'</div></div>';
+    }
+  }
+  if(showCam()){
+    if(!C.length) h+='<div class="card"><h3>Preocupações dos caminheiros</h3><div class="empty">Ainda sem respostas de caminheiros.</div></div>';
+    else{
+      var cs=camStats(C), ref2=camStats(Call);
+      var it2=DATA.cam.map(function(x,i){return {t:x[0],v:cs.areaPeople[i]/C.length,label:pct(cs.areaPeople[i]/C.length),m:Call.length?ref2.areaPeople[i]/Call.length:null}}).sort(function(a,b){return b.v-a.v});
+      h+='<div class="card"><h3>Preocupações dos caminheiros</h3><div class="bars">'+bars(it2,{max:1})+'</div><div class="leg"><span><i></i>este agrupamento</span><span><i class="m"></i>média nos filtros</span></div><p class="note">% que pôs a área entre as 3 que mais preocupam.</p></div>';
+      var items=[]; DATA.cam.forEach(function(ar,ai){ar[1].forEach(function(t,k){items.push({t:t,a:ar[0],p:cs.pts[ai*2+k]})})});
+      items.sort(function(a,b){return b.p-a.p}); items=items.filter(function(x){return x.p>0}).slice(0,5);
+      h+='<div class="card"><h3>Afirmações mais escolhidas</h3><ol class="dl">'+items.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.t)+'<small>'+esc(x.a)+'</small></span><span class="p">'+x.p+' pts</span></li>'}).join('')+'</ol><p class="note">1.ª escolha vale 3 pontos, 2.ª vale 2, 3.ª vale 1.</p></div>';
+    }
+  }
+  el.innerHTML=h+'</div>';
+}
+
+/* ---------- CSV ---------- */
+function csvCell(v){ v=v==null?'':String(v); return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v }
+function download(name,rows){
+  var txt='﻿'+rows.map(function(r){return r.map(csvCell).join(';')}).join('\r\n');
+  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([txt],{type:'text/csv;charset=utf-8'})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);
+}
+function dstr(){return new Date().toISOString().slice(0,10)}
+document.querySelector('#dexp').addEventListener('click',function(e){
+  var b=e.target.closest('[data-csv]'); if(!b) return; var t=b.dataset.csv, R=fR(), C=fC(), rows=[];
+  if(t==='resumo'){
+    rows.push(['Agrupamento','Encontro','Dirigentes'].concat(Object.keys(SEC).map(function(k){return 'Dirigentes '+SEC[k]}),['Caminheiros','Clã (mediana indicada)','Cobertura do clã %']));
+    resumo().sort(function(a,b){return a.nome.localeCompare(b.nome,'pt',{numeric:true})}).forEach(function(x){ rows.push([x.nome,ZNOME[x.z]||'',x.dir].concat(Object.keys(SEC).map(function(k){return x.sec[k]||0}),[x.cam,x.n==null?'':x.n,x.cob==null?'':Math.round(x.cob*100)])) });
+  } else if(t==='dif'){
+    rows.push(['Agrupamento','Tema','Dificuldade','Dirigentes','Duelos em que apareceu','Duelos ganhos','% ganhos']);
+    var ags={}; R.forEach(function(r){(ags[r.a]=ags[r.a]||[]).push(r)});
+    Object.keys(ags).sort(function(a,b){return a.localeCompare(b,'pt',{numeric:true})}).forEach(function(a){ var st=duelStats(ags[a]); DATA.difs.forEach(function(df,i){ rows.push([a,DATA.themes[df.t],df.x,ags[a].length,st.ap[i],st.wi[i],st.ap[i]?Math.round(st.wi[i]/st.ap[i]*1000)/10:'']) }) });
+    var st2=duelStats(R); DATA.difs.forEach(function(df,i){ rows.push(['TODOS NOS FILTROS',DATA.themes[df.t],df.x,R.length,st2.ap[i],st2.wi[i],st2.ap[i]?Math.round(st2.wi[i]/st2.ap[i]*1000)/10:'']) });
+  } else {
+    rows.push(['Agrupamento','Área','Afirmação','Caminheiros','1.ª escolha','2.ª escolha','3.ª escolha','Pontos']);
+    var gs={}; C.forEach(function(c){(gs[c.a]=gs[c.a]||[]).push(c)}); gs['TODOS NOS FILTROS']=C;
+    Object.keys(gs).sort(function(a,b){return a.localeCompare(b,'pt',{numeric:true})}).forEach(function(a){ var cs=camStats(gs[a]); DATA.cam.forEach(function(ar,ai){ar[1].forEach(function(tx,k){ var i=ai*2+k; rows.push([a,ar[0],tx,gs[a].length,cs.por[i][0],cs.por[i][1],cs.por[i][2],cs.pts[i]]) })}) });
+  }
+  download('entre-as-estrelas-'+t+'-'+dstr()+'.csv',rows); $('#dexp').open=false;
+});
+document.addEventListener('click',function(e){ ['#dagr','#dexp'].forEach(function(s){ var d=$(s); if(d.open&&!d.contains(e.target)) d.open=false }) });
+
+/* ---------- demonstração (só no ficheiro de teste) ---------- */
+function demoData(){
+  var seed=7; function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647}
+  var agrs=DATA.zonas[0].agr, secs=Object.keys(SEC), ans=Object.keys(ANO), R=[],C=[];
+  agrs.forEach(function(a,gi){ var n=gi<9?3+Math.floor(rnd()*9):0;
+    for(var i=0;i<n;i++){ var d=[]; for(var j=0;j<33;j++){ var x=Math.floor(rnd()*N_DIF), y=Math.floor(rnd()*N_DIF); if(x===y)y=(y+1)%N_DIF;
+        var bias=function(v){return (DATA.difs[v].t===(gi%N_TEMA))?0.7:0.45}; var w=rnd()<bias(x)/(bias(x)+bias(y))?x:y; d.push([x,y,w]) }
+      R.push({t:'',z:1,a:a,s:secs[Math.floor(rnd()*secs.length)],y:ans[Math.floor(rnd()*ans.length)],d:d}) }
+    var m=gi<6?2+Math.floor(rnd()*7):0, nc=3+Math.floor(rnd()*7);
+    for(var k=0;k<m;k++){ var o=[]; while(o.length<3){ var v=Math.floor(rnd()*12); if(o.indexOf(v)<0)o.push(v) } C.push({t:'',z:k%3?1:null,a:a,n:nc,o:o}) } });
+  return {respostas:R,caminheiros:C};
+}
+</script>
+</body>
+</html>
