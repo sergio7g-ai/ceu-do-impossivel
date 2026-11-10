@@ -1019,7 +1019,7 @@ function pollLive(){
 }
 
 /* ================= CAMINHEIROS ================= */
-var CM={agr:'',n:0,ord:[],items:null,started:false,T:0};
+var CM={agr:'',zona:0,n:0,ord:[],items:null,started:false,T:0};
 function camItems(){var a=[];D.cam.forEach(function(ar,ai){ar[1].forEach(function(x){a.push({a:ai,x:x})})});return a}
 function startCam(){
   if(CM.started){go(curStep==='camf'?'camf':curStep.indexOf('cam')===0?curStep:'camq');return}
@@ -1031,7 +1031,7 @@ function startCam(){
   $('#s-camq').addEventListener('click',function(e){
     var b=e.target.closest('.chip');if(!b)return;
     if(b.dataset.z){
-      var z=zonaById[+b.dataset.z];CM.agr='';sel($('#cezchips'),'data-z',z.id);
+      var z=zonaById[+b.dataset.z];CM.agr='';CM.zona=z.id;sel($('#cezchips'),'data-z',z.id);
       $('#cachips').innerHTML=!z.agr.length?EMPTY:z.agr.map(function(a){return '<button class="chip" type="button" data-a="'+a[0]+' · '+a[1]+'"><span><b>'+a[0]+'</b> '+a[1]+'</span></button>'}).join('');
       $('#cbAgr').hidden=false;
     }
@@ -1056,7 +1056,7 @@ function startCam(){
   go('camq');
 }
 function camSend(){
-  var body={agrupamento:CM.agr,n_clan:CM.n,ordem:CM.ord.slice()};
+  var body={agrupamento:CM.agr,n_clan:CM.n,ordem:CM.ord.slice()};if(CM.zona)body.zona=CM.zona;
   $('#camSend').disabled=true;$('#camMsg').textContent='A enviar…';
   if(DEMO){
     var a=[];try{a=JSON.parse(store.get('ceu_cam_demo')||'[]')}catch(e){}a.push(body.ordem);store.set('ceu_cam_demo',JSON.stringify(a));
