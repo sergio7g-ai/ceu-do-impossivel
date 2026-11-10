@@ -94,6 +94,8 @@ tbody tr:hover{background:#F8FAFD}
 .heat td.c{text-align:center;min-width:78px;font-weight:700;border-left:1px solid #fff}
 .heat th.c{white-space:normal;min-width:78px;max-width:100px;text-align:center;line-height:1.2}
 .heat td.c.top{outline:2px solid var(--navy);outline-offset:-2px}
+.outros{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+.outros li{overflow-wrap:anywhere}
 .note{font-size:13px;color:var(--mut);margin-top:8px}
 .empty{padding:22px;text-align:center;color:var(--mut)}
 select.big{min-height:44px;border:2px solid var(--line);border-radius:12px;padding:0 12px;background:#fff;font-weight:700;max-width:100%}
@@ -145,6 +147,7 @@ select.big{min-height:44px;border:2px solid var(--line);border-radius:12px;paddi
      <label style="cursor:pointer"><button class="linkb" data-csv="dif" type="button">Dificuldades dos dirigentes</button></label>
      <label style="cursor:pointer"><button class="linkb" data-csv="cam" type="button">Preocupações dos caminheiros</button></label>
      <label style="cursor:pointer"><button class="linkb" data-csv="cen" type="button">Cenáculo (caminheiros)</button></label>
+     <label style="cursor:pointer"><button class="linkb" data-csv="outro" type="button">Cenáculo · textos de «Outro»</button></label>
     </div></details>
    <button class="btn p" id="bprint" type="button">Imprimir / PDF</button>
   </div>
@@ -457,7 +460,9 @@ function cenCards(cs){
     var it=q.o.map(function(o,i){return {t:o,v:s.cnt[i]/s.n,label:pct(s.cnt[i]/s.n)+' <small style="font-weight:600;color:var(--mut)">('+s.cnt[i]+')</small>'}});
     if(qi===0) it.sort(function(a,b){return 0});
     else it.sort(function(a,b){return b.v-a.v});
-    return '<div class="card"><h3>'+(qi+1)+'. '+esc(q.q)+'</h3><div class="bars">'+bars(it,{max:1})+'</div><p class="note">'+s.n+' resposta'+(s.n===1?'':'s')+(q.m?' · escolha múltipla':'')+'</p></div>';
+    var tx=cs.map(function(c){return qi===1?c.ro:qi===2?c.mo:null}).filter(Boolean);
+    var tl=tx.length?'<h4 style="margin:14px 0 6px;font:700 13px var(--body);color:var(--mut);text-transform:uppercase;letter-spacing:.05em">Escreveram em «Outro» ('+tx.length+')</h4><ul class="outros">'+tx.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'';
+    return '<div class="card"><h3>'+(qi+1)+'. '+esc(q.q)+'</h3><div class="bars">'+bars(it,{max:1})+'</div><p class="note">'+s.n+' resposta'+(s.n===1?'':'s')+(q.m?' · escolha múltipla':'')+'</p>'+tl+'</div>';
   }).join('');
 }
 function drawCen(C,RS){
@@ -536,6 +541,9 @@ document.querySelector('#dexp').addEventListener('click',function(e){
     var ags={}; R.forEach(function(r){(ags[r.a]=ags[r.a]||[]).push(r)});
     Object.keys(ags).sort(function(a,b){return a.localeCompare(b,'pt',{numeric:true})}).forEach(function(a){ var st=duelStats(ags[a]); DATA.difs.forEach(function(df,i){ rows.push([a,DATA.themes[df.t],df.x,ags[a].length,st.ap[i],st.wi[i],st.ap[i]?Math.round(st.wi[i]/st.ap[i]*1000)/10:'']) }) });
     var st2=duelStats(R); DATA.difs.forEach(function(df,i){ rows.push(['TODOS NOS FILTROS',DATA.themes[df.t],df.x,R.length,st2.ap[i],st2.wi[i],st2.ap[i]?Math.round(st2.wi[i]/st2.ap[i]*1000)/10:'']) });
+  } else if(t==='outro'){
+    rows.push(['Agrupamento','Encontro','Pergunta','Texto']);
+    C.forEach(function(c){ if(c.ro) rows.push([c.a,ZNOME[zonaDe(c)]||'',DATA.cen[1].q,c.ro]); if(c.mo) rows.push([c.a,ZNOME[zonaDe(c)]||'',DATA.cen[2].q,c.mo]) });
   } else if(t==='cen'){
     rows.push(['Agrupamento','Pergunta','Resposta','Caminheiros que responderam','Escolhas','% de quem respondeu']);
     var hs={}; C.forEach(function(c){(hs[c.a]=hs[c.a]||[]).push(c)}); hs['TODOS NOS FILTROS']=C;
@@ -558,7 +566,7 @@ function demoData(){
         var bias=function(v){return (DATA.difs[v].t===(gi%N_TEMA))?0.7:0.45}; var w=rnd()<bias(x)/(bias(x)+bias(y))?x:y; d.push([x,y,w]) }
       R.push({t:'',z:1,a:a,s:secs[Math.floor(rnd()*secs.length)],y:ans[Math.floor(rnd()*ans.length)],d:d}) }
     var m=gi<6?2+Math.floor(rnd()*7):0, nc=3+Math.floor(rnd()*7);
-    for(var k=0;k<m;k++){ var o=[]; while(o.length<3){ var v=Math.floor(rnd()*12); if(o.indexOf(v)<0)o.push(v) } C.push({t:'',z:k%3?1:null,a:a,n:nc,o:o,cc:Math.floor(rnd()*4),cr:[Math.floor(rnd()*5)],cm:[Math.floor(rnd()*5),4]}) } });
+    for(var k=0;k<m;k++){ var o=[]; while(o.length<3){ var v=Math.floor(rnd()*12); if(o.indexOf(v)<0)o.push(v) } C.push({t:'',z:k%3?1:null,a:a,n:nc,o:o,cc:Math.floor(rnd()*4),cr:[Math.floor(rnd()*5)],cm:[Math.floor(rnd()*5),4],ro:rnd()<.3?'Não conheço ninguém que vá':null,mo:rnd()<.3?'Mais tempo para debater':null}) } });
   return {respostas:R,caminheiros:C};
 }
 </script>
