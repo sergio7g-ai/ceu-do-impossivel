@@ -148,7 +148,10 @@ select.big{min-height:48px;border:1.5px solid var(--line);border-radius:14px;pad
 .dl li:last-child{border-bottom:0}
 .dl .r{font:700 18px var(--disp);color:var(--goldd);min-width:24px}
 .dl small{display:block;color:var(--mut)}
-.dl .p{font-weight:800}
+.dl .p{font-weight:800;white-space:nowrap}
+.mbar{display:block;height:8px;border-radius:4px;background:rgba(28,58,107,.12);margin-top:6px;overflow:hidden}
+.mbar i{display:block;height:100%;background:var(--blue);border-radius:4px;transform-origin:left;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.js section.blk:not(.in) .mbar i{transform:scaleX(0)}
 .fnome{font:700 22px var(--disp);margin:14px 0 10px}
 #phead{display:none}
 @media (max-width:640px){.btns{flex-wrap:nowrap;width:100%}.btn{padding:0 12px;font-size:14px;flex:1}.gtop img{width:34px}#fsum{flex:1;min-width:0;font-size:13px}.filt>summary{flex-wrap:nowrap}.gtop h1{font-size:18px}.bar{grid-template-columns:1fr auto}.bar .tr{grid-column:1/3;order:3}.seg button{font-size:15px}section.blk>h2{font-size:22px}html{scroll-padding-top:150px}}
@@ -312,10 +315,10 @@ select.big{min-height:48px;border:1.5px solid var(--line);border-radius:14px;pad
    </section>
    <section class="blk pb" id="c3" data-rail="O que preocupa">
     <h2>O que mais preocupa</h2>
-    <p class="sub">Percentagem de caminheiros que pôs cada área entre as 3 que mais os preocupam.</p>
+    <p class="sub">Cada caminheiro ordenou as 3 preocupações que mais o afetam. Aqui estão todas, da que mais pesa à que menos pesa.</p>
     <p class="take" id="t-c3"></p>
-    <div class="grid2"><div class="card"><h3>No conjunto</h3><div class="bars" id="gcam"></div></div></div>
-    <h3 style="margin:18px 0 8px;font-size:18px">Por agrupamento</h3>
+    <div class="card" style="margin-top:12px"><h3>As preocupações, ordenadas</h3><ol class="dl" id="gcam"></ol><p class="note">Do que mais preocupa (1.º) ao que menos preocupa. Pontuação: a 1.ª escolha de cada caminheiro vale 3 pontos, a 2.ª vale 2 e a 3.ª vale 1.</p></div>
+    <h3 style="margin:18px 0 8px;font-size:18px">Por agrupamento: % que pôs cada área entre as 3 que mais preocupam</h3>
     <div class="tw heat"><table id="tcheat"></table></div>
    </section>
    <section class="blk pb" id="c4" data-rail="Cenáculo">
@@ -472,6 +475,10 @@ function nomesLim(a,n){ return a.length>n?a.slice(0,n).join(', ')+' e mais '+(a.
 
 /* ---------- resumo ---------- */
 function clasTotais(RS){ var tN=0,tC=0,gr=0,com=0; RS.forEach(function(x){ if(x.cam) com++; if(x.n&&x.n<10){tN+=x.n;tC+=x.cam} if(x.n>=10) gr++ }); return {tN:tN,tC:tC,gr:gr,com:com} }
+function concernItems(C){ var cs=camStats(C), out=[]; DATA.cam.forEach(function(ar,ai){ ar[1].forEach(function(t,k){ var j=ai*2+k, por=cs.por[j]; out.push({t:t,a:ar[0],p:cs.pts[j],ppl:por[0]+por[1]+por[2]}) }) }); out.sort(function(a,b){return b.p-a.p||b.ppl-a.ppl}); return out }
+function concernList(C){ var it=concernItems(C), mx=Math.max(1,it[0].p), n=C.length;
+  return it.map(function(x,i){ return '<li><span class="r">'+(i+1)+'</span><span>'+esc(x.t)+'<small>'+esc(x.a)+' · '+x.ppl+' de '+n+' ('+pct(x.ppl/n)+') puseram-na entre as 3 que mais preocupam</small><span class="mbar"><i style="width:'+Math.round(x.p/mx*100)+'%"></i></span></span><span class="p">'+x.p+(x.p===1?' pt':' pts')+'</span></li>' }).join('') }
+var CNOTE='Do que mais preocupa (1.º) ao que menos preocupa. Pontuação: a 1.ª escolha de cada caminheiro vale 3 pontos, a 2.ª vale 2 e a 3.ª vale 1.';
 function drawKpis(R,C,RS){
   var d=RS.filter(function(x){return x.dir}).length, t=clasTotais(RS);
   $('#kd').innerHTML='<div class="kpi g"><b>'+R.length+'</b><span>dirigentes responderam</span></div>'+
@@ -500,8 +507,8 @@ function drawSumC(C,RS){
   var L=[], t=clasTotais(RS);
   L.push('<b>'+plural(C.length,'caminheiro','caminheiros')+'</b> responderam, em <b>'+t.com+' de '+RS.length+'</b> clãs.');
   if(t.tN) L.push('Nos clãs com tamanho conhecido (abaixo de 10), responderam <b>'+t.tC+' de ~'+t.tN+'</b> ('+pct(t.tC/t.tN)+').'+(t.gr?' Há '+plural(t.gr,'clã','clãs')+' «10 ou mais», que ficam de fora desta conta.':''));
-  var cs=camStats(C), o2=topN(DATA.cam.map(function(a,i){return {t:a[0],v:cs.areaPeople[i]/C.length}}),3);
-  L.push('As áreas que mais preocupam: <b>'+lista(o2.map(function(x){return esc(x.t)+' ('+pct(x.v)+')'}))+'</b>.');
+  var ci=concernItems(C).slice(0,3);
+  L.push('As preocupações que mais pesam: '+lista(ci.map(function(x){return '«<b>'+esc(x.t)+'</b>»'}))+'.');
   var st=cenStats(C), c0=st[0];
   if(c0.n){ var b=argmax(c0.cnt); L.push('Cenáculo: a resposta mais dada a «'+esc(DATA.cen[0].q)+'» foi <b>'+esc(DATA.cen[0].o[b])+'</b> ('+pct(c0.cnt[b]/c0.n)+' de '+c0.n+').') }
   var sem=RS.filter(function(x){return !x.cam}).map(function(x){return x.nome});
@@ -568,8 +575,8 @@ function drawTakes(R,C,RS){
     var dr=topN(DATA.difs.map(function(df,i){return {t:df.x,v:st.ap[i]?st.wi[i]/st.ap[i]:0}}),1)[0];
     take('t-d3','A dificuldade que mais custa aos dirigentes é «<b>'+esc(dr.t)+'</b>» (escolhida em '+pct(dr.v)+' dos duelos em que apareceu).');
   } else { take('t-d3','Sem respostas de dirigentes nestes filtros.') }
-  if(C.length){ var cs=camStats(C), o2=topN(DATA.cam.map(function(a,i){return {t:a[0],v:cs.areaPeople[i]/C.length}}),2);
-    take('t-c3','A área que mais preocupa os caminheiros é <b>'+esc(o2[0].t)+'</b> ('+pct(o2[0].v)+' pô-la entre as 3 primeiras)'+(o2[1]?', seguida de <b>'+esc(o2[1].t)+'</b> ('+pct(o2[1].v)+')':'')+'.');
+  if(C.length){ var ci2=concernItems(C), cn=C.length;
+    take('t-c3','A preocupação que mais pesa é «<b>'+esc(ci2[0].t)+'</b>» ('+pct(ci2[0].ppl/cn)+' pô-la entre as 3 primeiras)'+(ci2[1]?', seguida de «<b>'+esc(ci2[1].t)+'</b>» ('+pct(ci2[1].ppl/cn)+')':'')+'.');
     var s=cenStats(C), p=[];
     if(s[0].n){ var b0=argmax(s[0].cnt); p.push('a resposta mais dada ao propósito foi <b>'+esc(DATA.cen[0].o[b0])+'</b> ('+pct(s[0].cnt[b0]/s[0].n)+')') }
     if(s[1].n){ var b1=argmax(s[1].cnt); p.push('a razão mais apontada para não participar é <b>'+esc(DATA.cen[1].o[b1])+'</b> ('+pct(s[1].cnt[b1]/s[1].n)+')') }
@@ -599,8 +606,7 @@ function drawGeral(R,C){
   if(!showCam()){ $('#gcam').innerHTML='<div class="empty">Escondido pelo filtro "Quem".</div>' }
   else if(!C.length){ $('#gcam').innerHTML='<div class="empty">Sem respostas de caminheiros nestes filtros.</div>' }
   else{
-    var cs=camStats(C), it2=DATA.cam.map(function(a,i){return {t:a[0],v:cs.areaPeople[i]/C.length,label:pct(cs.areaPeople[i]/C.length)}}).sort(function(a,b){return b.v-a.v});
-    $('#gcam').innerHTML=bars(it2,{max:1})+'<p class="note">% das pessoas que puseram a área entre as 3 que mais as preocupam.</p>';
+    $('#gcam').innerHTML=concernList(C);
   }
 }
 
@@ -713,14 +719,10 @@ function drawFichaC(){
   var h='<h3 class="fnome">'+esc(a)+' · '+esc(ZNOME[AGR_ZONA[a]]||'')+'</h3><div class="kpis" style="margin:0 0 4px"><div class="kpi g"><b>'+C.length+(rs.n?' <small>de '+(rs.n>=10?'10 ou mais':'~'+rs.n)+'</small>':'')+'</b><span>caminheiros do clã responderam'+(rs.cob!=null?' · cobertura '+(rs.n>=10?'até ':'')+pct(rs.cob):(rs.n?'':' (tamanho do clã por indicar)'))+'</span>'+(rs.cob!=null?'<div style="margin-top:8px"><span class="cb" style="width:100%"><i style="width:'+Math.round(rs.cob*100)+'%"></i></span></div>':'')+'</div></div><div class="grid2">';
   if(!C.length){ h+='<div class="card"><h3>Preocupações dos caminheiros</h3><div class="empty">Ainda sem respostas de caminheiros.</div></div>'; take('t-c5','Este clã ainda não tem caminheiros a responder.') }
   else{
-    var cs=camStats(C), ref2=camStats(Call);
-    var it2=DATA.cam.map(function(x,i){return {t:x[0],v:cs.areaPeople[i]/C.length,label:pct(cs.areaPeople[i]/C.length),m:Call.length?ref2.areaPeople[i]/Call.length:null}}).sort(function(a,b){return b.v-a.v});
-    take('t-c5','No clã de <b>'+esc(a)+'</b>, a área que mais preocupa é <b>'+esc(it2[0].t)+'</b> ('+pct(it2[0].v)+' de '+plural(C.length,'caminheiro','caminheiros')+').');
-    h+='<div class="card"><h3>Preocupações dos caminheiros</h3><div class="bars">'+bars(it2,{max:1})+'</div><div class="leg"><span><i></i>este agrupamento</span><span><i class="m"></i>média nos filtros</span></div><p class="note">% que pôs a área entre as 3 que mais preocupam.</p></div>';
-    var items=[]; DATA.cam.forEach(function(ar,ai){ar[1].forEach(function(t,k){items.push({t:t,a:ar[0],p:cs.pts[ai*2+k]})})});
-    items.sort(function(a,b){return b.p-a.p}); items=items.filter(function(x){return x.p>0}).slice(0,5);
+    var ci3=concernItems(C);
+    take('t-c5','No clã de <b>'+esc(a)+'</b>, a preocupação que mais pesa é «<b>'+esc(ci3[0].t)+'</b>» ('+pct(ci3[0].ppl/C.length)+' de '+plural(C.length,'caminheiro','caminheiros')+').'+(C.length<5?' <i>Poucas respostas: lê com cuidado.</i>':''));
+    h+='<div class="card"><h3>As preocupações, ordenadas</h3><ol class="dl">'+concernList(C)+'</ol><p class="note">'+CNOTE+'</p></div>';
     h+=cenCards(C).split('<div class="card">').slice(1).map(function(x){return '<div class="card">'+x}).join('');
-    h+='<div class="card"><h3>Afirmações mais escolhidas</h3><ol class="dl">'+items.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.t)+'<small>'+esc(x.a)+'</small></span><span class="p">'+x.p+(x.p===1?' pt':' pts')+'</span></li>'}).join('')+'</ol><p class="note">1.ª escolha vale 3 pontos, 2.ª vale 2, 3.ª vale 1.</p></div>';
   }
   el.innerHTML=h+'</div>';
 }
