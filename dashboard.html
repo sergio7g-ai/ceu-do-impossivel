@@ -7,11 +7,15 @@
 <title>Painel · Entre as Estrelas</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Nunito+Sans:wght@400;600;800&display=swap">
 <style>
-:root{--navy:#0A1730;--navy2:#10244A;--blue:#1C3A6B;--gold:#FFD58A;--goldd:#B5791A;--ice:#9FC3FF;--bg:#F3F5FA;--card:#fff;--ink:#14213D;--mut:#4F5D7A;--line:#D8DEEB;--ok:#1C3A6B;
- --disp:'Josefin Sans',system-ui,sans-serif;--body:'Nunito Sans',system-ui,sans-serif}
+:root{--navy:#0A1730;--blue:#1C3A6B;--gold:#FFD58A;--goldd:#8A5A0B;--ice:#9FC3FF;--ink:#14213D;--mut:#46536F;--line:rgba(20,33,61,.13);--ok:#1C3A6B;
+ --disp:'Josefin Sans',system-ui,sans-serif;--body:'Nunito Sans',system-ui,sans-serif;--bg:#EEF2FA;--card:#fff}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.45 var(--body)}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:150px}
+body{margin:0;color:var(--ink);font:400 16px/1.5 var(--body);background:#EEF2FA}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+ radial-gradient(900px 560px at 6% -6%,#B9D0FF 0%,transparent 62%),
+ radial-gradient(820px 520px at 102% 8%,#FFE2AE 0%,transparent 58%),
+ radial-gradient(1000px 720px at 62% 108%,#C3D3F5 0%,transparent 62%),#EEF2FA}
 h1,h2,h3{font-family:var(--disp);margin:0;letter-spacing:.01em}
 button,select,input{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--goldd);outline-offset:2px}
@@ -26,138 +30,182 @@ button,select,input{font:inherit;color:inherit}
 #gate button{margin-top:12px;width:100%;height:52px;border:0;border-radius:14px;background:var(--gold);color:var(--navy);font-weight:800;font-size:16px;cursor:pointer}
 #gate button[disabled]{opacity:.6}
 #gerr{min-height:22px;margin-top:10px;color:#FFB3B3;font-weight:600}
-/* topo */
-header.top{background:var(--navy);color:#F4F1E8;padding:14px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-header.top img{width:44px;height:auto}
-header.top h1{font-size:22px;flex:1;min-width:200px}
-header.top h1 small{display:block;font:600 13px var(--body);color:#C9D5EE;margin-top:2px}
-details.agr summary.btn{background:transparent;color:#F4F1E8;border:2px solid #34528F;border-radius:12px;padding:0 16px}
+/* vidro */
+.glass,.card,.kpi,.tw,.filt{background:rgba(255,255,255,.60);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border:1px solid rgba(255,255,255,.78);box-shadow:0 10px 30px rgba(10,23,48,.09),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3);border-radius:22px}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.card,.kpi,.tw,.filt{background:rgba(255,255,255,.95)}}
+@media (prefers-reduced-transparency:reduce){.glass,.card,.kpi,.tw,.filt,.gbar{-webkit-backdrop-filter:none;backdrop-filter:none}.glass,.card,.kpi,.tw,.filt{background:#fff}.gbar{background:var(--navy)}}
+@media (prefers-contrast:more){.glass,.card,.kpi,.tw,.filt{background:#fff;border-color:var(--ink)}}
+/* barra de topo (camada funcional em vidro) */
+.gbar{position:sticky;top:8px;z-index:30;margin:12px auto 0;max-width:1240px;width:calc(100% - 20px);color:#F4F1E8;background:rgba(10,23,48,.84);-webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(255,255,255,.22);border-radius:26px;box-shadow:0 14px 40px rgba(10,23,48,.28),inset 0 1px 0 rgba(255,255,255,.25);padding:12px 14px 8px;display:grid;gap:10px}
+.gtop{display:flex;gap:12px;align-items:center;flex-wrap:wrap;max-width:1240px;margin:0 auto;padding:14px 14px 0}
+.gtop img{width:40px;height:auto}
+.gtop h1{font-size:20px;flex:1;min-width:170px;line-height:1.15}
+.gtop h1 small{display:block;font:600 13px var(--body);color:var(--mut);margin-top:2px}
 .btns{display:flex;gap:8px;flex-wrap:wrap}
-.btn{min-height:44px;padding:0 16px;border-radius:12px;border:2px solid #34528F;background:transparent;color:#F4F1E8;font-weight:700;cursor:pointer}
-.btn:hover{background:#17306100;border-color:var(--gold)}
+.btn{min-height:44px;padding:0 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.7);color:var(--ink);font-weight:700;cursor:pointer}
+.btn:hover{background:#fff}
 .btn.p{background:var(--gold);color:var(--navy);border-color:var(--gold)}
-main{max-width:1240px;margin:0 auto;padding:16px 16px 60px}
-/* filtros */
-.filt{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:14px;position:sticky;top:0;z-index:5;box-shadow:0 4px 14px #0a173014}
-.frow{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:flex-start}
-.fg{display:grid;gap:6px}
-.fg>label,.fg>span.l{font:700 12px var(--body);color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
-.chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{min-height:40px;padding:0 14px;border-radius:999px;border:2px solid var(--line);background:#fff;font-weight:700;cursor:pointer;color:var(--ink)}
-.chip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
-.chip.z[aria-pressed=true]{background:var(--blue);border-color:var(--blue)}
+details.agr summary.btn{display:inline-flex;align-items:center;list-style:none}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:18px;background:rgba(255,255,255,.12)}
+.seg button{min-height:48px;border:0;border-radius:14px;background:transparent;color:#DCE5F8;font:700 17px var(--disp);cursor:pointer;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;transition:background .25s,color .25s,box-shadow .25s}
+.seg button small{font:700 13px var(--body);opacity:.85}
+.seg button[aria-selected=true]{background:#fff;color:var(--navy);box-shadow:0 4px 14px rgba(0,0,0,.22)}
+.rail{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail button{flex:none;min-height:40px;padding:0 14px;border-radius:999px;border:0;background:transparent;color:#C9D5EE;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.rail button:hover{background:rgba(255,255,255,.12)}
+.rail button.on{background:rgba(255,213,138,.2);color:var(--gold);box-shadow:inset 0 0 0 1.5px var(--gold)}
+.prog{position:absolute;left:18px;right:18px;bottom:2px;height:3px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}
+.prog i{display:block;height:100%;width:100%;background:var(--gold);transform-origin:left;transform:scaleX(0)}
+.btn[disabled]{opacity:.6}
 details.agr{position:relative}
-details.agr summary{list-style:none;min-height:40px;display:inline-flex;align-items:center;gap:8px;padding:0 14px;border:2px solid var(--line);border-radius:12px;background:#fff;font-weight:700;cursor:pointer}
+details.agr summary{list-style:none;min-height:44px;display:inline-flex;align-items:center;gap:8px;padding:0 14px;border:2px solid var(--line);border-radius:14px;background:rgba(255,255,255,.7);font-weight:700;cursor:pointer}
 details.agr summary::-webkit-details-marker{display:none}
-details.agr .pop{position:absolute;z-index:20;margin-top:6px;width:min(360px,86vw);max-height:340px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px;box-shadow:0 12px 30px #0a173033}
-.pop label{display:flex;align-items:center;gap:10px;min-height:40px;padding:0 8px;border-radius:8px;cursor:pointer}
-.pop label:hover{background:var(--bg)}
+details.agr summary.btn{border:1px solid var(--line);background:rgba(255,255,255,.7)}
+details.agr .pop{position:absolute;z-index:40;margin-top:6px;width:min(360px,86vw);max-height:340px;overflow:auto;background:rgba(255,255,255,.96);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:8px;box-shadow:0 16px 40px #0a173040}
+.pop label{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 8px;border-radius:10px;cursor:pointer}
+.pop label:hover{background:#EEF2FA}
 .pop input{width:20px;height:20px;accent-color:var(--blue)}
 .pop .gh{font:700 12px var(--body);color:var(--mut);text-transform:uppercase;letter-spacing:.06em;padding:8px 8px 2px}
 .pop .acts{display:flex;gap:8px;padding:4px 8px 8px;position:sticky;top:0;background:#fff}
-.linkb{background:none;border:0;color:var(--blue);font-weight:800;text-decoration:underline;cursor:pointer;min-height:36px;padding:0 6px}
+.linkb{background:none;border:0;color:var(--blue);font-weight:800;text-decoration:underline;cursor:pointer;min-height:40px;padding:0 6px}
+main{max-width:1240px;margin:0 auto;padding:16px 14px 80px}
+/* filtros */
+.filt{position:relative;z-index:6;padding:4px 16px 14px;margin-top:14px}
+.filt>summary{list-style:none;min-height:48px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap}
+.filt>summary::-webkit-details-marker{display:none}
+.filt>summary::after{content:'▾';margin-left:auto;color:var(--mut)}
+.filt[open]>summary::after{content:'▴'}
+.frow{display:flex;gap:10px 22px;flex-wrap:wrap;align-items:flex-start}
+.fg{display:grid;gap:6px}
+.fg .l{font:700 12px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line);background:rgba(255,255,255,.75);font-weight:700;cursor:pointer;color:var(--ink);transition:background .2s,color .2s}
+.chip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+body.pcam .dironly{display:none}
 #fsum{font-weight:600;color:var(--mut);font-size:14px}
-/* blocos */
-section.blk{margin-top:22px}
-section.blk>h2{font-size:21px;margin:0 0 4px}
-section.blk>p.sub{margin:0 0 12px;color:var(--mut)}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:16px}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
-.kpi b{display:block;font:700 34px/1.1 var(--disp);color:var(--navy)}
+/* partes e secções */
+.part{counter-reset:s}
+.ptitle{display:none}
+section.blk{margin-top:34px}
+section.blk>h2{font-size:26px;margin:0 0 4px;display:flex;align-items:center;gap:12px}
+section.blk>h2::before{counter-increment:s;content:counter(s);flex:none;width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--gold);font:700 18px/34px var(--disp);text-align:center}
+section.blk>p.sub{margin:0 0 10px;color:var(--mut);max-width:70ch}
+.take{margin:0 0 14px;padding:12px 16px;border-radius:16px;background:rgba(255,213,138,.38);border-left:5px solid var(--goldd);font-weight:600;max-width:80ch}
+.take:empty{display:none}
+.take b{color:var(--navy)}
+.js section.blk{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.js section.blk.in{opacity:1;transform:none}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:6px}
+.kpi{padding:16px 18px}
+.kpi b{display:block;font:700 38px/1.1 var(--disp);color:var(--navy)}
+.kpi b small{font:700 16px var(--body);color:var(--mut)}
 .kpi span{color:var(--mut);font-weight:600;font-size:14px}
 .kpi.g{border-top:5px solid var(--gold)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;break-inside:avoid}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
-.card h3{font-size:17px;margin-bottom:10px}
+.card{padding:18px;break-inside:avoid}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin-top:12px}
+.card h3{font-size:18px;margin-bottom:10px}
+.sumbox{margin-top:12px}
+.sumbox ul{margin:0;padding-left:20px;display:grid;gap:8px}
+.sumbox li{font-size:16px}
 /* barras */
-.bars{display:grid;gap:8px}
-.bar{display:grid;grid-template-columns:minmax(120px,38%) 1fr auto;gap:10px;align-items:center;font-size:14px}
+.bars{display:grid;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(120px,38%) 1fr auto;gap:10px;align-items:center;font-size:14.5px}
 .bar .t{overflow-wrap:anywhere}
-.bar .tr{height:16px;background:#E6EBF5;border-radius:8px;position:relative;overflow:hidden}
-.bar .fi{position:absolute;left:0;top:0;bottom:0;background:var(--blue);border-radius:8px}
+.bar .tr{height:16px;background:rgba(28,58,107,.12);border-radius:8px;position:relative;overflow:hidden}
+.bar .fi{position:absolute;left:0;top:0;bottom:0;background:var(--blue);border-radius:8px;transform-origin:left;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.js section.blk:not(.in) .bar .fi{transform:scaleX(0)}
 .bar .mk{position:absolute;top:-2px;bottom:-2px;width:3px;background:var(--goldd)}
 .bar .v{font-weight:800;min-width:48px;text-align:right}
 .leg{font-size:13px;color:var(--mut);margin-top:8px;display:flex;gap:14px;flex-wrap:wrap}
 .leg i{display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--blue);vertical-align:-1px;margin-right:4px}
 .leg i.m{width:3px;height:14px;background:var(--goldd);border-radius:0}
 /* tabelas */
-.tw{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
-th{font:700 12px var(--body);color:var(--mut);text-transform:uppercase;letter-spacing:.05em;background:#F8FAFD;position:sticky;top:0}
+.tw{overflow:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font:700 12px var(--body);color:var(--mut);text-transform:uppercase;letter-spacing:.05em;background:rgba(238,242,250,.7);position:sticky;top:0}
 th[data-k]{cursor:pointer}
 th[data-k]:hover{color:var(--navy)}
 td.n,th.n{text-align:right}
-tr.zero td{color:#7B879F}
-tbody tr:hover{background:#F8FAFD}
-.pill{display:inline-block;padding:1px 9px;border-radius:999px;background:#E6EBF5;font-weight:700;font-size:12px;margin-right:4px}
+tr.zero td{color:#6B7690}
+tr[data-a]{cursor:pointer}
+tr[data-a]:hover,tr[data-a]:focus-visible{background:rgba(28,58,107,.08)}
+tr[data-a] td:first-child::after{content:" ›";color:var(--goldd);font-weight:800}
+tr.tot td{font-weight:800;border-top:2px solid var(--navy);background:rgba(238,242,250,.7)}
 .heat td.c{text-align:center;min-width:78px;font-weight:700;border-left:1px solid #fff}
 .heat th.c{white-space:normal;min-width:78px;max-width:100px;text-align:center;line-height:1.2}
 .heat td.c.top{outline:2px solid var(--navy);outline-offset:-2px}
-.outros{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+.cb{display:inline-block;width:80px;height:10px;background:rgba(28,58,107,.14);border-radius:6px;vertical-align:middle;margin-right:8px;overflow:hidden}
+.cb i{display:block;height:100%;background:var(--blue);border-radius:6px}
+.outros{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px}
 .outros li{overflow-wrap:anywhere}
-.note{font-size:13px;color:var(--mut);margin-top:8px}
+.note{font-size:13.5px;color:var(--mut);margin-top:8px}
 .empty{padding:22px;text-align:center;color:var(--mut)}
-select.big{min-height:44px;border:2px solid var(--line);border-radius:12px;padding:0 12px;background:#fff;font-weight:700;max-width:100%}
+select.big{min-height:48px;border:1.5px solid var(--line);border-radius:14px;padding:0 14px;background:rgba(255,255,255,.85);font-weight:700;max-width:100%}
 .dl{margin:0;padding:0;list-style:none;display:grid;gap:8px}
 .dl li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding-bottom:8px;border-bottom:1px solid var(--line)}
 .dl li:last-child{border-bottom:0}
 .dl .r{font:700 18px var(--disp);color:var(--goldd);min-width:24px}
 .dl small{display:block;color:var(--mut)}
 .dl .p{font-weight:800}
-#printline{display:none}
-@media (max-width:640px){header.top h1{font-size:19px}.bar{grid-template-columns:1fr auto;}.bar .tr{grid-column:1/3;order:3}.filt{position:static}}
-.cb{display:inline-block;width:70px;height:10px;background:#E6EBF5;border-radius:6px;vertical-align:middle;margin-right:6px;overflow:hidden}
-.cb i{display:block;height:100%;background:var(--blue)}
-.sumbox ul{margin:0;padding-left:20px;display:grid;gap:7px}
-.sumbox li{font-size:15px}
-.howto,.fnome,.pfoot{display:none}
-.fnome{font:700 20px var(--disp);margin:0 0 10px}
-tr.tot td{font-weight:800;border-top:2px solid var(--navy);background:#F8FAFD}
-.clanbig{font:700 28px/1.1 var(--disp);color:var(--navy)}
+.fnome{font:700 22px var(--disp);margin:14px 0 10px}
+#phead{display:none}
+@media (max-width:640px){.btns{flex-wrap:nowrap;width:100%}.btn{padding:0 12px;font-size:14px;flex:1}.gtop img{width:34px}#fsum{flex:1;min-width:0;font-size:13px}.filt>summary{flex-wrap:nowrap}.gtop h1{font-size:18px}.bar{grid-template-columns:1fr auto}.bar .tr{grid-column:1/3;order:3}.seg button{font-size:15px}section.blk>h2{font-size:22px}html{scroll-padding-top:150px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js section.blk{opacity:1;transform:none;transition:none}.bar .fi{transition:none}.js section.blk:not(.in) .bar .fi{transform:none}}
 @media print{
  @page{size:A4 landscape;margin:12mm 12mm 14mm 12mm;@bottom-right{content:"Página " counter(page) " de " counter(pages);font:9px sans-serif;color:#555}}
  html,body{background:#fff!important;font-size:11px;line-height:1.35;width:auto}
+ body::before{display:none}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
- #gate,.btns,.filt,details.agr,.noprint,select.big,#fclr{display:none!important}
+ #gate,.gtop,.gbar,.filt,details.agr,.noprint,select.big,#fclr{display:none!important}
+ .part.hide{display:block!important}
  main{max-width:none!important;width:100%;margin:0;padding:0}
- header.top{background:#fff;color:#000;padding:0 0 6px;border-bottom:3px solid var(--navy);gap:10px}
- header.top h1{font-size:19px;min-width:0}
- header.top h1 small{color:#333;font-size:11px}
- header.top img{width:34px;filter:none}
- #printline{display:block;margin:6px 0 8px;font-size:11px;padding:6px 10px;border:1px solid #999;border-radius:6px;background:#f4f4f4}
- .howto{display:block;font-size:11px;margin:0 0 10px;padding:6px 10px;border-left:4px solid var(--goldd);background:#fbf6ea}
- .kpis{grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
- .kpi{padding:8px 10px;border-radius:8px;box-shadow:none;break-inside:avoid}
- .kpi b{font-size:22px}.kpi span{font-size:11px}
- section.blk{margin-top:12px;break-inside:auto}
+ .glass,.card,.kpi,.tw{background:#fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important;border-color:#bbb;border-radius:8px}
+ .js section.blk{opacity:1!important;transform:none!important}
+ .js section.blk:not(.in) .bar .fi{transform:none!important}
+ #phead{display:block;margin-bottom:8px}
+ #phead .ph{display:flex;gap:10px;align-items:center;border-bottom:3px solid var(--navy);padding-bottom:6px}
+ #phead img{width:34px}
+ #phead h1{font-size:19px}
+ #phead small{display:block;font:600 11px var(--body);color:#333}
+ #printline{margin:6px 0 8px;font-size:11px;padding:6px 10px;border:1px solid #999;border-radius:6px;background:#f4f4f4}
+ .howto{font-size:11px;margin:0 0 8px;padding:6px 10px;border-left:4px solid var(--goldd);background:#fbf6ea}
+ .part+.part{break-before:page}
+ .ptitle{display:block;font-size:24px;color:var(--navy);margin:0 0 4px}
+ .kpis{grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+ .kpi{padding:8px 10px}.kpi b{font-size:22px}.kpi span{font-size:11px}
+ section.blk{margin-top:12px}
  section.blk>h2{font-size:16px;border-bottom:2px solid var(--navy);padding-bottom:3px;margin-bottom:6px;break-after:avoid}
+ section.blk>h2::before{width:22px;height:22px;font-size:12px;line-height:22px}
  section.blk>p.sub{font-size:11px;margin-bottom:6px}
- #s-resp,#s-geral,#s-comp,#s-cen,#s-ficha{break-before:page}
- .heat{break-inside:avoid}
+ .take{font-size:11.5px;padding:6px 10px;margin-bottom:8px}
+ .pb{break-before:page}
  h3,h4{break-after:avoid}
- .card{box-shadow:none;break-inside:avoid;padding:10px;border-radius:8px}
+ .card{padding:10px}
  .card h3{font-size:13px;margin-bottom:6px}
  .grid2{grid-template-columns:1fr 1fr;gap:8px}
+ #d3 .grid2,#d5 .grid2,#c4 .grid2{grid-template-columns:repeat(3,1fr)}
  .bars{gap:5px}.bar{font-size:10.5px;gap:6px;grid-template-columns:minmax(90px,40%) 1fr auto}
  .bar .tr{height:11px}
  .dl li{padding-bottom:4px}.dl .r{font-size:14px}
  .note,.leg{font-size:10px}
- .tw{overflow:visible!important;border:1px solid #999;border-radius:0;box-shadow:none}
+ .tw{overflow:visible!important}
  table{font-size:10px;width:100%;table-layout:auto}
  th,td{white-space:normal!important;overflow-wrap:normal;word-break:normal;padding:3px 5px}
  td:first-child{overflow-wrap:anywhere}
  td.n,th.n,td:nth-child(2){white-space:nowrap!important}
  th.n{white-space:normal!important;max-width:90px}
- th{position:static;font-size:9px;letter-spacing:0}
+ th{position:static;font-size:9px;letter-spacing:0;background:#f1f3f8}
  thead{display:table-header-group}
  tr{break-inside:avoid}
+ tr[data-a] td:first-child::after{content:""}
+ .heat{break-inside:avoid}
  .heat th.c,.heat td.c{min-width:0!important;max-width:none!important;padding:3px 2px;font-size:9.5px}
  .cb{width:46px;height:8px}
  .sumbox li{font-size:11.5px}
  .outros{font-size:10.5px}
- tbody tr:hover{background:none}
- .fnome{display:block}
+ .fnome{font-size:15px;margin:6px 0}
 }
 </style>
 </head>
@@ -174,86 +222,126 @@ tr.tot td{font-weight:800;border-top:2px solid var(--navy);background:#F8FAFD}
 </div>
 
 <div id="app" class="hide">
- <header class="top">
-  <img id="hlogo" alt="">
-  <h1>Entre as Estrelas · Painel<small id="upd">…</small></h1>
-  <div class="btns">
-   <button class="btn" id="bref" type="button">Atualizar</button>
-   <details class="agr" id="dexp"><summary class="btn" style="border-color:#34528F;color:#F4F1E8">Exportar CSV ▾</summary>
-    <div class="pop" style="right:0;color:var(--ink)">
-     <label style="cursor:pointer"><button class="linkb" data-csv="resumo" type="button">Resumo por agrupamento</button></label>
-     <label style="cursor:pointer"><button class="linkb" data-csv="dif" type="button">Dificuldades dos dirigentes</button></label>
-     <label style="cursor:pointer"><button class="linkb" data-csv="cam" type="button">Preocupações dos caminheiros</button></label>
-     <label style="cursor:pointer"><button class="linkb" data-csv="cen" type="button">Cenáculo (caminheiros)</button></label>
-     <label style="cursor:pointer"><button class="linkb" data-csv="outro" type="button">Cenáculo · textos de «Outro»</button></label>
-    </div></details>
-   <button class="btn p" id="bprint" type="button">Imprimir / PDF</button>
+<header class="gtop">
+   <img id="hlogo" alt="">
+   <h1>Entre as Estrelas · Painel<small id="upd">…</small></h1>
+   <div class="btns">
+    <button class="btn" id="bref" type="button">Atualizar</button>
+    <details class="agr" id="dexp"><summary class="btn">Exportar CSV ▾</summary>
+     <div class="pop" style="right:0">
+      <label><button class="linkb" data-csv="resumo" type="button">Resumo por agrupamento</button></label>
+      <label><button class="linkb" data-csv="dif" type="button">Dificuldades dos dirigentes</button></label>
+      <label><button class="linkb" data-csv="cam" type="button">Preocupações dos caminheiros</button></label>
+      <label><button class="linkb" data-csv="cen" type="button">Cenáculo (caminheiros)</button></label>
+      <label><button class="linkb" data-csv="outro" type="button">Cenáculo · textos de «Outro»</button></label>
+     </div></details>
+    <button class="btn p" id="bprint" type="button">Guardar PDF</button>
+   </div>
+  </header>
+ <nav class="gbar" aria-label="Painel">
+  <div class="seg" role="tablist" aria-label="Escolhe o grupo">
+   <button type="button" role="tab" id="tabD" data-part="dir" aria-selected="true">Dirigentes <small id="cD"></small></button>
+   <button type="button" role="tab" id="tabC" data-part="cam" aria-selected="false">Caminheiros <small id="cC"></small></button>
   </div>
- </header>
+  <div class="rail" id="rail" aria-label="Secções desta página"></div>
+  <div class="prog" aria-hidden="true"><i id="progi"></i></div>
+ </nav>
  <main>
-  <div class="filt" aria-label="Filtros">
-   <div class="frow">
-    <div class="fg"><span class="l">Quem</span><div class="chips" id="fq" role="group" aria-label="Quem"></div></div>
+  <div id="phead">
+   <div class="ph"><img class="plogo" alt=""><h1>Entre as Estrelas · Painel<small id="pupd"></small></h1></div>
+   <p id="printline"></p>
+   <p class="howto"><b>Como ler:</b> «n» é o número de respostas. Nos mapas de calor, cor mais escura = valor mais alto; o contorno marca o que mais pesa em cada linha. Com poucas respostas os valores oscilam muito: lê com cuidado. O clã é o conjunto de caminheiros do agrupamento.</p>
+  </div>
+  <details class="filt" id="dfilt"><summary><b>Filtros</b> <span id="fsum"></span></summary>
+   <div class="frow" style="margin-top:12px">
     <div class="fg"><span class="l">Encontro</span><div class="chips" id="fz" role="group" aria-label="Encontro"></div></div>
     <div class="fg"><span class="l">Agrupamento</span>
      <details class="agr" id="dagr"><summary id="sagr">Todos</summary><div class="pop" id="pagr"></div></details></div>
-    <div class="fg"><span class="l">Secção <em style="text-transform:none;font-weight:600">(dirigentes)</em></span><div class="chips" id="fs" role="group" aria-label="Secção"></div></div>
-    <div class="fg"><span class="l">Anos como dirigente</span><div class="chips" id="fy" role="group" aria-label="Anos"></div></div>
+    <div class="fg dironly"><span class="l">Secção</span><div class="chips" id="fs" role="group" aria-label="Secção"></div></div>
+    <div class="fg dironly"><span class="l">Anos como dirigente</span><div class="chips" id="fy" role="group" aria-label="Anos"></div></div>
    </div>
-   <div><span id="fsum"></span> <button class="linkb noprint" id="fclr" type="button">Limpar filtros</button></div>
+   <div style="margin-top:8px"><button class="linkb noprint" id="fclr" type="button">Limpar filtros</button></div>
+  </details>
+
+  <div class="part" id="part-dir" data-part="dir">
+   <h1 class="ptitle">Dirigentes</h1>
+   <section class="blk" id="d1" data-rail="Resumo">
+    <h2>Resumo</h2>
+    <p class="sub">Dirigentes que responderam ao jogo dos duelos: em cada duelo escolhem a dificuldade que mais lhes custa.</p>
+    <div class="kpis" id="kd"></div>
+    <div class="card sumbox" id="sumd"></div>
+   </section>
+   <section class="blk pb" id="d2" data-rail="Quem respondeu">
+    <h2>Quem respondeu</h2>
+    <p class="sub">Todos os agrupamentos, mesmo os que ainda não responderam. Clica numa linha para ver a ficha desse agrupamento.</p>
+    <p class="take" id="t-d2"></p>
+    <div class="tw"><table id="tresp"></table></div>
+   </section>
+   <section class="blk pb" id="d3" data-rail="O que mais custa">
+    <h2>O que mais custa</h2>
+    <p class="sub">Percentagem de duelos em que cada tema ou dificuldade foi escolhido como a que mais custa. Barra mais comprida = custa mais.</p>
+    <p class="take" id="t-d3"></p>
+    <div class="grid2">
+     <div class="card"><h3>Por tema</h3><div class="bars" id="gtemas"></div></div>
+     <div class="card"><h3>As 10 dificuldades que mais custam</h3><ol class="dl" id="gtop"></ol></div>
+     <div class="card"><h3>Respostas por secção</h3><div class="bars" id="gsec"></div></div>
+    </div>
+   </section>
+   <section class="blk pb" id="d4" data-rail="Comparar">
+    <h2>Comparar agrupamentos</h2>
+    <p class="sub">Cada linha é um agrupamento, cada coluna um tema. Mais escuro = custa mais. O contorno marca o tema que mais custa em cada agrupamento.</p>
+    <p class="take" id="t-d4"></p>
+    <div class="tw heat"><table id="theat"></table></div>
+    <p class="note">A média é 50% por definição de duelo; o que interessa é a diferença entre temas e entre agrupamentos. Com poucas respostas os valores oscilam muito: vê o n de cada linha.</p>
+   </section>
+   <section class="blk pb" id="d5" data-rail="Por agrupamento">
+    <h2>Dirigentes por agrupamento</h2>
+    <p class="sub">As dificuldades de um agrupamento, com a média de todos os que estão nos filtros como referência (marca dourada).</p>
+    <div class="noprint" style="margin:6px 0 4px"><select class="big" id="sfichaD" aria-label="Agrupamento"></select></div>
+    <p class="take" id="t-d5"></p>
+    <div id="fichaD"></div>
+   </section>
   </div>
-  <p id="printline"></p>
-  <p class="howto"><b>Como ler:</b> «n» é o número de respostas. Nos mapas de calor, cor mais escura = valor mais alto; o contorno marca o tema que mais custa. Com poucas respostas, os valores oscilam muito: lê com cuidado. O clã é o conjunto de caminheiros do agrupamento.</p>
 
-  <div class="kpis" id="kpis"></div>
-
-  <section class="blk" id="s-sum">
-   <h2>Em resumo</h2>
-   <div class="card sumbox" id="sum"></div>
-  </section>
-
-  <section class="blk" id="s-resp">
-   <h2>Quem respondeu</h2>
-   <p class="sub">Todos os agrupamentos, mesmo os que ainda não responderam. Para os caminheiros, vês quantos responderam, o tamanho do clã que eles indicaram e quantos faltam. Clica num título para ordenar.</p>
-   <div class="tw"><table id="tresp"></table></div>
-   <p class="note" id="nresp"></p>
-  </section>
-
-
-  <section class="blk" id="s-comp">
-   <h2>Comparar agrupamentos</h2>
-   <p class="sub">Dirigentes: % de duelos em que cada tema foi escolhido como o que mais custa. Mais escuro = custa mais. O contorno marca o tema que mais custa em cada agrupamento.</p>
-   <div class="tw heat"><table id="theat"></table></div>
-   <p class="note">A média é 50% por definição de duelo; o que interessa é a diferença entre temas e entre agrupamentos. Com poucas respostas os valores oscilam muito: vê o n de cada linha.</p>
-   <h3 style="margin:18px 0 8px;font-size:17px">Caminheiros: % que pôs a área entre as 3 que mais preocupam</h3>
-   <div class="tw heat"><table id="tcheat"></table></div>
-  </section>
-
-  <section class="blk" id="s-cen">
-   <h2>Cenáculo</h2>
-   <p class="sub">O que os caminheiros responderam às 3 perguntas sobre o Cenáculo. Percentagens sobre quem respondeu a cada pergunta. Cada pessoa escolhe uma só opção por pergunta.</p>
-   <div class="grid2" id="cen"></div>
-   <h3 style="margin:18px 0 8px;font-size:17px">Por agrupamento: o Cenáculo cumpre o seu propósito?</h3>
-   <div class="tw heat"><table id="tcen"></table></div>
-  </section>
-
-  <section class="blk" id="s-geral">
-   <h2>No conjunto</h2>
-   <p class="sub">Tudo o que está nos filtros, somado.</p>
-   <div class="grid2">
-    <div class="card"><h3>Dificuldades dos dirigentes, por tema</h3><div class="bars" id="gtemas"></div></div>
-    <div class="card"><h3>As 10 dificuldades que mais custam</h3><ol class="dl" id="gtop"></ol></div>
-    <div class="card"><h3>Preocupações dos caminheiros</h3><div class="bars" id="gcam"></div></div>
-    <div class="card"><h3>Respostas por secção</h3><div class="bars" id="gsec"></div></div>
-   </div>
-  </section>
-
-  <section class="blk" id="s-ficha">
-   <h2>Ficha de um agrupamento</h2>
-   <p class="sub">As dificuldades e preocupações deste agrupamento, com a média de todos os que estão nos filtros como referência.</p>
-   <div class="noprint" style="margin-bottom:12px"><select class="big" id="sficha" aria-label="Agrupamento"></select></div>
-   <div id="ficha"></div>
-  </section>
+  <div class="part hide" id="part-cam" data-part="cam">
+   <h1 class="ptitle">Caminheiros</h1>
+   <section class="blk" id="c1" data-rail="Resumo">
+    <h2>Resumo</h2>
+    <p class="sub">Caminheiros que responderam: ordenaram as áreas que mais os preocupam e responderam a 3 perguntas sobre o Cenáculo.</p>
+    <div class="kpis" id="kc"></div>
+    <div class="card sumbox" id="sumc"></div>
+   </section>
+   <section class="blk pb" id="c2" data-rail="Clãs">
+    <h2>Quantos caminheiros respondem em cada clã</h2>
+    <p class="sub">Um clã por agrupamento. «Tamanho do clã» é o que os próprios caminheiros indicaram. Clica numa linha para ver a ficha.</p>
+    <p class="take" id="t-c2"></p>
+    <div class="tw"><table id="tclas"></table></div>
+    <p class="note" id="nclas"></p>
+   </section>
+   <section class="blk pb" id="c3" data-rail="O que preocupa">
+    <h2>O que mais preocupa</h2>
+    <p class="sub">Percentagem de caminheiros que pôs cada área entre as 3 que mais os preocupam.</p>
+    <p class="take" id="t-c3"></p>
+    <div class="grid2"><div class="card"><h3>No conjunto</h3><div class="bars" id="gcam"></div></div></div>
+    <h3 style="margin:18px 0 8px;font-size:18px">Por agrupamento</h3>
+    <div class="tw heat"><table id="tcheat"></table></div>
+   </section>
+   <section class="blk pb" id="c4" data-rail="Cenáculo">
+    <h2>Cenáculo</h2>
+    <p class="sub">As 3 perguntas sobre o Cenáculo. Percentagens sobre quem respondeu a cada pergunta; cada pessoa escolhe uma só opção.</p>
+    <p class="take" id="t-c4"></p>
+    <div class="grid2" id="cen"></div>
+    <h3 style="margin:18px 0 8px;font-size:18px">Por agrupamento: o Cenáculo cumpre o seu propósito?</h3>
+    <div class="tw heat"><table id="tcen"></table></div>
+   </section>
+   <section class="blk pb" id="c5" data-rail="Por agrupamento">
+    <h2>Caminheiros por agrupamento</h2>
+    <p class="sub">As respostas dos caminheiros de um agrupamento, com a média de todos os que estão nos filtros como referência (marca dourada).</p>
+    <div class="noprint" style="margin:6px 0 4px"><select class="big" id="sfichaC" aria-label="Agrupamento"></select></div>
+    <p class="take" id="t-c5"></p>
+    <div id="fichaC"></div>
+   </section>
+  </div>
  </main>
 </div>
 
@@ -261,7 +349,7 @@ tr.tot td{font-weight:800;border-top:2px solid var(--navy);background:#F8FAFD}
 var CFG={"url":"https://qkjakaxufkyvpplzzmfh.supabase.co","key":"sb_publishable_36f8PITfrKqa4O2-tNlelw_NIuldxpL"}, DATA={"themes":["Preparar","Aprender fazendo","Guias e patrulhas","Jovens","Progresso","Equipa e tempo","Formação e apoio","Lei, Promessa e fé","Natureza e comunidade","Tradição e identidade","Material e dinheiro"],"difs":[{"t":0,"x":"Preparar uma reunião semanal que não saia sempre igual"},{"t":0,"x":"Manter o ritmo e a atenção dos jovens durante a reunião"},{"t":0,"x":"Planear uma atividade de fim de semana de ponta a ponta"},{"t":0,"x":"Ter um plano B quando chove ou faltam jovens"},{"t":0,"x":"Ter um Plano Anual de Unidade que se trabalhe a sério"},{"t":0,"x":"Planear pela intenção educativa e não só pela diversão ou pela logística"},{"t":1,"x":"Motivar a secção a sonhar um projeto ambicioso"},{"t":1,"x":"Deixar que escolham o projeto sem decidir por eles"},{"t":1,"x":"Viver as fases do método do projeto sem saltar nenhuma"},{"t":1,"x":"Manter o painel do projeto vivo ao longo do ano"},{"t":1,"x":"Fazer uma avaliação honesta no fim de cada atividade"},{"t":1,"x":"Transformar os erros dos jovens em aprendizagem"},{"t":2,"x":"Preparar o Conselho de Guias com os próprios guias"},{"t":2,"x":"Fazer do Conselho de Guias um espaço de decisão e não só de informação"},{"t":2,"x":"Ajudar a secção a eleger bons guias sem escolher por eles"},{"t":2,"x":"Formar os guias para liderarem a patrulha"},{"t":2,"x":"Acompanhar guias que perderam a motivação"},{"t":2,"x":"Conseguir que os guias façam o que combinámos"},{"t":3,"x":"Motivar os jovens que andam desligados"},{"t":3,"x":"Lidar com o telemóvel nas reuniões"},{"t":3,"x":"Gerir o comportamento do grupo durante as atividades"},{"t":3,"x":"Falar com os pais quando há um problema"},{"t":3,"x":"Integrar um jovem que acabou de chegar"},{"t":3,"x":"Incluir jovens com dificuldades ou necessidades especiais"},{"t":4,"x":"Ligar cada atividade aos objetivos do Sistema de Progresso"},{"t":4,"x":"Escolher objetivos adequados a cada jovem"},{"t":4,"x":"Acompanhar o progresso de cada jovem, um a um"},{"t":4,"x":"Registar o progresso e as noites de campo sem criar papelada"},{"t":4,"x":"Reconhecer o progresso em público de forma que valha a pena"},{"t":4,"x":"Motivar os jovens a trabalhar as especialidades"},{"t":5,"x":"Arranjar tempo para preparar as atividades, entre o trabalho e os estudos"},{"t":5,"x":"Conciliar o escutismo com a família e a vida pessoal"},{"t":5,"x":"Distribuir tarefas entre os dirigentes da equipa"},{"t":5,"x":"Ter dirigentes suficientes em cada atividade"},{"t":5,"x":"Manter a equipa de dirigentes unida e motivada"},{"t":5,"x":"Integrar um dirigente novo na equipa"},{"t":6,"x":"Perceber o que o Núcleo pode fazer por mim"},{"t":6,"x":"Contar com o Assistente na vida da secção"},{"t":6,"x":"Dar conta da burocracia (censos, plano, relatório e contas)"},{"t":6,"x":"Manter as fichas, autorizações e seguros dos jovens em dia"},{"t":6,"x":"Sentir segurança pedagógica com a formação que tenho"},{"t":6,"x":"Fazer formação sem gastar mais fins de semana"},{"t":7,"x":"Transformar a Lei em atitudes do dia a dia, e não em recitações"},{"t":7,"x":"Dar sentido verdadeiro à Promessa e às cerimónias"},{"t":7,"x":"Animar a fé de forma intencional na secção"},{"t":7,"x":"Preparar-me pessoalmente para falar de fé com os jovens"},{"t":7,"x":"Dar sentido aos símbolos e aos ritos sem ser encenação"},{"t":7,"x":"Criar momentos de reflexão e silêncio nas atividades"},{"t":8,"x":"Fazer atividades ao ar livre apesar dos custos e da logística"},{"t":8,"x":"Ensinar técnicas de campismo e de vida ao ar livre aos jovens"},{"t":8,"x":"Passar do serviço pontual a uma ligação real com a comunidade"},{"t":8,"x":"Criar parcerias com a paróquia e as instituições locais"},{"t":8,"x":"Dar a conhecer o escutismo à comunidade e atrair novos jovens"},{"t":8,"x":"Envolver os pais nas atividades da secção"},{"t":9,"x":"Manter vivos o grito e a bandeirola da patrulha ao longo do ano"},{"t":9,"x":"Que todos tenham e usem a vara pessoal"},{"t":9,"x":"Fazer formaturas com sentido e não só por rotina"},{"t":9,"x":"Trabalhar o imaginário da secção em todas as atividades"},{"t":9,"x":"Manter o Livro de Ouro vivo"},{"t":9,"x":"Passar as tradições da patrulha aos mais novos"},{"t":10,"x":"Ter material de campismo completo e em bom estado"},{"t":10,"x":"Cuidar e arrumar o material depois de cada atividade"},{"t":10,"x":"Fazer angariações de fundos sem esgotar os pais"},{"t":10,"x":"Cobrar quotas e atividades sem excluir ninguém"},{"t":10,"x":"Gerir a caixa da patrulha com os guias"},{"t":10,"x":"Ter um orçamento claro para cada atividade"}],"cam":[["Voz e decisão",["Falamos muito, mas as nossas ideias raramente chegam a decisões reais","Os caminheiros ainda não têm voz e voto onde se decide"]],["Fé e Igreja",["Sinto-me distante da posição da Igreja em temas como a afetividade e a sexualidade","Não sei como viver a fé no dia a dia sem parecer imposta"]],["Tempo e vida fora",["Com a faculdade ou o trabalho, quase não tenho tempo para o Clã","O Clã exige muito e a vida lá fora não deixa acompanhar"]],["Pressão para ser dirigente",["Sinto pressão para ser dirigente antes de acabar o meu caminho como caminheiro","Faltam dirigentes no agrupamento e isso acaba por recair sobre nós"]],["A Partida",["Sair do escutismo depois da Partida é visto como abandonar","A Partida devia lançar-me para a vida e não só para ser dirigente"]],["Clã pequeno",["No nosso Clã somos poucos e as mesmas pessoas acumulam todos os cargos","Com poucos no Clã, as ideias repetem-se e custa manter a motivação"]]],"cen":[{"q":"Sentes que o Cenáculo cumpre o seu propósito?","o":["Sim, cumpre","Sim, mas com algumas falhas","Não, não cumpre","Não sei qual é o propósito do Cenáculo"],"m":false},{"q":"Que razões te levam a não participar no Cenáculo?","o":["Costumo participar","Acho que no geral o Cenáculo é desinteressante","Sinto que a atividade não tem impacto prático","Sinto que a atividade não é bem comunicada","Outro"],"m":false},{"q":"Que áreas do Cenáculo achas que podem ser melhoradas?","o":["Nada em específico","Os momentos que precedem o ciclo","A elaboração de propostas e o plenário","A exposição dos temas","Outro"],"m":false}],"zonas":[{"id":1,"n":"1.º Encontro","agr":["87 · Barco","316 · Sande S. Martinho","323 · Sta. Eufémia Prazins","365 · Corvite","454 · Longos","666 · Taipas","830 · Sto. Estêvão Briteiros","882 · Sto. Tirso Prazins","883 · Sta. Leocádia Briteiros","1130 · S. Salvador Briteiros","1259 · S. Clemente Sande"]},{"id":2,"n":"2.º Encontro","agr":[]},{"id":3,"n":"3.º Encontro","agr":[]},{"id":4,"n":"4.º Encontro","agr":[]}],"seccoes":{"alcateia":"Alcateia","expedicao":"Expedição","comunidade":"Comunidade","cla":"Clã","varias":"Várias secções"},"anos":{"0-1":"Menos de 1 ano","1-2":"1 a 2 anos","3-5":"3 a 5 anos","6+":"Mais de 5 anos"}}, DEMO=false;
 var $=function(s){return document.querySelector(s)};
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
-var ST={q:'todos',z:{},a:{},s:{},y:{}}, RAW=null, CODE='', SORT={k:'nome',d:1};
+var ST={z:{},a:{},s:{},y:{}}, RAW=null, CODE='', SORT={k:'nome',d:1};
 var SEC=DATA.seccoes, ANO=DATA.anos;
 var N_DIF=DATA.difs.length, N_TEMA=DATA.themes.length, N_AREA=DATA.cam.length;
 
@@ -290,8 +378,9 @@ $('#gform').addEventListener('submit',function(e){
 function start(d){
   RAW=d; $('#hlogo').src=document.querySelector('#gate img').src; $('#gate').classList.add('hide'); $('#app').classList.remove('hide');
   $('#upd').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
-  if(!$('#fq').children.length) buildFilters();
-  renderAll();
+  if(!$('#fz').children.length) buildFilters();
+  [].forEach.call(document.querySelectorAll('.plogo'),function(i){i.src=$('#hlogo').src});
+  renderAll(); setPart(PART,true);
 }
 $('#bref').addEventListener('click',function(){ var b=this; b.disabled=true; load(CODE).then(function(d){RAW=d;start(d)}).catch(function(){alert('Não consegui atualizar.')}).then(function(){b.disabled=false}) });
 $('#bprint').addEventListener('click',function(){window.print()});
@@ -304,17 +393,16 @@ function allAgr(){
   return m;
 }
 function buildFilters(){
-  $('#fq').innerHTML=[['todos','Todos'],['dir','Dirigentes'],['cam','Caminheiros']].map(function(x){return chip('q',x[1],x[0],'q')}).join('');
   var zs=DATA.zonas.map(function(z){return z.id}); [5,6].forEach(function(i){ if(RAW.respostas.concat(RAW.caminheiros).some(function(r){return zonaDe(r)===i})) zs.push(i) });
   $('#fz').innerHTML=zs.map(function(i){return chip('z',ZNOME[i],i,'z')}).join('');
   $('#fs').innerHTML=Object.keys(SEC).map(function(k){return chip('s',SEC[k],k,'s')}).join('');
   $('#fy').innerHTML=Object.keys(ANO).map(function(k){return chip('y',ANO[k],k,'y')}).join('');
   document.querySelector('.filt').addEventListener('click',function(e){
     var b=e.target.closest('.chip'); if(!b) return; var g=b.dataset.g,k=b.dataset.k;
-    if(g==='q'){ ST.q=k } else { ST[g][k]=!ST[g][k]; if(!ST[g][k]) delete ST[g][k] }
+    ST[g][k]=!ST[g][k]; if(!ST[g][k]) delete ST[g][k];
     syncChips(); renderAll();
   });
-  $('#fclr').addEventListener('click',function(){ ST={q:'todos',z:{},a:{},s:{},y:{}}; syncChips(); renderAll() });
+  $('#fclr').addEventListener('click',function(){ ST={z:{},a:{},s:{},y:{}}; syncChips(); renderAll() });
   buildAgrPop(); syncChips();
 }
 function buildAgrPop(){
@@ -330,18 +418,18 @@ function buildAgrPop(){
   $('#pagr').addEventListener('click',function(e){ var t=e.target.dataset.act; if(!t) return; ST.a={}; if(t==='all'){ Object.keys(allAgr()).forEach(function(a){ST.a[a]=1}) } syncChips(); renderAll() });
 }
 function syncChips(){
-  document.querySelectorAll('.filt .chip').forEach(function(b){ var g=b.dataset.g,k=b.dataset.k; b.setAttribute('aria-pressed', g==='q'?String(ST.q===k):String(!!ST[g][k])) });
+  document.querySelectorAll('.filt .chip').forEach(function(b){ var g=b.dataset.g,k=b.dataset.k; b.setAttribute('aria-pressed', String(!!ST[g][k])) });
   document.querySelectorAll('#pagr input').forEach(function(i){ i.checked=!!ST.a[i.dataset.a] });
   var n=Object.keys(ST.a).length; $('#sagr').textContent=n?(n===1?Object.keys(ST.a)[0]:n+' agrupamentos'):'Todos';
 }
 function has(o){return Object.keys(o).length>0}
 function descFiltros(){
-  var p=[]; p.push(ST.q==='dir'?'Dirigentes':ST.q==='cam'?'Caminheiros':'Dirigentes e caminheiros');
+  var p=[];
   if(has(ST.z)) p.push('Encontro: '+Object.keys(ST.z).map(function(i){return ZNOME[i]}).join(', '));
   if(has(ST.a)) p.push('Agrupamento: '+Object.keys(ST.a).join(', '));
   if(has(ST.s)) p.push('Secção: '+Object.keys(ST.s).map(function(k){return SEC[k]}).join(', '));
   if(has(ST.y)) p.push('Anos: '+Object.keys(ST.y).map(function(k){return ANO[k]}).join(', '));
-  return p.join(' · ');
+  return p.length?p.join(' · '):'sem filtros (todos os encontros e agrupamentos)';
 }
 
 /* ---------- dados filtrados ---------- */
@@ -349,7 +437,7 @@ function fR(){ return RAW.respostas.filter(function(r){
   return (!has(ST.z)||ST.z[zonaDe(r)]) && (!has(ST.a)||ST.a[r.a]) && (!has(ST.s)||ST.s[r.s]) && (!has(ST.y)||ST.y[r.y]) }) }
 function fC(){ return RAW.caminheiros.filter(function(r){
   return (!has(ST.z)||ST.z[zonaDe(r)]) && (!has(ST.a)||ST.a[r.a]) }) }
-function showDir(){return ST.q!=='cam'} function showCam(){return ST.q!=='dir'}
+function showDir(){return true} function showCam(){return true}
 
 function duelStats(rs){
   var ap=new Array(N_DIF).fill(0), wi=new Array(N_DIF).fill(0);
@@ -381,72 +469,127 @@ function resumo(){
   return Object.keys(rows).map(function(a){ var x=rows[a]; x.n=x.ns.length?Math.round(median(x.ns)):null; x.cob=x.n?Math.min(1,x.cam/x.n):null; x.falta=(x.n&&x.n<10)?Math.max(0,x.n-x.cam):null; return x });
 }
 
-/* ---------- em resumo ---------- */
+/* ---------- utilitários de texto ---------- */
 function lista(a){ return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' e '+a[a.length-1] }
-function drawSum(R,C,RS){
-  var L=[], nAg=RS.length, com=RS.filter(function(x){return x.dir||x.cam}).length;
-  if(!R.length&&!C.length){ $('#sum').innerHTML='<div class="empty">Ainda sem respostas nestes filtros.</div>'; return }
-  var q=[]; if(showDir()) q.push(R.length+' dirigente'+(R.length===1?'':'s')); if(showCam()) q.push(C.length+' caminheiro'+(C.length===1?'':'s'));
-  L.push('<b>'+lista(q)+'</b> responderam, em <b>'+com+' de '+nAg+'</b> agrupamentos.');
-  if(showCam()){ var tN=0,tC=0,gr=0; RS.forEach(function(x){ if(x.n&&x.n<10){tN+=x.n;tC+=x.cam} if(x.n>=10) gr++ });
-    if(tN) L.push('Clãs: dos <b>~'+tN+'</b> caminheiros dos clãs com tamanho indicado (abaixo de 10), já responderam <b>'+tC+'</b> ('+pct(tC/tN)+').'+(gr?' Há '+gr+' clã'+(gr===1?'':'s')+' «10 ou mais», que ficam de fora desta conta.':'')); }
-  if(showDir()&&R.length){ var tr=temaRates(duelStats(R)); var o=tr.map(function(v,i){return {t:DATA.themes[i],v:v||0}}).sort(function(a,b){return b.v-a.v}).slice(0,3);
-    L.push('Dirigentes: o que mais custa é <b>'+lista(o.map(function(x){return esc(x.t)+' ('+pct(x.v)+')'}))+'</b>.'); }
-  if(showCam()&&C.length){ var cs=camStats(C); var o2=DATA.cam.map(function(a,i){return {t:a[0],v:cs.areaPeople[i]/C.length}}).sort(function(a,b){return b.v-a.v}).slice(0,3);
-    L.push('Caminheiros: as áreas que mais preocupam são <b>'+lista(o2.map(function(x){return esc(x.t)+' ('+pct(x.v)+')'}))+'</b>.');
-    var c0=cenStats(C)[0]; if(c0.n){ var bi=0; c0.cnt.forEach(function(v,i){ if(v>c0.cnt[bi]) bi=i });
-      L.push('Cenáculo: a resposta mais dada a «'+esc(DATA.cen[0].q)+'» foi <b>'+esc(DATA.cen[0].o[bi])+'</b> ('+pct(c0.cnt[bi]/c0.n)+' de '+c0.n+').'); } }
-  var sem=RS.filter(function(x){return !x.dir&&!x.cam}).map(function(x){return x.nome});
-  if(sem.length) L.push('Ainda sem respostas ('+sem.length+'): '+esc(sem.join(', '))+'.');
-  var minimo=Math.min(showDir()?R.length:1e9, showCam()?C.length:1e9);
-  if(minimo<15) L.push('<i>Atenção: ainda há poucas respostas; as percentagens oscilam muito.</i>');
-  $('#sum').innerHTML='<ul>'+L.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
+function take(id,h){ var e=$('#'+id); if(e) e.innerHTML=h||'' }
+function plural(n,s,p){ return n+' '+(n===1?s:p) }
+function topN(arr,n){ return arr.slice().sort(function(a,b){return b.v-a.v}).slice(0,n) }
+function argmax(a){ var b=0; a.forEach(function(v,i){ if(v>a[b]) b=i }); return b }
+function ordAgr(RS){ return RS.slice().sort(function(a,b){return a.nome.localeCompare(b.nome,'pt',{numeric:true})}) }
+function nomesLim(a,n){ return a.length>n?a.slice(0,n).join(', ')+' e mais '+(a.length-n):a.join(', ') }
+
+/* ---------- resumo ---------- */
+function clasTotais(RS){ var tN=0,tC=0,gr=0,com=0; RS.forEach(function(x){ if(x.cam) com++; if(x.n&&x.n<10){tN+=x.n;tC+=x.cam} if(x.n>=10) gr++ }); return {tN:tN,tC:tC,gr:gr,com:com} }
+function drawKpis(R,C,RS){
+  var d=RS.filter(function(x){return x.dir}).length, t=clasTotais(RS);
+  $('#kd').innerHTML='<div class="kpi g"><b>'+R.length+'</b><span>dirigentes responderam</span></div>'+
+   '<div class="kpi"><b>'+d+' <small>de '+RS.length+'</small></b><span>agrupamentos com dirigentes a responder</span></div>';
+  $('#kc').innerHTML='<div class="kpi g"><b>'+C.length+'</b><span>caminheiros responderam</span></div>'+
+   '<div class="kpi"><b>'+t.com+' <small>de '+RS.length+'</small></b><span>clãs com caminheiros a responder</span></div>'+
+   '<div class="kpi"><b>'+(t.tN?t.tC+' <small>de ~'+t.tN+'</small>':'–')+'</b><span>caminheiros nos clãs de tamanho conhecido'+(t.tN?' · '+pct(t.tC/t.tN):'')+'</span>'+(t.tN?'<div style="margin-top:8px"><span class="cb" style="width:100%"><i style="width:'+Math.round(t.tC/t.tN*100)+'%"></i></span></div>':'')+'</div>';
+  $('#cD').textContent=R.length; $('#cC').textContent=C.length;
 }
+function drawSumD(R,RS){
+  if(!R.length){ $('#sumd').innerHTML='<div class="empty">Ainda sem respostas de dirigentes nestes filtros.</div>'; return }
+  var L=[], com=RS.filter(function(x){return x.dir}).length;
+  L.push('<b>'+plural(R.length,'dirigente','dirigentes')+'</b> responderam, em <b>'+com+' de '+RS.length+'</b> agrupamentos.');
+  var sc={}; R.forEach(function(r){sc[r.s]=(sc[r.s]||0)+1});
+  L.push('Por secção: '+Object.keys(SEC).map(function(k){return esc(SEC[k])+' <b>'+(sc[k]||0)+'</b>'}).join(' · ')+'.');
+  var st=duelStats(R), tr=temaRates(st);
+  var o=topN(tr.map(function(v,i){return {t:DATA.themes[i],v:v||0}}),3);
+  L.push('O que mais custa é <b>'+lista(o.map(function(x){return esc(x.t)+' ('+pct(x.v)+')'}))+'</b>.');
+  var dr=topN(DATA.difs.map(function(df,i){return {t:df.x,v:st.ap[i]?st.wi[i]/st.ap[i]:0}}),1)[0];
+  if(dr) L.push('A dificuldade mais escolhida: «'+esc(dr.t)+'» ('+pct(dr.v)+' dos duelos).');
+  var sem=RS.filter(function(x){return !x.dir}).map(function(x){return x.nome});
+  if(sem.length) L.push('Ainda sem dirigentes ('+sem.length+'): '+esc(nomesLim(sem,8))+'.');
+  if(R.length<15) L.push('<i>Atenção: ainda há poucas respostas; as percentagens oscilam muito.</i>');
+  $('#sumd').innerHTML='<ul>'+L.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
+}
+function drawSumC(C,RS){
+  if(!C.length){ $('#sumc').innerHTML='<div class="empty">Ainda sem respostas de caminheiros nestes filtros.</div>'; return }
+  var L=[], t=clasTotais(RS);
+  L.push('<b>'+plural(C.length,'caminheiro','caminheiros')+'</b> responderam, em <b>'+t.com+' de '+RS.length+'</b> clãs.');
+  if(t.tN) L.push('Nos clãs com tamanho conhecido (abaixo de 10), responderam <b>'+t.tC+' de ~'+t.tN+'</b> ('+pct(t.tC/t.tN)+').'+(t.gr?' Há '+plural(t.gr,'clã','clãs')+' «10 ou mais», que ficam de fora desta conta.':''));
+  var cs=camStats(C), o2=topN(DATA.cam.map(function(a,i){return {t:a[0],v:cs.areaPeople[i]/C.length}}),3);
+  L.push('As áreas que mais preocupam: <b>'+lista(o2.map(function(x){return esc(x.t)+' ('+pct(x.v)+')'}))+'</b>.');
+  var st=cenStats(C), c0=st[0];
+  if(c0.n){ var b=argmax(c0.cnt); L.push('Cenáculo: a resposta mais dada a «'+esc(DATA.cen[0].q)+'» foi <b>'+esc(DATA.cen[0].o[b])+'</b> ('+pct(c0.cnt[b]/c0.n)+' de '+c0.n+').') }
+  var sem=RS.filter(function(x){return !x.cam}).map(function(x){return x.nome});
+  if(sem.length) L.push('Clãs ainda sem respostas ('+sem.length+'): '+esc(nomesLim(sem,8))+'.');
+  if(C.length<15) L.push('<i>Atenção: ainda há poucas respostas; as percentagens oscilam muito.</i>');
+  $('#sumc').innerHTML='<ul>'+L.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
+}
+
+/* ---------- tabelas «quem respondeu» ---------- */
+var SD={k:'nome',d:1}, SC={k:'cam',d:-1};
+function sortBy(RS,S){
+  RS.sort(function(a,b){ var va,vb,key=S.k;
+    if(key.indexOf('sec_')===0){ va=a.sec[key.slice(4)]||0; vb=b.sec[key.slice(4)]||0 } else { va=a[key]; vb=b[key] }
+    if(va==null) va=-1; if(vb==null) vb=-1;
+    if(typeof va==='string') return va.localeCompare(vb,'pt',{numeric:true})*S.d;
+    return (va-vb)*S.d||a.nome.localeCompare(b.nome,'pt',{numeric:true}) });
+}
+function thead(cols,S){ return '<thead><tr>'+cols.map(function(c){return '<th data-k="'+c[0]+'" class="'+(c[2]||'')+'" scope="col" tabindex="0">'+esc(c[1])+(S.k===c[0]?(S.d>0?' ▲':' ▼'):'')+'</th>'}).join('')+'</tr></thead>' }
+function rowOpen(x,zero){ return '<tr data-a="'+esc(x.nome)+'" tabindex="0" class="'+(zero?'zero':'')+'"><td>'+esc(x.nome)+'</td><td>'+esc(ZNOME[x.z]||'–')+'</td>' }
+function drawRespD(RS){
+  var cols=[['nome','Agrupamento'],['z','Encontro'],['dir','Dirigentes','n']]; Object.keys(SEC).forEach(function(k){cols.push(['sec_'+k,SEC[k],'n'])});
+  sortBy(RS,SD); var h=thead(cols,SD)+'<tbody>', tot={dir:0,sec:{}};
+  RS.forEach(function(x){ h+=rowOpen(x,!x.dir)+'<td class="n"><b>'+x.dir+'</b></td>'; Object.keys(SEC).forEach(function(k){h+='<td class="n">'+(x.sec[k]||'·')+'</td>'});
+    h+='</tr>'; tot.dir+=x.dir; Object.keys(x.sec).forEach(function(k){tot.sec[k]=(tot.sec[k]||0)+x.sec[k]}) });
+  h+='<tr class="tot"><td>Total ('+RS.length+' agrupamentos)</td><td></td><td class="n">'+tot.dir+'</td>'+Object.keys(SEC).map(function(k){return '<td class="n">'+(tot.sec[k]||0)+'</td>'}).join('')+'</tr></tbody>';
+  $('#tresp').innerHTML=h;
+  var sem=RS.filter(function(x){return !x.dir}).map(function(x){return x.nome}), com=RS.length-sem.length;
+  take('t-d2','<b>'+com+' de '+RS.length+'</b> agrupamentos já têm dirigentes a responder.'+(sem.length?' Ainda faltam: '+esc(nomesLim(sem,8))+'.':' Todos responderam.'));
+}
+function drawClas(RS){
+  var cols=[['nome','Agrupamento'],['z','Encontro'],['cam','Responderam','n'],['n','Tamanho do clã','n'],['falta','Faltam','n'],['cob','Cobertura','n']];
+  sortBy(RS,SC); var h=thead(cols,SC)+'<tbody>', tot={cam:0,n:0,falta:0};
+  RS.forEach(function(x){
+    h+=rowOpen(x,!x.cam)+'<td class="n"><b>'+x.cam+'</b></td><td class="n">'+(x.n==null?'–':(x.n>=10?'10 ou mais':x.n))+'</td><td class="n">'+(x.falta==null?'–':x.falta)+'</td><td class="n">'+(x.cob==null?'–':'<span class="cb"><i style="width:'+Math.round(x.cob*100)+'%"></i></span>'+(x.n>=10?'até ':'')+pct(x.cob))+'</td></tr>';
+    tot.cam+=x.cam; if(x.n&&x.n<10){tot.n+=x.n;tot.falta+=x.falta} });
+  h+='<tr class="tot"><td>Total ('+RS.length+' clãs)</td><td></td><td class="n">'+tot.cam+'</td><td class="n">'+(tot.n||'–')+'</td><td class="n">'+(tot.n?tot.falta:'–')+'</td><td class="n"></td></tr></tbody>';
+  $('#tclas').innerHTML=h;
+  $('#nclas').textContent='Tamanho do clã = mediana do que os próprios caminheiros indicaram. Faltam = tamanho − responderam. Cobertura = responderam ÷ tamanho. Quando o clã é «10 ou mais», não sabemos o tamanho real: não calculamos o que falta e a cobertura é no máximo o valor indicado. Os totais só somam clãs com tamanho abaixo de 10.';
+  var t=clasTotais(RS);
+  take('t-c2',t.tN?('Nos clãs com tamanho conhecido, já responderam <b>'+t.tC+' de ~'+t.tN+'</b> caminheiros ('+pct(t.tC/t.tN)+'): faltam ~<b>'+Math.max(0,t.tN-t.tC)+'</b>.'):'Ainda não há tamanho de clã indicado para calcular a cobertura.');
+}
+function goFicha(a,part){
+  FICHA=a; fichaSync(); drawFichaD(); drawFichaC();
+  var el=$(part==='cam'?'#c5':'#d5'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+['#tresp','#tclas'].forEach(function(sel){
+  var t=$(sel), isD=sel==='#tresp';
+  t.addEventListener('click',function(e){
+    var th=e.target.closest('th[data-k]'); if(th){ var S=isD?SD:SC, k=th.dataset.k; if(S.k===k) S.d*=-1; else{S.k=k;S.d=(k==='nome'||k==='z')?1:-1} renderAll(); return }
+    var tr=e.target.closest('tr[data-a]'); if(tr) goFicha(tr.dataset.a,isD?'dir':'cam');
+  });
+  t.addEventListener('keydown',function(e){ if(e.key!=='Enter'&&e.key!==' ') return; var el=e.target.closest('th[data-k],tr[data-a]'); if(el){ e.preventDefault(); el.click() } });
+});
 
 /* ---------- desenho ---------- */
 function renderAll(){
-  $('#fsum').textContent=descFiltros(); $('#printline').textContent='Filtros: '+descFiltros()+' · '+$('#upd').textContent;
+  $('#fsum').textContent=descFiltros(); $('#printline').textContent='Filtros: '+descFiltros(); $('#pupd').textContent=$('#upd').textContent;
   var R=fR(), C=fC(), RS=resumo();
-  var agrCom=RS.filter(function(x){return x.dir||x.cam}).length;
-  var k=[];
-  if(showDir()) k.push(['g',R.length,'dirigentes responderam']);
-  if(showCam()){ var tN=0,tC=0; RS.forEach(function(x){ if(x.n){tN+=x.n;tC+=x.cam} });
-    k.push(['g',C.length,'caminheiros responderam']);
-    k.push(['g',tN?(tC+' de ~'+tN):'–','caminheiros nos clãs que indicaram o tamanho'+(tN?' ('+pct(tC/tN)+')':'')]); }
-  k.push(['',agrCom+' / '+RS.length,'agrupamentos com resposta']);
-  if(showDir()) k.push(['',RS.filter(function(x){return x.dir}).length,'agrupamentos com dirigentes']);
-  if(showCam()) k.push(['',RS.filter(function(x){return x.cam}).length,'agrupamentos com caminheiros']);
-  $('#kpis').innerHTML=k.map(function(x){return '<div class="kpi '+x[0]+'"><b>'+x[1]+'</b><span>'+x[2]+'</span></div>'}).join('');
-  drawSum(R,C,RS); drawResp(RS); drawGeral(R,C); drawComp(R,C,RS); drawCen(C,RS); drawFichaSel(RS);
-  ['#s-resp','#s-comp'].forEach(function(s){});
+  drawKpis(R,C,RS); drawSumD(R,RS); drawSumC(C,RS); drawRespD(RS.slice()); drawClas(RS.slice());
+  drawGeral(R,C); drawComp(R,C,RS); drawCen(C,RS); drawFichaSel(RS); drawTakes(R,C,RS);
 }
-
-function drawResp(RS){
-  var cols=[['nome','Agrupamento'],['z','Encontro']];
-  if(showDir()){ cols.push(['dir','Dirigentes','n']); Object.keys(SEC).forEach(function(k){cols.push(['sec_'+k,SEC[k],'n'])}) }
-  if(showCam()){ cols.push(['cam','Caminheiros que responderam','n'],['n','Tamanho do clã (indicado)','n'],['falta','Faltam responder','n'],['cob','Cobertura do clã','n']) }
-  var key=SORT.k;
-  RS.sort(function(a,b){ var va,vb;
-    if(key.indexOf('sec_')===0){ va=a.sec[key.slice(4)]||0; vb=b.sec[key.slice(4)]||0 }
-    else { va=a[key]; vb=b[key] }
-    if(va==null) va=-1; if(vb==null) vb=-1;
-    if(typeof va==='string') return va.localeCompare(vb,'pt',{numeric:true})*SORT.d;
-    return (va-vb)*SORT.d });
-  var h='<thead><tr>'+cols.map(function(c){return '<th data-k="'+c[0]+'" class="'+(c[2]||'')+'" scope="col">'+esc(c[1])+(SORT.k===c[0]?(SORT.d>0?' ▲':' ▼'):'')+'</th>'}).join('')+'</tr></thead><tbody>';
-  RS.forEach(function(x){
-    var zero=!(showDir()&&x.dir)&&!(showCam()&&x.cam);
-    h+='<tr class="'+(zero?'zero':'')+'"><td>'+esc(x.nome)+'</td><td>'+esc(ZNOME[x.z]||'–')+'</td>';
-    if(showDir()){ h+='<td class="n"><b>'+x.dir+'</b></td>'; Object.keys(SEC).forEach(function(k){h+='<td class="n">'+(x.sec[k]||'·')+'</td>'}) }
-    if(showCam()){ h+='<td class="n"><b>'+x.cam+'</b></td><td class="n">'+(x.n==null?'–':(x.n>=10?'10 ou mais':x.n))+'</td><td class="n">'+(x.falta==null?'–':x.falta)+'</td><td class="n">'+(x.cob==null?'–':'<span class="cb"><i style="width:'+Math.round(x.cob*100)+'%"></i></span>'+(x.n>=10?'até ':'')+pct(x.cob))+'</td>' }
-    h+='</tr>';
-  });
-  var tot={dir:0,cam:0,n:0,falta:0,sec:{}}; RS.forEach(function(x){tot.dir+=x.dir;tot.cam+=x.cam; if(x.n&&x.n<10){tot.n+=x.n;tot.falta+=x.falta} Object.keys(x.sec).forEach(function(k){tot.sec[k]=(tot.sec[k]||0)+x.sec[k]})});
-  h+='<tr class="tot"><td>Total ('+RS.length+' agrupamentos)</td><td></td>';
-  if(showDir()){ h+='<td class="n">'+tot.dir+'</td>'; Object.keys(SEC).forEach(function(k){h+='<td class="n">'+(tot.sec[k]||0)+'</td>'}) }
-  if(showCam()){ h+='<td class="n">'+tot.cam+'</td><td class="n">'+(tot.n?tot.n:'–')+'</td><td class="n">'+(tot.n?tot.falta:'–')+'</td><td class="n"></td>' }
-  h+='</tr></tbody>'; $('#tresp').innerHTML=h;
-  $('#nresp').textContent=showCam()?'Tamanho do clã = mediana do que os próprios caminheiros indicaram. Faltam responder = tamanho do clã − caminheiros que responderam. Cobertura = caminheiros que responderam ÷ tamanho do clã. Quando o clã é «10 ou mais», não sabemos o tamanho real: não calculamos o que falta e a cobertura é no máximo o valor indicado. O total só soma clãs com tamanho abaixo de 10.':'';
-  $('#tresp thead').addEventListener('click',function(e){ var t=e.target.closest('th'); if(!t)return; var k=t.dataset.k; if(SORT.k===k)SORT.d*=-1; else{SORT.k=k;SORT.d=(k==='nome'||k==='z')?1:-1} renderAll() });
+function drawTakes(R,C,RS){
+  if(R.length){ var st=duelStats(R), tr=temaRates(st);
+    var o=topN(tr.map(function(v,i){return {t:DATA.themes[i],v:v||0}}),2);
+    var dr=topN(DATA.difs.map(function(df,i){return {t:df.x,v:st.ap[i]?st.wi[i]/st.ap[i]:0}}),1)[0];
+    take('t-d3','O que mais custa aos dirigentes é <b>'+esc(o[0].t)+'</b> ('+pct(o[0].v)+')'+(o[1]?', logo a seguir <b>'+esc(o[1].t)+'</b> ('+pct(o[1].v)+')':'')+'. A dificuldade mais escolhida: «'+esc(dr.t)+'».');
+    var cnt={}, n=0; RS.filter(function(x){return x.dir}).forEach(function(x){ var rs=R.filter(function(r){return r.a===x.nome}); if(!rs.length) return; var t2=temaRates(duelStats(rs)); var b=argmax(t2.map(function(v){return v==null?-1:v})); cnt[b]=(cnt[b]||0)+1; n++ });
+    var kb=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]})[0];
+    take('t-d4',kb!=null?('O tema que mais custa não é igual em todo o lado: <b>'+esc(DATA.themes[kb])+'</b> lidera em '+cnt[kb]+' de '+n+' agrupamentos.'):'');
+  } else { take('t-d3','Sem respostas de dirigentes nestes filtros.'); take('t-d4','') }
+  if(C.length){ var cs=camStats(C), o2=topN(DATA.cam.map(function(a,i){return {t:a[0],v:cs.areaPeople[i]/C.length}}),2);
+    take('t-c3','A área que mais preocupa os caminheiros é <b>'+esc(o2[0].t)+'</b> ('+pct(o2[0].v)+' pô-la entre as 3 primeiras)'+(o2[1]?', seguida de <b>'+esc(o2[1].t)+'</b> ('+pct(o2[1].v)+')':'')+'.');
+    var s=cenStats(C), p=[];
+    if(s[0].n){ var b0=argmax(s[0].cnt); p.push('a resposta mais dada ao propósito foi <b>'+esc(DATA.cen[0].o[b0])+'</b> ('+pct(s[0].cnt[b0]/s[0].n)+')') }
+    if(s[1].n){ var b1=argmax(s[1].cnt); p.push('a razão mais apontada para não participar é <b>'+esc(DATA.cen[1].o[b1])+'</b> ('+pct(s[1].cnt[b1]/s[1].n)+')') }
+    if(s[2].n){ var b2=argmax(s[2].cnt); p.push('a área a melhorar mais indicada é <b>'+esc(DATA.cen[2].o[b2])+'</b> ('+pct(s[2].cnt[b2]/s[2].n)+')') }
+    take('t-c4',p.length?('No Cenáculo, '+lista(p)+'.'):'');
+  } else { take('t-c3','Sem respostas de caminheiros nestes filtros.'); take('t-c4','') }
 }
 
 function bars(items,opts){ /* items:[{t,v(0..1 fraction of max),label,m}] */
@@ -552,49 +695,79 @@ function drawCen(C,RS){
 
 /* ficha */
 var FICHA='';
+function optsFicha(RS,f){ var cur=FICHA; return ordAgr(RS).map(function(x){return '<option value="'+esc(x.nome)+'"'+(x.nome===cur?' selected':'')+'>'+esc(x.nome)+' ('+f(x)+')</option>'}).join('') }
+function fichaSync(){ ['#sfichaD','#sfichaC'].forEach(function(s){ var e=$(s); if(e) e.value=FICHA }) }
 function drawFichaSel(RS){
-  var opts=RS.slice().sort(function(a,b){return a.nome.localeCompare(b.nome,'pt',{numeric:true})});
-  var sel=$('#sficha'); var cur=FICHA;
+  var opts=ordAgr(RS), cur=FICHA;
   if(!opts.some(function(x){return x.nome===cur})){ var best=opts.slice().sort(function(a,b){return (b.dir+b.cam)-(a.dir+a.cam)})[0]; cur=best?best.nome:'' }
   FICHA=cur;
-  sel.innerHTML=opts.map(function(x){return '<option value="'+esc(x.nome)+'"'+(x.nome===cur?' selected':'')+'>'+esc(x.nome)+' ('+x.dir+' dir. · '+x.cam+' cam.)</option>'}).join('');
-  drawFicha();
+  $('#sfichaD').innerHTML=optsFicha(RS,function(x){return plural(x.dir,'dirigente','dirigentes')});
+  $('#sfichaC').innerHTML=optsFicha(RS,function(x){return plural(x.cam,'caminheiro','caminheiros')});
+  drawFichaD(); drawFichaC();
 }
-$('#sficha').addEventListener('change',function(){FICHA=this.value;drawFicha()});
-function drawFicha(){
-  var a=FICHA, el=$('#ficha'); if(!a){ el.innerHTML='<div class="empty card">Escolhe um agrupamento.</div>'; return }
-  var Rall=fR(), Call=fC(), R=Rall.filter(function(r){return r.a===a}), C=Call.filter(function(c){return c.a===a});
-  var h='<h3 class="fnome">'+esc(a)+' · '+esc(ZNOME[AGR_ZONA[a]]||'')+'</h3><div class="kpis" style="margin:0 0 14px">';
-  var rs=resumo().filter(function(x){return x.nome===a})[0]||{};
-  if(showDir()) h+='<div class="kpi g"><b>'+R.length+'</b><span>dirigentes responderam</span></div>';
-  if(showCam()) h+='<div class="kpi g"><b>'+C.length+(rs.n?' <small style="font:700 16px var(--body);color:var(--mut)">de '+(rs.n>=10?'10 ou mais':'~'+rs.n)+'</small>':'')+'</b><span>caminheiros do clã responderam'+(rs.cob!=null?' · cobertura '+(rs.n>=10?'até ':'')+pct(rs.cob):(rs.n?'':' (tamanho do clã por indicar)'))+'</span>'+(rs.cob!=null?'<div style="margin-top:6px"><span class="cb" style="width:100%"><i style="width:'+Math.round(rs.cob*100)+'%"></i></span></div>':'')+'</div>';
-  h+='</div><div class="grid2">';
-  if(showDir()){
-    if(!R.length) h+='<div class="card"><h3>Dificuldades dos dirigentes</h3><div class="empty">Ainda sem respostas de dirigentes.</div></div>';
-    else{
-      var st=duelStats(R), tr=temaRates(st), ref=temaRates(duelStats(Rall));
-      var it=tr.map(function(v,i){return {t:DATA.themes[i],v:v||0,label:pct(v),m:ref[i]}}).sort(function(a,b){return b.v-a.v});
-      h+='<div class="card"><h3>Temas que mais custam</h3><div class="bars">'+bars(it,{max:Math.max(0.75,it[0].v)})+'</div><div class="leg"><span><i></i>este agrupamento</span><span><i class="m"></i>média nos filtros</span></div></div>';
-      var dr=DATA.difs.map(function(df,i){return {t:df.t,x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0,ap:st.ap[i]}}).sort(function(a,b){return b.r-a.r||b.ap-a.ap}).slice(0,10);
-      h+='<div class="card"><h3>As 10 dificuldades que mais custam</h3><ol class="dl">'+dr.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.x)+'<small>'+esc(DATA.themes[x.t])+'</small></span><span class="p">'+pct(x.r)+'</span></li>'}).join('')+'</ol></div>';
-      var sc={}; R.forEach(function(r){sc[r.s]=(sc[r.s]||0)+1});
-      h+='<div class="card"><h3>Dirigentes por secção</h3><div class="bars">'+bars(Object.keys(SEC).map(function(k){return {t:SEC[k],v:sc[k]||0,label:String(sc[k]||0)}}))+'</div></div>';
-    }
-  }
-  if(showCam()){
-    if(!C.length) h+='<div class="card"><h3>Preocupações dos caminheiros</h3><div class="empty">Ainda sem respostas de caminheiros.</div></div>';
-    else{
-      var cs=camStats(C), ref2=camStats(Call);
-      var it2=DATA.cam.map(function(x,i){return {t:x[0],v:cs.areaPeople[i]/C.length,label:pct(cs.areaPeople[i]/C.length),m:Call.length?ref2.areaPeople[i]/Call.length:null}}).sort(function(a,b){return b.v-a.v});
-      h+='<div class="card"><h3>Preocupações dos caminheiros</h3><div class="bars">'+bars(it2,{max:1})+'</div><div class="leg"><span><i></i>este agrupamento</span><span><i class="m"></i>média nos filtros</span></div><p class="note">% que pôs a área entre as 3 que mais preocupam.</p></div>';
-      var items=[]; DATA.cam.forEach(function(ar,ai){ar[1].forEach(function(t,k){items.push({t:t,a:ar[0],p:cs.pts[ai*2+k]})})});
-      items.sort(function(a,b){return b.p-a.p}); items=items.filter(function(x){return x.p>0}).slice(0,5);
-      h+=cenCards(C).split('<div class="card">').slice(1).map(function(x){return '<div class="card">'+x}).join('');
-      h+='<div class="card"><h3>Afirmações mais escolhidas</h3><ol class="dl">'+items.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.t)+'<small>'+esc(x.a)+'</small></span><span class="p">'+x.p+(x.p===1?' pt':' pts')+'</span></li>'}).join('')+'</ol><p class="note">1.ª escolha vale 3 pontos, 2.ª vale 2, 3.ª vale 1.</p></div>';
-    }
+['#sfichaD','#sfichaC'].forEach(function(s){ $(s).addEventListener('change',function(){ FICHA=this.value; fichaSync(); drawFichaD(); drawFichaC() }) });
+function drawFichaD(){
+  var a=FICHA, el=$('#fichaD'); if(!a){ el.innerHTML='<div class="empty card">Escolhe um agrupamento.</div>'; take('t-d5',''); return }
+  var Rall=fR(), R=Rall.filter(function(r){return r.a===a});
+  var h='<h3 class="fnome">'+esc(a)+' · '+esc(ZNOME[AGR_ZONA[a]]||'')+'</h3><div class="kpis" style="margin:0 0 4px"><div class="kpi g"><b>'+R.length+'</b><span>dirigentes responderam</span></div></div><div class="grid2">';
+  if(!R.length){ h+='<div class="card"><h3>Dificuldades dos dirigentes</h3><div class="empty">Ainda sem respostas de dirigentes.</div></div>'; take('t-d5','Este agrupamento ainda não tem dirigentes a responder.') }
+  else{
+    var st=duelStats(R), tr=temaRates(st), ref=temaRates(duelStats(Rall));
+    var it=tr.map(function(v,i){return {t:DATA.themes[i],v:v||0,label:pct(v),m:ref[i],d:(v||0)-(ref[i]||0)}}).sort(function(a,b){return b.v-a.v});
+    var up=it.slice().sort(function(a,b){return b.d-a.d})[0];
+    take('t-d5','Em <b>'+esc(a)+'</b>, o que mais custa é <b>'+esc(it[0].t)+'</b> ('+pct(it[0].v)+'). Face à média, o tema que mais se destaca é <b>'+esc(up.t)+'</b> ('+(up.d>=0?'+':'')+Math.round(up.d*100)+' pontos).');
+    h+='<div class="card"><h3>Temas que mais custam</h3><div class="bars">'+bars(it,{max:Math.max(0.75,it[0].v)})+'</div><div class="leg"><span><i></i>este agrupamento</span><span><i class="m"></i>média nos filtros</span></div></div>';
+    var dr=DATA.difs.map(function(df,i){return {t:df.t,x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0,ap:st.ap[i]}}).sort(function(a,b){return b.r-a.r||b.ap-a.ap}).slice(0,10);
+    h+='<div class="card"><h3>As 10 dificuldades que mais custam</h3><ol class="dl">'+dr.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.x)+'<small>'+esc(DATA.themes[x.t])+'</small></span><span class="p">'+pct(x.r)+'</span></li>'}).join('')+'</ol></div>';
+    var sc={}; R.forEach(function(r){sc[r.s]=(sc[r.s]||0)+1});
+    h+='<div class="card"><h3>Dirigentes por secção</h3><div class="bars">'+bars(Object.keys(SEC).map(function(k){return {t:SEC[k],v:sc[k]||0,label:String(sc[k]||0)}}))+'</div></div>';
   }
   el.innerHTML=h+'</div>';
 }
+function drawFichaC(){
+  var a=FICHA, el=$('#fichaC'); if(!a){ el.innerHTML='<div class="empty card">Escolhe um agrupamento.</div>'; take('t-c5',''); return }
+  var Call=fC(), C=Call.filter(function(c){return c.a===a}), rs=resumo().filter(function(x){return x.nome===a})[0]||{};
+  var h='<h3 class="fnome">'+esc(a)+' · '+esc(ZNOME[AGR_ZONA[a]]||'')+'</h3><div class="kpis" style="margin:0 0 4px"><div class="kpi g"><b>'+C.length+(rs.n?' <small>de '+(rs.n>=10?'10 ou mais':'~'+rs.n)+'</small>':'')+'</b><span>caminheiros do clã responderam'+(rs.cob!=null?' · cobertura '+(rs.n>=10?'até ':'')+pct(rs.cob):(rs.n?'':' (tamanho do clã por indicar)'))+'</span>'+(rs.cob!=null?'<div style="margin-top:8px"><span class="cb" style="width:100%"><i style="width:'+Math.round(rs.cob*100)+'%"></i></span></div>':'')+'</div></div><div class="grid2">';
+  if(!C.length){ h+='<div class="card"><h3>Preocupações dos caminheiros</h3><div class="empty">Ainda sem respostas de caminheiros.</div></div>'; take('t-c5','Este clã ainda não tem caminheiros a responder.') }
+  else{
+    var cs=camStats(C), ref2=camStats(Call);
+    var it2=DATA.cam.map(function(x,i){return {t:x[0],v:cs.areaPeople[i]/C.length,label:pct(cs.areaPeople[i]/C.length),m:Call.length?ref2.areaPeople[i]/Call.length:null}}).sort(function(a,b){return b.v-a.v});
+    take('t-c5','No clã de <b>'+esc(a)+'</b>, a área que mais preocupa é <b>'+esc(it2[0].t)+'</b> ('+pct(it2[0].v)+' de '+plural(C.length,'caminheiro','caminheiros')+').');
+    h+='<div class="card"><h3>Preocupações dos caminheiros</h3><div class="bars">'+bars(it2,{max:1})+'</div><div class="leg"><span><i></i>este agrupamento</span><span><i class="m"></i>média nos filtros</span></div><p class="note">% que pôs a área entre as 3 que mais preocupam.</p></div>';
+    var items=[]; DATA.cam.forEach(function(ar,ai){ar[1].forEach(function(t,k){items.push({t:t,a:ar[0],p:cs.pts[ai*2+k]})})});
+    items.sort(function(a,b){return b.p-a.p}); items=items.filter(function(x){return x.p>0}).slice(0,5);
+    h+=cenCards(C).split('<div class="card">').slice(1).map(function(x){return '<div class="card">'+x}).join('');
+    h+='<div class="card"><h3>Afirmações mais escolhidas</h3><ol class="dl">'+items.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.t)+'<small>'+esc(x.a)+'</small></span><span class="p">'+x.p+(x.p===1?' pt':' pts')+'</span></li>'}).join('')+'</ol><p class="note">1.ª escolha vale 3 pontos, 2.ª vale 2, 3.ª vale 1.</p></div>';
+  }
+  el.innerHTML=h+'</div>';
+}
+
+/* ---------- partes, rail, scroll ---------- */
+var PART='dir', SPY=null, REV=null;
+document.documentElement.classList.add('js');
+function setPart(p,noscroll){
+  PART=p; document.body.classList.toggle('pcam',p==='cam');
+  $('#part-dir').classList.toggle('hide',p!=='dir'); $('#part-cam').classList.toggle('hide',p!=='cam');
+  ['#tabD','#tabC'].forEach(function(s){ var b=$(s); b.setAttribute('aria-selected',String(b.dataset.part===p)) });
+  buildRail(); if(!noscroll) window.scrollTo({top:0,behavior:'smooth'});
+}
+function buildRail(){
+  var secs=[].slice.call($('#part-'+PART).querySelectorAll('section.blk'));
+  $('#rail').innerHTML=secs.map(function(s,i){return '<button type="button" data-t="'+s.id+'">'+(i+1)+' · '+esc(s.dataset.rail)+'</button>'}).join('');
+  if(SPY) SPY.disconnect();
+  if('IntersectionObserver' in window){
+    SPY=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ [].forEach.call($('#rail').children,function(b){ b.classList.toggle('on',b.dataset.t===e.target.id) }) } }) },{rootMargin:'-30% 0px -60% 0px'});
+    secs.forEach(function(s){SPY.observe(s)});
+  }
+}
+$('#rail').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; var s=$('#'+b.dataset.t); if(s) s.scrollIntoView({behavior:'smooth',block:'start'}) });
+document.querySelector('.seg').addEventListener('click',function(e){ var b=e.target.closest('button'); if(b&&b.dataset.part!==PART) setPart(b.dataset.part) });
+if('IntersectionObserver' in window){
+  REV=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); REV.unobserve(e.target) } }) },{threshold:.06,rootMargin:'0px 0px -6% 0px'});
+  [].forEach.call(document.querySelectorAll('section.blk'),function(s){REV.observe(s)});
+} else { [].forEach.call(document.querySelectorAll('section.blk'),function(s){s.classList.add('in')}) }
+window.addEventListener('beforeprint',function(){ [].forEach.call(document.querySelectorAll('section.blk'),function(s){s.classList.add('in')}) });
+(function(){ var tk=false; window.addEventListener('scroll',function(){ if(tk) return; tk=true; requestAnimationFrame(function(){ var h=document.documentElement.scrollHeight-innerHeight; $('#progi').style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')'; tk=false }) },{passive:true}) })();
 
 /* ---------- CSV ---------- */
 function csvCell(v){ v=v==null?'':String(v); return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v }
