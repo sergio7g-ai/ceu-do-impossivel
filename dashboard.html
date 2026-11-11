@@ -461,7 +461,7 @@ function resumo(){
   Object.keys(all).forEach(function(a){ if(wantAgr(a)&&wantZ(a)) rows[a]={nome:a,z:all[a],dir:0,sec:{},cam:0,ns:[]} });
   R.forEach(function(r){ var x=rows[r.a]; if(!x) return; x.dir++; x.sec[r.s]=(x.sec[r.s]||0)+1 });
   C.forEach(function(c){ var x=rows[c.a]; if(!x) return; x.cam++; x.ns.push(c.n) });
-  return Object.keys(rows).map(function(a){ var x=rows[a]; x.n=x.ns.length?Math.round(median(x.ns)):null; x.cob=x.n?Math.min(1,x.cam/x.n):null; x.falta=(x.n&&x.n<10)?Math.max(0,x.n-x.cam):null; return x });
+  return Object.keys(rows).map(function(a){ var x=rows[a]; x.n=x.ns.length>=3?Math.round(median(x.ns)):null; x.cob=x.n?Math.min(1,x.cam/x.n):null; x.falta=(x.n&&x.n<10)?Math.max(0,x.n-x.cam):null; return x });
 }
 
 /* ---------- utilitários de texto ---------- */
@@ -485,7 +485,7 @@ function drawKpis(R,C,RS){
    '<div class="kpi"><b>'+d+' <small>de '+RS.length+'</small></b><span>agrupamentos com dirigentes a responder</span></div>';
   $('#kc').innerHTML='<div class="kpi g"><b>'+C.length+'</b><span>caminheiros responderam</span></div>'+
    '<div class="kpi"><b>'+t.com+' <small>de '+RS.length+'</small></b><span>clãs com caminheiros a responder</span></div>'+
-   '<div class="kpi"><b>'+(t.tN?t.tC+' <small>de ~'+t.tN+'</small>':'–')+'</b><span>caminheiros nos clãs de tamanho conhecido'+(t.tN?' · '+pct(t.tC/t.tN):'')+'</span>'+(t.tN?'<div style="margin-top:8px"><span class="cb" style="width:100%"><i style="width:'+Math.round(t.tC/t.tN*100)+'%"></i></span></div>':'')+'</div>';
+   '<div class="kpi"><b>'+(t.tN?t.tC+' <small>de ~'+t.tN+'</small>':'–')+'</b><span>caminheiros nos clãs com 3 ou mais respostas'+(t.tN?' · '+pct(t.tC/t.tN):'')+'</span>'+(t.tN?'<div style="margin-top:8px"><span class="cb" style="width:100%"><i style="width:'+Math.round(t.tC/t.tN*100)+'%"></i></span></div>':'')+'</div>';
   $('#cD').textContent=R.length; $('#cC').textContent=C.length;
 }
 function drawSumD(R,RS){
@@ -506,7 +506,7 @@ function drawSumC(C,RS){
   if(!C.length){ $('#sumc').innerHTML='<div class="empty">Ainda sem respostas de caminheiros nestes filtros.</div>'; return }
   var L=[], t=clasTotais(RS);
   L.push('<b>'+plural(C.length,'caminheiro','caminheiros')+'</b> responderam, em <b>'+t.com+' de '+RS.length+'</b> clãs.');
-  if(t.tN) L.push('Nos clãs com tamanho conhecido (abaixo de 10), responderam <b>'+t.tC+' de ~'+t.tN+'</b> ('+pct(t.tC/t.tN)+').'+(t.gr?' Há '+plural(t.gr,'clã','clãs')+' «10 ou mais», que ficam de fora desta conta.':''));
+  if(t.tN) L.push('Nos clãs com 3 ou mais respostas e tamanho abaixo de 10, responderam <b>'+t.tC+' de ~'+t.tN+'</b> ('+pct(t.tC/t.tN)+').'+(t.gr?' Há '+plural(t.gr,'clã','clãs')+' «10 ou mais», que ficam de fora desta conta.':''));
   var ci=concernItems(C).slice(0,3);
   L.push('As preocupações que mais pesam: '+lista(ci.map(function(x){return '«<b>'+esc(x.t)+'</b>»'}))+'.');
   var st=cenStats(C), c0=st[0];
@@ -546,9 +546,9 @@ function drawClas(RS){
     tot.cam+=x.cam; if(x.n&&x.n<10){tot.n+=x.n;tot.falta+=x.falta} });
   h+='<tr class="tot"><td>Total ('+RS.length+' clãs)</td><td></td><td class="n">'+tot.cam+'</td><td class="n">'+(tot.n||'–')+'</td><td class="n">'+(tot.n?tot.falta:'–')+'</td><td class="n"></td></tr></tbody>';
   $('#tclas').innerHTML=h;
-  $('#nclas').textContent='Tamanho do clã = mediana do que os próprios caminheiros indicaram. Faltam = tamanho − responderam. Cobertura = responderam ÷ tamanho. Quando o clã é «10 ou mais», não sabemos o tamanho real: não calculamos o que falta e a cobertura é no máximo o valor indicado. Os totais só somam clãs com tamanho abaixo de 10.';
+  $('#nclas').textContent='O tamanho do clã é a mediana do que os próprios caminheiros indicaram e só é estimado quando o clã tem pelo menos 3 respostas; com menos fica «–», porque não é fiável. Faltam = tamanho − responderam. Cobertura = responderam ÷ tamanho. Quando o clã é «10 ou mais», não sabemos o tamanho real: não calculamos o que falta e a cobertura é no máximo o valor indicado. Os totais só somam clãs com tamanho abaixo de 10.';
   var t=clasTotais(RS);
-  take('t-c2',t.tN?('Nos clãs com tamanho conhecido, já responderam <b>'+t.tC+' de ~'+t.tN+'</b> caminheiros ('+pct(t.tC/t.tN)+'): faltam ~<b>'+Math.max(0,t.tN-t.tC)+'</b>.'):'Ainda não há tamanho de clã indicado para calcular a cobertura.');
+  take('t-c2',t.tN?('Nos clãs com 3 ou mais respostas, já responderam <b>'+t.tC+' de ~'+t.tN+'</b> caminheiros ('+pct(t.tC/t.tN)+'): faltam ~<b>'+Math.max(0,t.tN-t.tC)+'</b>.'):'Ainda nenhum clã tem 3 respostas, o mínimo para estimar o tamanho do clã e a cobertura.');
 }
 function goFicha(a,part){
   FICHA=a; fichaSync(); drawFichaD(); drawFichaC();
@@ -716,7 +716,7 @@ function drawFichaD(){
 function drawFichaC(){
   var a=FICHA, el=$('#fichaC'); if(!a){ el.innerHTML='<div class="empty card">Escolhe um agrupamento.</div>'; take('t-c5',''); return }
   var Call=fC(), C=Call.filter(function(c){return c.a===a}), rs=resumo().filter(function(x){return x.nome===a})[0]||{};
-  var h='<h3 class="fnome">'+esc(a)+' · '+esc(ZNOME[AGR_ZONA[a]]||'')+'</h3><div class="kpis" style="margin:0 0 4px"><div class="kpi g"><b>'+C.length+(rs.n?' <small>de '+(rs.n>=10?'10 ou mais':'~'+rs.n)+'</small>':'')+'</b><span>caminheiros do clã responderam'+(rs.cob!=null?' · cobertura '+(rs.n>=10?'até ':'')+pct(rs.cob):(rs.n?'':' (tamanho do clã por indicar)'))+'</span>'+(rs.cob!=null?'<div style="margin-top:8px"><span class="cb" style="width:100%"><i style="width:'+Math.round(rs.cob*100)+'%"></i></span></div>':'')+'</div></div><div class="grid2">';
+  var h='<h3 class="fnome">'+esc(a)+' · '+esc(ZNOME[AGR_ZONA[a]]||'')+'</h3><div class="kpis" style="margin:0 0 4px"><div class="kpi g"><b>'+C.length+(rs.n?' <small>de '+(rs.n>=10?'10 ou mais':'~'+rs.n)+'</small>':'')+'</b><span>caminheiros do clã responderam'+(rs.cob!=null?' · cobertura '+(rs.n>=10?'até ':'')+pct(rs.cob):(rs.n?'':' (poucas respostas para estimar o tamanho do clã)'))+'</span>'+(rs.cob!=null?'<div style="margin-top:8px"><span class="cb" style="width:100%"><i style="width:'+Math.round(rs.cob*100)+'%"></i></span></div>':'')+'</div></div><div class="grid2">';
   if(!C.length){ h+='<div class="card"><h3>Preocupações dos caminheiros</h3><div class="empty">Ainda sem respostas de caminheiros.</div></div>'; take('t-c5','Este clã ainda não tem caminheiros a responder.') }
   else{
     var ci3=concernItems(C);
