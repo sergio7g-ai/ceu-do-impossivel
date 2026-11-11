@@ -279,20 +279,12 @@ select.big{min-height:48px;border:1.5px solid var(--line);border-radius:14px;pad
    </section>
    <section class="blk pb" id="d3" data-rail="O que mais custa">
     <h2>O que mais custa</h2>
-    <p class="sub">Percentagem de duelos em que cada tema ou dificuldade foi escolhido como a que mais custa. Barra mais comprida = custa mais.</p>
+    <p class="sub">Percentagem de duelos em que cada dificuldade foi escolhida como a que mais custa. O tema aparece por baixo de cada uma.</p>
     <p class="take" id="t-d3"></p>
     <div class="grid2">
-     <div class="card"><h3>Por tema</h3><div class="bars" id="gtemas"></div></div>
      <div class="card"><h3>As 10 dificuldades que mais custam</h3><ol class="dl" id="gtop"></ol></div>
      <div class="card"><h3>Respostas por secção</h3><div class="bars" id="gsec"></div></div>
     </div>
-   </section>
-   <section class="blk pb" id="d4" data-rail="Comparar">
-    <h2>Comparar agrupamentos</h2>
-    <p class="sub">Cada linha é um agrupamento, cada coluna um tema. Mais escuro = custa mais. O contorno marca o tema que mais custa em cada agrupamento.</p>
-    <p class="take" id="t-d4"></p>
-    <div class="tw heat"><table id="theat"></table></div>
-    <p class="note">A média é 50% por definição de duelo; o que interessa é a diferença entre temas e entre agrupamentos. Com poucas respostas os valores oscilam muito: vê o n de cada linha.</p>
    </section>
    <section class="blk pb" id="d5" data-rail="Por agrupamento">
     <h2>Dirigentes por agrupamento</h2>
@@ -495,9 +487,7 @@ function drawSumD(R,RS){
   L.push('<b>'+plural(R.length,'dirigente','dirigentes')+'</b> responderam, em <b>'+com+' de '+RS.length+'</b> agrupamentos.');
   var sc={}; R.forEach(function(r){sc[r.s]=(sc[r.s]||0)+1});
   L.push('Por secção: '+Object.keys(SEC).map(function(k){return esc(SEC[k])+' <b>'+(sc[k]||0)+'</b>'}).join(' · ')+'.');
-  var st=duelStats(R), tr=temaRates(st);
-  var o=topN(tr.map(function(v,i){return {t:DATA.themes[i],v:v||0}}),3);
-  L.push('O que mais custa é <b>'+lista(o.map(function(x){return esc(x.t)+' ('+pct(x.v)+')'}))+'</b>.');
+  var st=duelStats(R);
   var dr=topN(DATA.difs.map(function(df,i){return {t:df.x,v:st.ap[i]?st.wi[i]/st.ap[i]:0}}),1)[0];
   if(dr) L.push('A dificuldade mais escolhida: «'+esc(dr.t)+'» ('+pct(dr.v)+' dos duelos).');
   var sem=RS.filter(function(x){return !x.dir}).map(function(x){return x.nome});
@@ -574,14 +564,10 @@ function renderAll(){
   drawGeral(R,C); drawComp(R,C,RS); drawCen(C,RS); drawFichaSel(RS); drawTakes(R,C,RS);
 }
 function drawTakes(R,C,RS){
-  if(R.length){ var st=duelStats(R), tr=temaRates(st);
-    var o=topN(tr.map(function(v,i){return {t:DATA.themes[i],v:v||0}}),2);
+  if(R.length){ var st=duelStats(R);
     var dr=topN(DATA.difs.map(function(df,i){return {t:df.x,v:st.ap[i]?st.wi[i]/st.ap[i]:0}}),1)[0];
-    take('t-d3','O que mais custa aos dirigentes é <b>'+esc(o[0].t)+'</b> ('+pct(o[0].v)+')'+(o[1]?', logo a seguir <b>'+esc(o[1].t)+'</b> ('+pct(o[1].v)+')':'')+'. A dificuldade mais escolhida: «'+esc(dr.t)+'».');
-    var cnt={}, n=0; RS.filter(function(x){return x.dir}).forEach(function(x){ var rs=R.filter(function(r){return r.a===x.nome}); if(!rs.length) return; var t2=temaRates(duelStats(rs)); var b=argmax(t2.map(function(v){return v==null?-1:v})); cnt[b]=(cnt[b]||0)+1; n++ });
-    var kb=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]})[0];
-    take('t-d4',kb!=null?('O tema que mais custa não é igual em todo o lado: <b>'+esc(DATA.themes[kb])+'</b> lidera em '+cnt[kb]+' de '+n+' agrupamentos.'):'');
-  } else { take('t-d3','Sem respostas de dirigentes nestes filtros.'); take('t-d4','') }
+    take('t-d3','A dificuldade que mais custa aos dirigentes é «<b>'+esc(dr.t)+'</b>» (escolhida em '+pct(dr.v)+' dos duelos em que apareceu).');
+  } else { take('t-d3','Sem respostas de dirigentes nestes filtros.') }
   if(C.length){ var cs=camStats(C), o2=topN(DATA.cam.map(function(a,i){return {t:a[0],v:cs.areaPeople[i]/C.length}}),2);
     take('t-c3','A área que mais preocupa os caminheiros é <b>'+esc(o2[0].t)+'</b> ('+pct(o2[0].v)+' pô-la entre as 3 primeiras)'+(o2[1]?', seguida de <b>'+esc(o2[1].t)+'</b> ('+pct(o2[1].v)+')':'')+'.');
     var s=cenStats(C), p=[];
@@ -598,13 +584,11 @@ function bars(items,opts){ /* items:[{t,v(0..1 fraction of max),label,m}] */
 }
 
 function drawGeral(R,C){
-  if(!showDir()){ $('#gtemas').innerHTML='<div class="empty">Escondido pelo filtro "Quem".</div>'; $('#gtop').innerHTML=''; $('#gsec').innerHTML=''; }
+  if(!showDir()){ $('#gtop').innerHTML=''; $('#gsec').innerHTML=''; }
   else{
     var st=duelStats(R), tr=temaRates(st);
-    if(!R.length){ $('#gtemas').innerHTML='<div class="empty">Sem respostas de dirigentes nestes filtros.</div>'; $('#gtop').innerHTML='' }
+    if(!R.length){ $('#gtop').innerHTML='' }
     else{
-      var it=tr.map(function(v,i){return {t:DATA.themes[i],v:v||0,label:pct(v)}}).sort(function(a,b){return b.v-a.v});
-      $('#gtemas').innerHTML=bars(it,{max:Math.max(0.75,it[0].v)});
       var dr=DATA.difs.map(function(df,i){return {i:i,t:df.t,x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0,ap:st.ap[i]}}).sort(function(a,b){return b.r-a.r}).slice(0,10);
       $('#gtop').innerHTML=dr.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.x)+'<small>'+esc(DATA.themes[x.t])+'</small></span><span class="p">'+pct(x.r)+'</span></li>'}).join('');
     }
@@ -627,7 +611,8 @@ function shade(v,lo,hi){ /* azul navy sequencial; devolve [bg,fg] */
 }
 function drawComp(R,C,RS){
   var tb=$('#theat'), tc=$('#tcheat');
-  if(!showDir()){ tb.innerHTML='<tbody><tr><td class="empty">Escondido pelo filtro "Quem".</td></tr></tbody>' }
+  if(!tb){}
+  else if(!showDir()){ tb.innerHTML='<tbody><tr><td class="empty">Escondido pelo filtro "Quem".</td></tr></tbody>' }
   else{
     var rows=RS.filter(function(x){return x.dir}).map(function(x){ var rs=R.filter(function(r){return r.a===x.nome}); return {nome:x.nome,n:rs.length,tr:temaRates(duelStats(rs))} });
     if(!rows.length){ tb.innerHTML='<tbody><tr><td class="empty">Sem respostas de dirigentes nestes filtros.</td></tr></tbody>' }
@@ -712,11 +697,9 @@ function drawFichaD(){
   var h='<h3 class="fnome">'+esc(a)+' · '+esc(ZNOME[AGR_ZONA[a]]||'')+'</h3><div class="kpis" style="margin:0 0 4px"><div class="kpi g"><b>'+R.length+'</b><span>dirigentes responderam</span></div></div><div class="grid2">';
   if(!R.length){ h+='<div class="card"><h3>Dificuldades dos dirigentes</h3><div class="empty">Ainda sem respostas de dirigentes.</div></div>'; take('t-d5','Este agrupamento ainda não tem dirigentes a responder.') }
   else{
-    var st=duelStats(R), tr=temaRates(st), ref=temaRates(duelStats(Rall));
-    var it=tr.map(function(v,i){return {t:DATA.themes[i],v:v||0,label:pct(v),m:ref[i],d:(v||0)-(ref[i]||0)}}).sort(function(a,b){return b.v-a.v});
-    var up=it.slice().sort(function(a,b){return b.d-a.d})[0];
-    take('t-d5','Em <b>'+esc(a)+'</b>, o que mais custa é <b>'+esc(it[0].t)+'</b> ('+pct(it[0].v)+'). Face à média, o tema que mais se destaca é <b>'+esc(up.t)+'</b> ('+(up.d>=0?'+':'')+Math.round(up.d*100)+' pontos).');
-    h+='<div class="card"><h3>Temas que mais custam</h3><div class="bars">'+bars(it,{max:Math.max(0.75,it[0].v)})+'</div><div class="leg"><span><i></i>este agrupamento</span><span><i class="m"></i>média nos filtros</span></div></div>';
+    var st=duelStats(R);
+    var dr0=DATA.difs.map(function(df,i){return {x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0}}).sort(function(a,b){return b.r-a.r})[0];
+    take('t-d5','Em <b>'+esc(a)+'</b>, a dificuldade que mais custa é «<b>'+esc(dr0.x)+'</b>» ('+pct(dr0.r)+' dos duelos).'+(R.length<5?' <i>Poucas respostas: lê com cuidado.</i>':''));
     var dr=DATA.difs.map(function(df,i){return {t:df.t,x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0,ap:st.ap[i]}}).sort(function(a,b){return b.r-a.r||b.ap-a.ap}).slice(0,10);
     h+='<div class="card"><h3>As 10 dificuldades que mais custam</h3><ol class="dl">'+dr.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.x)+'<small>'+esc(DATA.themes[x.t])+'</small></span><span class="p">'+pct(x.r)+'</span></li>'}).join('')+'</ol></div>';
     var sc={}; R.forEach(function(r){sc[r.s]=(sc[r.s]||0)+1});
