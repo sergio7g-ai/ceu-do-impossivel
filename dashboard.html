@@ -107,19 +107,57 @@ select.big{min-height:44px;border:2px solid var(--line);border-radius:12px;paddi
 .dl .p{font-weight:800}
 #printline{display:none}
 @media (max-width:640px){header.top h1{font-size:19px}.bar{grid-template-columns:1fr auto;}.bar .tr{grid-column:1/3;order:3}.filt{position:static}}
+.cb{display:inline-block;width:70px;height:10px;background:#E6EBF5;border-radius:6px;vertical-align:middle;margin-right:6px;overflow:hidden}
+.cb i{display:block;height:100%;background:var(--blue)}
+.sumbox ul{margin:0;padding-left:20px;display:grid;gap:7px}
+.sumbox li{font-size:15px}
+.howto,.fnome,.pfoot{display:none}
+.fnome{font:700 20px var(--disp);margin:0 0 10px}
+tr.tot td{font-weight:800;border-top:2px solid var(--navy);background:#F8FAFD}
+.clanbig{font:700 28px/1.1 var(--disp);color:var(--navy)}
 @media print{
- @page{size:A4 landscape;margin:11mm}
- body{background:#fff;font-size:12px}
- #gate,.btns,.filt,details.agr,.noprint,select.big{display:none!important}
- header.top{background:#fff;color:#000;padding:0 0 8px;border-bottom:3px solid var(--navy)}
- header.top h1 small{color:#333}
- header.top img{width:36px}
- #printline{display:block;margin:8px 0;font-size:12px}
- .kpi,.card,.tw{box-shadow:none;break-inside:avoid}
- section.blk{margin-top:14px}
- .tw{overflow:visible}
+ @page{size:A4 landscape;margin:12mm 12mm 14mm 12mm;@bottom-right{content:"Página " counter(page) " de " counter(pages);font:9px sans-serif;color:#555}}
+ html,body{background:#fff!important;font-size:11px;line-height:1.35;width:auto}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
- th{position:static}
+ #gate,.btns,.filt,details.agr,.noprint,select.big,#fclr{display:none!important}
+ main{max-width:none!important;width:100%;margin:0;padding:0}
+ header.top{background:#fff;color:#000;padding:0 0 6px;border-bottom:3px solid var(--navy);gap:10px}
+ header.top h1{font-size:19px;min-width:0}
+ header.top h1 small{color:#333;font-size:11px}
+ header.top img{width:34px;filter:none}
+ #printline{display:block;margin:6px 0 8px;font-size:11px;padding:6px 10px;border:1px solid #999;border-radius:6px;background:#f4f4f4}
+ .howto{display:block;font-size:11px;margin:0 0 10px;padding:6px 10px;border-left:4px solid var(--goldd);background:#fbf6ea}
+ .kpis{grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+ .kpi{padding:8px 10px;border-radius:8px;box-shadow:none;break-inside:avoid}
+ .kpi b{font-size:22px}.kpi span{font-size:11px}
+ section.blk{margin-top:12px;break-inside:auto}
+ section.blk>h2{font-size:16px;border-bottom:2px solid var(--navy);padding-bottom:3px;margin-bottom:6px;break-after:avoid}
+ section.blk>p.sub{font-size:11px;margin-bottom:6px}
+ #s-resp,#s-geral,#s-comp,#s-cen,#s-ficha{break-before:page}
+ .heat{break-inside:avoid}
+ h3,h4{break-after:avoid}
+ .card{box-shadow:none;break-inside:avoid;padding:10px;border-radius:8px}
+ .card h3{font-size:13px;margin-bottom:6px}
+ .grid2{grid-template-columns:1fr 1fr;gap:8px}
+ .bars{gap:5px}.bar{font-size:10.5px;gap:6px;grid-template-columns:minmax(90px,40%) 1fr auto}
+ .bar .tr{height:11px}
+ .dl li{padding-bottom:4px}.dl .r{font-size:14px}
+ .note,.leg{font-size:10px}
+ .tw{overflow:visible!important;border:1px solid #999;border-radius:0;box-shadow:none}
+ table{font-size:10px;width:100%;table-layout:auto}
+ th,td{white-space:normal!important;overflow-wrap:normal;word-break:normal;padding:3px 5px}
+ td:first-child{overflow-wrap:anywhere}
+ td.n,th.n,td:nth-child(2){white-space:nowrap!important}
+ th.n{white-space:normal!important;max-width:90px}
+ th{position:static;font-size:9px;letter-spacing:0}
+ thead{display:table-header-group}
+ tr{break-inside:avoid}
+ .heat th.c,.heat td.c{min-width:0!important;max-width:none!important;padding:3px 2px;font-size:9.5px}
+ .cb{width:46px;height:8px}
+ .sumbox li{font-size:11.5px}
+ .outros{font-size:10.5px}
+ tbody tr:hover{background:none}
+ .fnome{display:block}
 }
 </style>
 </head>
@@ -165,22 +203,22 @@ select.big{min-height:44px;border:2px solid var(--line);border-radius:12px;paddi
    <div><span id="fsum"></span> <button class="linkb noprint" id="fclr" type="button">Limpar filtros</button></div>
   </div>
   <p id="printline"></p>
+  <p class="howto"><b>Como ler:</b> «n» é o número de respostas. Nos mapas de calor, cor mais escura = valor mais alto; o contorno marca o tema que mais custa. Com poucas respostas, os valores oscilam muito: lê com cuidado. O clã é o conjunto de caminheiros do agrupamento.</p>
 
   <div class="kpis" id="kpis"></div>
 
+  <section class="blk" id="s-sum">
+   <h2>Em resumo</h2>
+   <div class="card sumbox" id="sum"></div>
+  </section>
+
   <section class="blk" id="s-resp">
    <h2>Quem respondeu</h2>
-   <p class="sub">Todos os agrupamentos, mesmo os que ainda não responderam. Clica num título para ordenar.</p>
+   <p class="sub">Todos os agrupamentos, mesmo os que ainda não responderam. Para os caminheiros, vês quantos responderam, o tamanho do clã que eles indicaram e quantos faltam. Clica num título para ordenar.</p>
    <div class="tw"><table id="tresp"></table></div>
    <p class="note" id="nresp"></p>
   </section>
 
-  <section class="blk" id="s-ficha">
-   <h2>Ficha de um agrupamento</h2>
-   <p class="sub">As dificuldades e preocupações deste agrupamento, com a média de todos os que estão nos filtros como referência.</p>
-   <div class="noprint" style="margin-bottom:12px"><select class="big" id="sficha" aria-label="Agrupamento"></select></div>
-   <div id="ficha"></div>
-  </section>
 
   <section class="blk" id="s-comp">
    <h2>Comparar agrupamentos</h2>
@@ -208,6 +246,13 @@ select.big{min-height:44px;border:2px solid var(--line);border-radius:12px;paddi
     <div class="card"><h3>Preocupações dos caminheiros</h3><div class="bars" id="gcam"></div></div>
     <div class="card"><h3>Respostas por secção</h3><div class="bars" id="gsec"></div></div>
    </div>
+  </section>
+
+  <section class="blk" id="s-ficha">
+   <h2>Ficha de um agrupamento</h2>
+   <p class="sub">As dificuldades e preocupações deste agrupamento, com a média de todos os que estão nos filtros como referência.</p>
+   <div class="noprint" style="margin-bottom:12px"><select class="big" id="sficha" aria-label="Agrupamento"></select></div>
+   <div id="ficha"></div>
   </section>
  </main>
 </div>
@@ -333,7 +378,29 @@ function resumo(){
   Object.keys(all).forEach(function(a){ if(wantAgr(a)&&wantZ(a)) rows[a]={nome:a,z:all[a],dir:0,sec:{},cam:0,ns:[]} });
   R.forEach(function(r){ var x=rows[r.a]; if(!x) return; x.dir++; x.sec[r.s]=(x.sec[r.s]||0)+1 });
   C.forEach(function(c){ var x=rows[c.a]; if(!x) return; x.cam++; x.ns.push(c.n) });
-  return Object.keys(rows).map(function(a){ var x=rows[a]; x.n=median(x.ns); x.cob=x.n?Math.min(1,x.cam/x.n):null; return x });
+  return Object.keys(rows).map(function(a){ var x=rows[a]; x.n=x.ns.length?Math.round(median(x.ns)):null; x.cob=x.n?Math.min(1,x.cam/x.n):null; x.falta=(x.n&&x.n<10)?Math.max(0,x.n-x.cam):null; return x });
+}
+
+/* ---------- em resumo ---------- */
+function lista(a){ return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' e '+a[a.length-1] }
+function drawSum(R,C,RS){
+  var L=[], nAg=RS.length, com=RS.filter(function(x){return x.dir||x.cam}).length;
+  if(!R.length&&!C.length){ $('#sum').innerHTML='<div class="empty">Ainda sem respostas nestes filtros.</div>'; return }
+  var q=[]; if(showDir()) q.push(R.length+' dirigente'+(R.length===1?'':'s')); if(showCam()) q.push(C.length+' caminheiro'+(C.length===1?'':'s'));
+  L.push('<b>'+lista(q)+'</b> responderam, em <b>'+com+' de '+nAg+'</b> agrupamentos.');
+  if(showCam()){ var tN=0,tC=0,gr=0; RS.forEach(function(x){ if(x.n&&x.n<10){tN+=x.n;tC+=x.cam} if(x.n>=10) gr++ });
+    if(tN) L.push('Clãs: dos <b>~'+tN+'</b> caminheiros dos clãs com tamanho indicado (abaixo de 10), já responderam <b>'+tC+'</b> ('+pct(tC/tN)+').'+(gr?' Há '+gr+' clã'+(gr===1?'':'s')+' «10 ou mais», que ficam de fora desta conta.':'')); }
+  if(showDir()&&R.length){ var tr=temaRates(duelStats(R)); var o=tr.map(function(v,i){return {t:DATA.themes[i],v:v||0}}).sort(function(a,b){return b.v-a.v}).slice(0,3);
+    L.push('Dirigentes: o que mais custa é <b>'+lista(o.map(function(x){return esc(x.t)+' ('+pct(x.v)+')'}))+'</b>.'); }
+  if(showCam()&&C.length){ var cs=camStats(C); var o2=DATA.cam.map(function(a,i){return {t:a[0],v:cs.areaPeople[i]/C.length}}).sort(function(a,b){return b.v-a.v}).slice(0,3);
+    L.push('Caminheiros: as áreas que mais preocupam são <b>'+lista(o2.map(function(x){return esc(x.t)+' ('+pct(x.v)+')'}))+'</b>.');
+    var c0=cenStats(C)[0]; if(c0.n){ var bi=0; c0.cnt.forEach(function(v,i){ if(v>c0.cnt[bi]) bi=i });
+      L.push('Cenáculo: a resposta mais dada a «'+esc(DATA.cen[0].q)+'» foi <b>'+esc(DATA.cen[0].o[bi])+'</b> ('+pct(c0.cnt[bi]/c0.n)+' de '+c0.n+').'); } }
+  var sem=RS.filter(function(x){return !x.dir&&!x.cam}).map(function(x){return x.nome});
+  if(sem.length) L.push('Ainda sem respostas ('+sem.length+'): '+esc(sem.join(', '))+'.');
+  var minimo=Math.min(showDir()?R.length:1e9, showCam()?C.length:1e9);
+  if(minimo<15) L.push('<i>Atenção: ainda há poucas respostas; as percentagens oscilam muito.</i>');
+  $('#sum').innerHTML='<ul>'+L.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
 }
 
 /* ---------- desenho ---------- */
@@ -343,19 +410,21 @@ function renderAll(){
   var agrCom=RS.filter(function(x){return x.dir||x.cam}).length;
   var k=[];
   if(showDir()) k.push(['g',R.length,'dirigentes responderam']);
-  if(showCam()) k.push(['g',C.length,'caminheiros responderam']);
+  if(showCam()){ var tN=0,tC=0; RS.forEach(function(x){ if(x.n){tN+=x.n;tC+=x.cam} });
+    k.push(['g',C.length,'caminheiros responderam']);
+    k.push(['g',tN?(tC+' de ~'+tN):'–','caminheiros nos clãs que indicaram o tamanho'+(tN?' ('+pct(tC/tN)+')':'')]); }
   k.push(['',agrCom+' / '+RS.length,'agrupamentos com resposta']);
   if(showDir()) k.push(['',RS.filter(function(x){return x.dir}).length,'agrupamentos com dirigentes']);
   if(showCam()) k.push(['',RS.filter(function(x){return x.cam}).length,'agrupamentos com caminheiros']);
   $('#kpis').innerHTML=k.map(function(x){return '<div class="kpi '+x[0]+'"><b>'+x[1]+'</b><span>'+x[2]+'</span></div>'}).join('');
-  drawResp(RS); drawGeral(R,C); drawComp(R,C,RS); drawCen(C,RS); drawFichaSel(RS);
+  drawSum(R,C,RS); drawResp(RS); drawGeral(R,C); drawComp(R,C,RS); drawCen(C,RS); drawFichaSel(RS);
   ['#s-resp','#s-comp'].forEach(function(s){});
 }
 
 function drawResp(RS){
   var cols=[['nome','Agrupamento'],['z','Encontro']];
   if(showDir()){ cols.push(['dir','Dirigentes','n']); Object.keys(SEC).forEach(function(k){cols.push(['sec_'+k,SEC[k],'n'])}) }
-  if(showCam()){ cols.push(['cam','Caminheiros','n'],['n','Clã (n.º indicado)','n'],['cob','Cobertura do clã','n']) }
+  if(showCam()){ cols.push(['cam','Caminheiros que responderam','n'],['n','Tamanho do clã (indicado)','n'],['falta','Faltam responder','n'],['cob','Cobertura do clã','n']) }
   var key=SORT.k;
   RS.sort(function(a,b){ var va,vb;
     if(key.indexOf('sec_')===0){ va=a.sec[key.slice(4)]||0; vb=b.sec[key.slice(4)]||0 }
@@ -368,12 +437,15 @@ function drawResp(RS){
     var zero=!(showDir()&&x.dir)&&!(showCam()&&x.cam);
     h+='<tr class="'+(zero?'zero':'')+'"><td>'+esc(x.nome)+'</td><td>'+esc(ZNOME[x.z]||'–')+'</td>';
     if(showDir()){ h+='<td class="n"><b>'+x.dir+'</b></td>'; Object.keys(SEC).forEach(function(k){h+='<td class="n">'+(x.sec[k]||'·')+'</td>'}) }
-    if(showCam()){ h+='<td class="n"><b>'+x.cam+'</b></td><td class="n">'+(x.n==null?'–':(x.n>=10?'10 ou mais':x.n))+'</td><td class="n">'+(x.cob==null?'–':x.cam+' de ~'+x.n+' ('+pct(x.cob)+')')+'</td>' }
+    if(showCam()){ h+='<td class="n"><b>'+x.cam+'</b></td><td class="n">'+(x.n==null?'–':(x.n>=10?'10 ou mais':x.n))+'</td><td class="n">'+(x.falta==null?'–':x.falta)+'</td><td class="n">'+(x.cob==null?'–':'<span class="cb"><i style="width:'+Math.round(x.cob*100)+'%"></i></span>'+(x.n>=10?'até ':'')+pct(x.cob))+'</td>' }
     h+='</tr>';
   });
-  var tot={dir:0,cam:0}; RS.forEach(function(x){tot.dir+=x.dir;tot.cam+=x.cam});
-  h+='</tbody>'; $('#tresp').innerHTML=h;
-  $('#nresp').textContent=showCam()?'Cobertura do clã = caminheiros que responderam ÷ mediana do tamanho do clã indicado por eles ("10 ou mais" conta como 10, por isso a cobertura de clãs grandes pode ficar subestimada ou chegar a 100%).':'';
+  var tot={dir:0,cam:0,n:0,falta:0,sec:{}}; RS.forEach(function(x){tot.dir+=x.dir;tot.cam+=x.cam; if(x.n&&x.n<10){tot.n+=x.n;tot.falta+=x.falta} Object.keys(x.sec).forEach(function(k){tot.sec[k]=(tot.sec[k]||0)+x.sec[k]})});
+  h+='<tr class="tot"><td>Total ('+RS.length+' agrupamentos)</td><td></td>';
+  if(showDir()){ h+='<td class="n">'+tot.dir+'</td>'; Object.keys(SEC).forEach(function(k){h+='<td class="n">'+(tot.sec[k]||0)+'</td>'}) }
+  if(showCam()){ h+='<td class="n">'+tot.cam+'</td><td class="n">'+(tot.n?tot.n:'–')+'</td><td class="n">'+(tot.n?tot.falta:'–')+'</td><td class="n"></td>' }
+  h+='</tr></tbody>'; $('#tresp').innerHTML=h;
+  $('#nresp').textContent=showCam()?'Tamanho do clã = mediana do que os próprios caminheiros indicaram. Faltam responder = tamanho do clã − caminheiros que responderam. Cobertura = caminheiros que responderam ÷ tamanho do clã. Quando o clã é «10 ou mais», não sabemos o tamanho real: não calculamos o que falta e a cobertura é no máximo o valor indicado. O total só soma clãs com tamanho abaixo de 10.':'';
   $('#tresp thead').addEventListener('click',function(e){ var t=e.target.closest('th'); if(!t)return; var k=t.dataset.k; if(SORT.k===k)SORT.d*=-1; else{SORT.k=k;SORT.d=(k==='nome'||k==='z')?1:-1} renderAll() });
 }
 
@@ -492,10 +564,10 @@ $('#sficha').addEventListener('change',function(){FICHA=this.value;drawFicha()})
 function drawFicha(){
   var a=FICHA, el=$('#ficha'); if(!a){ el.innerHTML='<div class="empty card">Escolhe um agrupamento.</div>'; return }
   var Rall=fR(), Call=fC(), R=Rall.filter(function(r){return r.a===a}), C=Call.filter(function(c){return c.a===a});
-  var h='<div class="kpis" style="margin:0 0 14px">';
+  var h='<h3 class="fnome">'+esc(a)+' · '+esc(ZNOME[AGR_ZONA[a]]||'')+'</h3><div class="kpis" style="margin:0 0 14px">';
   var rs=resumo().filter(function(x){return x.nome===a})[0]||{};
   if(showDir()) h+='<div class="kpi g"><b>'+R.length+'</b><span>dirigentes responderam</span></div>';
-  if(showCam()) h+='<div class="kpi g"><b>'+C.length+'</b><span>caminheiros responderam'+(rs.n?' (clã de '+(rs.n>=10?'10 ou mais':rs.n)+(rs.cob!=null?' · '+pct(rs.cob):'')+')':'')+'</span></div>';
+  if(showCam()) h+='<div class="kpi g"><b>'+C.length+(rs.n?' <small style="font:700 16px var(--body);color:var(--mut)">de '+(rs.n>=10?'10 ou mais':'~'+rs.n)+'</small>':'')+'</b><span>caminheiros do clã responderam'+(rs.cob!=null?' · cobertura '+(rs.n>=10?'até ':'')+pct(rs.cob):(rs.n?'':' (tamanho do clã por indicar)'))+'</span>'+(rs.cob!=null?'<div style="margin-top:6px"><span class="cb" style="width:100%"><i style="width:'+Math.round(rs.cob*100)+'%"></i></span></div>':'')+'</div>';
   h+='</div><div class="grid2">';
   if(showDir()){
     if(!R.length) h+='<div class="card"><h3>Dificuldades dos dirigentes</h3><div class="empty">Ainda sem respostas de dirigentes.</div></div>';
@@ -534,8 +606,8 @@ function dstr(){return new Date().toISOString().slice(0,10)}
 document.querySelector('#dexp').addEventListener('click',function(e){
   var b=e.target.closest('[data-csv]'); if(!b) return; var t=b.dataset.csv, R=fR(), C=fC(), rows=[];
   if(t==='resumo'){
-    rows.push(['Agrupamento','Encontro','Dirigentes'].concat(Object.keys(SEC).map(function(k){return 'Dirigentes '+SEC[k]}),['Caminheiros','Clã (mediana indicada)','Cobertura do clã %']));
-    resumo().sort(function(a,b){return a.nome.localeCompare(b.nome,'pt',{numeric:true})}).forEach(function(x){ rows.push([x.nome,ZNOME[x.z]||'',x.dir].concat(Object.keys(SEC).map(function(k){return x.sec[k]||0}),[x.cam,x.n==null?'':x.n,x.cob==null?'':Math.round(x.cob*100)])) });
+    rows.push(['Agrupamento','Encontro','Dirigentes'].concat(Object.keys(SEC).map(function(k){return 'Dirigentes '+SEC[k]}),['Caminheiros que responderam','Tamanho do clã (mediana indicada; 10 = 10 ou mais)','Faltam responder','Cobertura do clã %']));
+    resumo().sort(function(a,b){return a.nome.localeCompare(b.nome,'pt',{numeric:true})}).forEach(function(x){ rows.push([x.nome,ZNOME[x.z]||'',x.dir].concat(Object.keys(SEC).map(function(k){return x.sec[k]||0}),[x.cam,x.n==null?'':x.n,x.falta==null?'':x.falta,x.cob==null?'':Math.round(x.cob*100)])) });
   } else if(t==='dif'){
     rows.push(['Agrupamento','Tema','Dificuldade','Dirigentes','Duelos em que apareceu','Duelos ganhos','% ganhos']);
     var ags={}; R.forEach(function(r){(ags[r.a]=ags[r.a]||[]).push(r)});
