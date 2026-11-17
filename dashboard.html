@@ -595,12 +595,12 @@ function drawAval(perfil,k){
   var rows=Object.keys(by).map(function(a){ return {a:a,z:zonaDe({a:a,z:by[a][0].z}),rs:by[a]} }).sort(function(x,y){return x.a.localeCompare(y.a,'pt',{numeric:true})});
   var h='<thead><tr><th scope="col">Agrupamento</th><th scope="col">Encontro</th><th class="n" scope="col">n</th>'+DATA.aval.map(function(q){return '<th class="n" scope="col">'+esc(q.n)+'</th>'}).join('')+'</tr></thead><tbody>';
   if(!rows.length) h+='<tr><td class="empty" colspan="'+(3+DATA.aval.length)+'">Sem respostas nestes filtros.</td></tr>';
-  rows.forEach(function(r){ var small=r.rs.length<3;
-    h+='<tr class="'+(small?'zero':'')+'"><td>'+esc(r.a)+'</td><td>'+esc(ZNOME[r.z]||'–')+'</td><td class="n" data-l="n"><b>'+r.rs.length+'</b>'+(small?' <small>n pequeno</small>':'')+'</td>'+
+  rows.forEach(function(r){
+    h+='<tr><td>'+esc(r.a)+'</td><td>'+esc(ZNOME[r.z]||'–')+'</td><td class="n" data-l="n"><b>'+r.rs.length+'</b></td>'+
       DATA.aval.map(function(q,i){ return '<td class="n" data-l="'+esc(q.n)+'">'+fmt1(avStat(r.rs,i).m)+'</td>' }).join('')+'</tr>' });
   if(rows.length) h+='<tr class="tot"><td>Total ('+rows.length+' agrupamentos)</td><td></td><td class="n" data-l="n">'+all.length+'</td>'+DATA.aval.map(function(q,i){ return '<td class="n" data-l="'+esc(q.n)+'">'+fmt1(avStat(all,i).m)+'</td>' }).join('')+'</tr>';
   $('#tav'+k).innerHTML=h+'</tbody>';
-  $('#nav'+k).textContent='Escala 1 a 5. Com menos de 3 respostas num agrupamento (n pequeno) a média não é fiável e serve só de indicação. Cada pessoa responde uma só vez por encontro.';
+  $('#nav'+k).textContent='Escala 1 a 5. Todos os agrupamentos com respostas aparecem, mesmo com uma só: com poucas respostas a média é só uma indicação. Cada pessoa responde uma só vez por encontro.';
 }
 
 /* ---------- tabelas «quem respondeu» ---------- */
