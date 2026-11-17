@@ -497,6 +497,7 @@ function fC(){ return RAW.caminheiros.filter(function(r){
   return (!has(ST.z)||ST.z[zonaDe(r)]) && (!has(ST.a)||ST.a[r.a]) }) }
 function showDir(){return true} function showCam(){return true}
 
+function haveD(rs){ return duelStats(rs).ap.some(function(x){return x>0}) }
 function duelStats(rs){
   var ap=new Array(N_DIF).fill(0), wi=new Array(N_DIF).fill(0);
   rs.forEach(function(r){ (r.d||[]).forEach(function(du){ ap[du[0]]++; ap[du[1]]++; wi[du[2]]++ }) });
@@ -559,7 +560,7 @@ function drawSumD(R,RS){
   L.push('Por secção: '+Object.keys(SEC).map(function(k){return esc(SEC[k])+' <b>'+(sc[k]||0)+'</b>'}).join(' · ')+'.');
   var st=duelStats(R);
   var dr=topN(DATA.difs.map(function(df,i){return {t:df.x,v:st.ap[i]?st.wi[i]/st.ap[i]:0}}),1)[0];
-  if(dr) L.push('A dificuldade mais escolhida: «'+esc(dr.t)+'» ('+pct(dr.v)+' dos duelos).');
+  if(dr&&dr.v>0) L.push('A dificuldade mais escolhida: «'+esc(dr.t)+'» ('+pct(dr.v)+' dos duelos).'); else L.push('Os duelos destas respostas não estão guardados (foram apagados por engano). Só se sabe quem respondeu.');
   var sem=RS.filter(function(x){return !x.dir}).map(function(x){return x.nome});
   if(sem.length) L.push('Ainda sem dirigentes ('+sem.length+'): '+esc(nomesLim(sem,8))+'.');
   if(R.length<15) L.push('<i>Atenção: ainda há poucas respostas; as percentagens oscilam muito.</i>');
@@ -657,7 +658,8 @@ function renderAll(){
   drawGeral(R,C); drawComp(R,C,RS); drawCen(C,RS); drawFichaSel(RS); drawTakes(R,C,RS); drawAval('dirigente','D'); drawAval('caminheiro','C');
 }
 function drawTakes(R,C,RS){
-  if(R.length){ var st=duelStats(R);
+  if(R.length&&!haveD(R)){ take('t-d3','Os duelos destas respostas não estão guardados (foram apagados por engano). Só se sabe quem respondeu.') }
+  else if(R.length){ var st=duelStats(R);
     var dr=topN(DATA.difs.map(function(df,i){return {t:df.x,v:st.ap[i]?st.wi[i]/st.ap[i]:0}}),1)[0];
     take('t-d3','A dificuldade que mais custa aos dirigentes é «<b>'+esc(dr.t)+'</b>» (escolhida em '+pct(dr.v)+' dos duelos em que apareceu).');
   } else { take('t-d3','Sem respostas de dirigentes nestes filtros.') }
@@ -681,6 +683,7 @@ function drawGeral(R,C){
   else{
     var st=duelStats(R), tr=temaRates(st);
     if(!R.length){ $('#gtop').innerHTML='' }
+    else if(!haveD(R)){ $('#gtop').innerHTML='<li class="empty">Os duelos destas respostas não estão guardados (foram apagados por engano). Só se sabe quem respondeu.</li>' }
     else{
       var dr=DATA.difs.map(function(df,i){return {i:i,t:df.t,x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0,ap:st.ap[i]}}).sort(function(a,b){return b.r-a.r}).slice(0,10);
       $('#gtop').innerHTML=dr.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.x)+'<small>'+esc(DATA.themes[x.t])+'</small></span><span class="p">'+pct(x.r)+'</span></li>'}).join('');
@@ -708,6 +711,7 @@ function drawComp(R,C,RS){
   else{
     var rows=RS.filter(function(x){return x.dir}).map(function(x){ var rs=R.filter(function(r){return r.a===x.nome}); return {nome:x.nome,n:rs.length,tr:temaRates(duelStats(rs))} });
     if(!rows.length){ tb.innerHTML='<tbody><tr><td class="empty">Sem respostas de dirigentes nestes filtros.</td></tr></tbody>' }
+    else if(!haveD(R)){ tb.innerHTML='<tbody><tr><td class="empty">Os duelos destas respostas não estão guardados (foram apagados por engano). Só se sabe quem respondeu.</td></tr></tbody>' }
     else{
       var all=[]; rows.forEach(function(r){r.tr.forEach(function(v){if(v!=null)all.push(v)})}); var lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
       var h='<thead><tr><th scope="col">Agrupamento</th><th class="n" scope="col">n</th>'+DATA.themes.map(function(t){return '<th class="c" scope="col">'+esc(t)+'</th>'}).join('')+'</tr></thead><tbody>';
@@ -791,6 +795,7 @@ function drawFichaD(){
   else{
     var st=duelStats(R);
     var dr0=DATA.difs.map(function(df,i){return {x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0}}).sort(function(a,b){return b.r-a.r})[0];
+    if(!haveD(R)){ h+='<div class="card"><h3>Dificuldades dos dirigentes</h3><div class="empty">Os duelos destas respostas não estão guardados (foram apagados por engano). Só se sabe quem respondeu.</div></div></div>'; el.innerHTML=h; take('t-d5',''); return }
     take('t-d5','Em <b>'+esc(a)+'</b>, a dificuldade que mais custa é «<b>'+esc(dr0.x)+'</b>» ('+pct(dr0.r)+' dos duelos).'+(R.length<5?' <i>Poucas respostas: lê com cuidado.</i>':''));
     var dr=DATA.difs.map(function(df,i){return {t:df.t,x:df.x,r:st.ap[i]?st.wi[i]/st.ap[i]:0,ap:st.ap[i]}}).sort(function(a,b){return b.r-a.r||b.ap-a.ap}).slice(0,10);
     h+='<div class="card"><h3>As 10 dificuldades que mais custam</h3><ol class="dl">'+dr.map(function(x,n){return '<li><span class="r">'+(n+1)+'</span><span>'+esc(x.x)+'<small>'+esc(DATA.themes[x.t])+'</small></span><span class="p">'+pct(x.r)+'</span></li>'}).join('')+'</ol></div>';
