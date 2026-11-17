@@ -209,6 +209,16 @@ h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter
 .vo.pick{border-color:var(--luz);background:color-mix(in srgb,var(--luz) 18%,var(--bg2))}
 .vo.done{border-color:var(--luz);box-shadow:0 0 24px color-mix(in srgb,var(--luz) 45%,transparent)}
 .vo:disabled:not(.done){opacity:.45}
+.av{display:grid;gap:14px}
+.avq{border:1.5px solid var(--line);background:var(--bg2);border-radius:16px;padding:16px}
+.avq h3{margin:0 0 14px;font:700 17px/1.3 var(--body,inherit);color:var(--estrela);text-transform:none;letter-spacing:0}
+.avs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.avs button{height:54px;border-radius:12px;border:2px solid var(--line);background:transparent;color:var(--estrela);font:700 21px var(--display)}
+.avs button.sel{border-color:var(--luz);background:var(--luz);color:#0A1730}
+.avs button:disabled:not(.sel){opacity:.4}
+.avl{display:flex;justify-content:space-between;gap:10px;margin-top:10px;font-size:13px;color:var(--dim)}
+.avl span:last-child{text-align:right}
+.avc{margin-top:8px;min-height:1.4em;font-weight:800;font-size:16px;color:var(--luz);text-align:center}
 #proj.rev .pq,#proj.rev .hint2,#proj.rev .pl{opacity:0}
 #proj .pq,#proj .hint2,#proj .pl{transition:opacity .6s}
 .pp ol{list-style:none;margin:0;padding:0;display:grid;gap:9px}
@@ -366,6 +376,16 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:min(15vw,90
     <div class="logo pf" role="img" aria-label="Um dia a sorte muda e a gente muda a sorte · 2026-2029"></div>
   </section>
 
+  <section class="step" id="s-aval">
+    <div class="eyebrow" id="avz"></div>
+    <h2>A tua opinião</h2>
+    <p class="mut" id="avmsg">Responde às 3 perguntas. É rápido.</p>
+    <div class="av" id="avq"></div>
+    <button class="btn" id="avgo" disabled>Enviar</button>
+    <div class="spacer"></div>
+    <div class="logo pf" role="img" aria-label="Um dia a sorte muda e a gente muda a sorte · 2026-2029"></div>
+  </section>
+
   <section class="step" id="s-final">
     <div class="eyebrow" id="fz"></div>
     <h2>A tua constelação do <span class="imp" role="img" aria-label="Impossível"></span></h2>
@@ -403,7 +423,7 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:min(15vw,90
     <div class="pdemo" id="pdemo" hidden>Demonstração · votos simulados · <a href="#jogar" style="color:#0A1730">voltar ao telemóvel</a></div>
     <div id="cam"><h2>O que mais preocupa<br>os caminheiros</h2><div class="ct"><b id="cn">0</b><span>caminheiros</span></div><ol id="col"></ol></div>
     <div id="vz"></div><div id="vst"></div><div id="ptoast"></div>
-    <div id="pcode"><div><small>Código para abrir a votação</small><input id="pcin" type="text" autocomplete="off" maxlength="12" spellcheck="false"></div></div>
+    <div id="pcode"><div><small>Código de acesso</small><input id="pcin" type="text" autocomplete="off" maxlength="12" spellcheck="false"></div></div>
     <div class="empty-msg" id="empty">À espera das primeiras estrelas</div>
     <aside class="pp" id="panel"><h2>A Constelação do <span class="imp" role="img" aria-label="Impossível"></span></h2><small id="pps"></small><ol id="pol"></ol></aside>
   </div>
@@ -412,7 +432,7 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:min(15vw,90
 <script>
 (function(){
 'use strict';
-var D={"themes":[{"n":"Preparar","d":"preparar reuniões e atividades com intenção educativa"},{"n":"Aprender fazendo","d":"viver o método do projeto e aprender com o erro"},{"n":"Guias e patrulhas","d":"deixar os guias liderar de verdade"},{"n":"Jovens","d":"motivar, integrar e acompanhar sem controlar"},{"n":"Progresso","d":"acompanhar o progresso pessoal sem burocracia"},{"n":"Equipa e tempo","d":"tempo, voluntariado e vida de equipa"},{"n":"Formação e apoio","d":"formação, apoio e Núcleo"},{"n":"Lei, Promessa e fé","d":"dar sentido à Lei, à Promessa, aos símbolos e à fé"},{"n":"Natureza e comunidade","d":"vida na natureza e ligação real à comunidade"},{"n":"Tradição e identidade","d":"grito, bandeirola, formaturas, imaginário e a identidade da patrulha"},{"n":"Material e dinheiro","d":"material de campismo, caixa, angariações e noites de campo"}],"difs":[{"id":0,"t":0,"x":"Preparar uma reunião semanal que não saia sempre igual"},{"id":1,"t":0,"x":"Manter o ritmo e a atenção dos jovens durante a reunião"},{"id":2,"t":0,"x":"Planear uma atividade de fim de semana de ponta a ponta"},{"id":3,"t":0,"x":"Ter um plano B quando chove ou faltam jovens"},{"id":4,"t":0,"x":"Ter um Plano Anual de Unidade que se trabalhe a sério"},{"id":5,"t":0,"x":"Planear pela intenção educativa e não só pela diversão ou pela logística"},{"id":6,"t":1,"x":"Motivar a secção a sonhar um projeto ambicioso"},{"id":7,"t":1,"x":"Deixar que escolham o projeto sem decidir por eles"},{"id":8,"t":1,"x":"Viver as fases do método do projeto sem saltar nenhuma"},{"id":9,"t":1,"x":"Manter o painel do projeto vivo ao longo do ano"},{"id":10,"t":1,"x":"Fazer uma avaliação honesta no fim de cada atividade"},{"id":11,"t":1,"x":"Transformar os erros dos jovens em aprendizagem"},{"id":12,"t":2,"x":"Preparar o Conselho de Guias com os próprios guias"},{"id":13,"t":2,"x":"Fazer do Conselho de Guias um espaço de decisão e não só de informação"},{"id":14,"t":2,"x":"Ajudar a secção a eleger bons guias sem escolher por eles"},{"id":15,"t":2,"x":"Formar os guias para liderarem a patrulha"},{"id":16,"t":2,"x":"Acompanhar guias que perderam a motivação"},{"id":17,"t":2,"x":"Conseguir que os guias façam o que combinámos"},{"id":18,"t":3,"x":"Motivar os jovens que andam desligados"},{"id":19,"t":3,"x":"Lidar com o telemóvel nas reuniões"},{"id":20,"t":3,"x":"Gerir o comportamento do grupo durante as atividades"},{"id":21,"t":3,"x":"Falar com os pais quando há um problema"},{"id":22,"t":3,"x":"Integrar um jovem que acabou de chegar"},{"id":23,"t":3,"x":"Incluir jovens com dificuldades ou necessidades especiais"},{"id":24,"t":4,"x":"Ligar cada atividade aos objetivos do Sistema de Progresso"},{"id":25,"t":4,"x":"Escolher objetivos adequados a cada jovem"},{"id":26,"t":4,"x":"Acompanhar o progresso de cada jovem, um a um"},{"id":27,"t":4,"x":"Registar o progresso e as noites de campo sem criar papelada"},{"id":28,"t":4,"x":"Reconhecer o progresso em público de forma que valha a pena"},{"id":29,"t":4,"x":"Motivar os jovens a trabalhar as especialidades"},{"id":30,"t":5,"x":"Arranjar tempo para preparar as atividades, entre o trabalho e os estudos"},{"id":31,"t":5,"x":"Conciliar o escutismo com a família e a vida pessoal"},{"id":32,"t":5,"x":"Distribuir tarefas entre os dirigentes da equipa"},{"id":33,"t":5,"x":"Ter dirigentes suficientes em cada atividade"},{"id":34,"t":5,"x":"Manter a equipa de dirigentes unida e motivada"},{"id":35,"t":5,"x":"Integrar um dirigente novo na equipa"},{"id":36,"t":6,"x":"Perceber o que o Núcleo pode fazer por mim"},{"id":37,"t":6,"x":"Contar com o Assistente na vida da secção"},{"id":38,"t":6,"x":"Dar conta da burocracia (censos, plano, relatório e contas)"},{"id":39,"t":6,"x":"Manter as fichas, autorizações e seguros dos jovens em dia"},{"id":40,"t":6,"x":"Sentir segurança pedagógica com a formação que tenho"},{"id":41,"t":6,"x":"Fazer formação sem gastar mais fins de semana"},{"id":42,"t":7,"x":"Transformar a Lei em atitudes do dia a dia, e não em recitações"},{"id":43,"t":7,"x":"Dar sentido verdadeiro à Promessa e às cerimónias"},{"id":44,"t":7,"x":"Animar a fé de forma intencional na secção"},{"id":45,"t":7,"x":"Preparar-me pessoalmente para falar de fé com os jovens"},{"id":46,"t":7,"x":"Dar sentido aos símbolos e aos ritos sem ser encenação"},{"id":47,"t":7,"x":"Criar momentos de reflexão e silêncio nas atividades"},{"id":48,"t":8,"x":"Fazer atividades ao ar livre apesar dos custos e da logística"},{"id":49,"t":8,"x":"Ensinar técnicas de campismo e de vida ao ar livre aos jovens"},{"id":50,"t":8,"x":"Passar do serviço pontual a uma ligação real com a comunidade"},{"id":51,"t":8,"x":"Criar parcerias com a paróquia e as instituições locais"},{"id":52,"t":8,"x":"Dar a conhecer o escutismo à comunidade e atrair novos jovens"},{"id":53,"t":8,"x":"Envolver os pais nas atividades da secção"},{"id":54,"t":9,"x":"Manter vivos o grito e a bandeirola da patrulha ao longo do ano"},{"id":55,"t":9,"x":"Que todos tenham e usem a vara pessoal"},{"id":56,"t":9,"x":"Fazer formaturas com sentido e não só por rotina"},{"id":57,"t":9,"x":"Trabalhar o imaginário da secção em todas as atividades"},{"id":58,"t":9,"x":"Manter o Livro de Ouro vivo"},{"id":59,"t":9,"x":"Passar as tradições da patrulha aos mais novos"},{"id":60,"t":10,"x":"Ter material de campismo completo e em bom estado"},{"id":61,"t":10,"x":"Cuidar e arrumar o material depois de cada atividade"},{"id":62,"t":10,"x":"Fazer angariações de fundos sem esgotar os pais"},{"id":63,"t":10,"x":"Cobrar quotas e atividades sem excluir ninguém"},{"id":64,"t":10,"x":"Gerir a caixa da patrulha com os guias"},{"id":65,"t":10,"x":"Ter um orçamento claro para cada atividade"}],"cam":[["Voz e decisão",["Falamos muito, mas as nossas ideias raramente chegam a decisões reais","Os caminheiros ainda não têm voz e voto onde se decide"]],["Fé e Igreja",["Sinto-me distante da posição da Igreja em temas como a afetividade e a sexualidade","Não sei como viver a fé no dia a dia sem parecer imposta"]],["Tempo e vida fora",["Com a faculdade ou o trabalho, quase não tenho tempo para o Clã","O Clã exige muito e a vida lá fora não deixa acompanhar"]],["Pressão para ser dirigente",["Sinto pressão para ser dirigente antes de acabar o meu caminho como caminheiro","Faltam dirigentes no agrupamento e isso acaba por recair sobre nós"]],["A Partida",["Sair do escutismo depois da Partida é visto como abandonar","A Partida devia lançar-me para a vida e não só para ser dirigente"]],["Clã pequeno",["No nosso Clã somos poucos e as mesmas pessoas acumulam todos os cargos","Com poucos no Clã, as ideias repetem-se e custa manter a motivação"]]],"cen":[{"q":"Sentes que o Cenáculo cumpre o seu propósito?","o":["Sim, cumpre","Sim, mas com algumas falhas","Não, não cumpre","Não sei qual é o propósito do Cenáculo"],"m":false,"x":null},{"q":"Que razões te levam a não participar no Cenáculo?","o":["Costumo participar","Acho que no geral o Cenáculo é desinteressante","Sinto que a atividade não tem impacto prático","Sinto que a atividade não é bem comunicada","Outro"],"m":true,"x":-1},{"q":"Que áreas do Cenáculo achas que podem ser melhoradas?","o":["Nada em específico","Os momentos que precedem o ciclo","A elaboração de propostas e o plenário","A exposição dos temas","Outro"],"m":true,"x":-1}],"zonas":[{"id":1,"n":"1.º Encontro","c":"#C768B0","agr":[[87,"Barco"],[316,"Sande S. Martinho"],[323,"Sta. Eufémia Prazins"],[365,"Corvite"],[454,"Longos"],[666,"Taipas"],[830,"Sto. Estêvão Briteiros"],[882,"Sto. Tirso Prazins"],[883,"Sta. Leocádia Briteiros"],[1130,"S. Salvador Briteiros"],[1259,"S. Clemente Sande"]]},{"id":2,"n":"2.º Encontro","c":"#FFD23F","agr":[[28,"S. Torcato"],[145,"Azurém"],[106,"Selho S. Lourenço"],[702,"Mesão Frio"],[322,"Urgeses"],[566,"Creixomil"],[1020,"Atães"],[331,"S. Dâmaso"],[199,"Costa"],[108,"Fermentões"],[532,"Mascotelos"],[814,"Sra. da Conceição"]]},{"id":3,"n":"3.º Encontro","c":"#FF5A5F","agr":[]},{"id":4,"n":"4.º Encontro","c":"#5CCB6B","agr":[]}],"seccoes":[["alcateia","Alcateia","Lobitos"],["expedicao","Expedição","Exploradores"],["comunidade","Comunidade","Pioneiros"],["cla","Clã","Caminheiros"],["varias","Várias secções","ou agrupamento"]],"anos":[["0-1","Menos de 1 ano"],["1-2","1 a 2 anos"],["3-5","3 a 5 anos"],["6+","Mais de 5 anos"]],"pts":[[546,541],[1500,483],[1020,210],[1044,758],[83,353],[180,667],[865,494],[1204,442],[374,298],[730,756],[666,309],[1294,220],[332,515],[1046,545],[855,316],[1183,648],[423,674],[1345,568],[711,572],[899,657],[140,508],[512,371],[1012,380],[234,384],[1156,249],[614,670],[744,432],[1317,378],[621,422],[306,673],[786,657],[905,186],[1175,761],[446,480],[233,565],[851,761],[1392,465],[1077,652],[81,620],[352,404],[1120,368],[1149,550],[173,301],[1230,317],[966,482],[913,399],[956,289],[453,580],[1244,545],[930,571],[755,299],[944,745],[511,660],[276,297],[1213,175],[1082,452],[1448,565],[801,559],[1068,293],[146,419],[987,636],[363,604],[1298,473],[564,295],[227,476],[827,413]],"edges":[],"labels":[],"duels":[[18,19],[54,55],[37,36],[4,5],[65,64],[11,10],[28,29],[46,47],[49,48],[32,33],[40,41],[50,51],[7,6],[58,59],[0,1],[30,31],[27,26],[44,45],[61,60],[20,21],[12,13],[43,42],[63,62],[16,17],[8,9],[34,35],[57,56],[24,25],[23,22],[53,52],[38,39],[14,15],[3,2]]};
+var D={"themes":[{"n":"Preparar","d":"preparar reuniões e atividades com intenção educativa"},{"n":"Aprender fazendo","d":"viver o método do projeto e aprender com o erro"},{"n":"Guias e patrulhas","d":"deixar os guias liderar de verdade"},{"n":"Jovens","d":"motivar, integrar e acompanhar sem controlar"},{"n":"Progresso","d":"acompanhar o progresso pessoal sem burocracia"},{"n":"Equipa e tempo","d":"tempo, voluntariado e vida de equipa"},{"n":"Formação e apoio","d":"formação, apoio e Núcleo"},{"n":"Lei, Promessa e fé","d":"dar sentido à Lei, à Promessa, aos símbolos e à fé"},{"n":"Natureza e comunidade","d":"vida na natureza e ligação real à comunidade"},{"n":"Tradição e identidade","d":"grito, bandeirola, formaturas, imaginário e a identidade da patrulha"},{"n":"Material e dinheiro","d":"material de campismo, caixa, angariações e noites de campo"}],"difs":[{"id":0,"t":0,"x":"Preparar uma reunião semanal que não saia sempre igual"},{"id":1,"t":0,"x":"Manter o ritmo e a atenção dos jovens durante a reunião"},{"id":2,"t":0,"x":"Planear uma atividade de fim de semana de ponta a ponta"},{"id":3,"t":0,"x":"Ter um plano B quando chove ou faltam jovens"},{"id":4,"t":0,"x":"Ter um Plano Anual de Unidade que se trabalhe a sério"},{"id":5,"t":0,"x":"Planear pela intenção educativa e não só pela diversão ou pela logística"},{"id":6,"t":1,"x":"Motivar a secção a sonhar um projeto ambicioso"},{"id":7,"t":1,"x":"Deixar que escolham o projeto sem decidir por eles"},{"id":8,"t":1,"x":"Viver as fases do método do projeto sem saltar nenhuma"},{"id":9,"t":1,"x":"Manter o painel do projeto vivo ao longo do ano"},{"id":10,"t":1,"x":"Fazer uma avaliação honesta no fim de cada atividade"},{"id":11,"t":1,"x":"Transformar os erros dos jovens em aprendizagem"},{"id":12,"t":2,"x":"Preparar o Conselho de Guias com os próprios guias"},{"id":13,"t":2,"x":"Fazer do Conselho de Guias um espaço de decisão e não só de informação"},{"id":14,"t":2,"x":"Ajudar a secção a eleger bons guias sem escolher por eles"},{"id":15,"t":2,"x":"Formar os guias para liderarem a patrulha"},{"id":16,"t":2,"x":"Acompanhar guias que perderam a motivação"},{"id":17,"t":2,"x":"Conseguir que os guias façam o que combinámos"},{"id":18,"t":3,"x":"Motivar os jovens que andam desligados"},{"id":19,"t":3,"x":"Lidar com o telemóvel nas reuniões"},{"id":20,"t":3,"x":"Gerir o comportamento do grupo durante as atividades"},{"id":21,"t":3,"x":"Falar com os pais quando há um problema"},{"id":22,"t":3,"x":"Integrar um jovem que acabou de chegar"},{"id":23,"t":3,"x":"Incluir jovens com dificuldades ou necessidades especiais"},{"id":24,"t":4,"x":"Ligar cada atividade aos objetivos do Sistema de Progresso"},{"id":25,"t":4,"x":"Escolher objetivos adequados a cada jovem"},{"id":26,"t":4,"x":"Acompanhar o progresso de cada jovem, um a um"},{"id":27,"t":4,"x":"Registar o progresso e as noites de campo sem criar papelada"},{"id":28,"t":4,"x":"Reconhecer o progresso em público de forma que valha a pena"},{"id":29,"t":4,"x":"Motivar os jovens a trabalhar as especialidades"},{"id":30,"t":5,"x":"Arranjar tempo para preparar as atividades, entre o trabalho e os estudos"},{"id":31,"t":5,"x":"Conciliar o escutismo com a família e a vida pessoal"},{"id":32,"t":5,"x":"Distribuir tarefas entre os dirigentes da equipa"},{"id":33,"t":5,"x":"Ter dirigentes suficientes em cada atividade"},{"id":34,"t":5,"x":"Manter a equipa de dirigentes unida e motivada"},{"id":35,"t":5,"x":"Integrar um dirigente novo na equipa"},{"id":36,"t":6,"x":"Perceber o que o Núcleo pode fazer por mim"},{"id":37,"t":6,"x":"Contar com o Assistente na vida da secção"},{"id":38,"t":6,"x":"Dar conta da burocracia (censos, plano, relatório e contas)"},{"id":39,"t":6,"x":"Manter as fichas, autorizações e seguros dos jovens em dia"},{"id":40,"t":6,"x":"Sentir segurança pedagógica com a formação que tenho"},{"id":41,"t":6,"x":"Fazer formação sem gastar mais fins de semana"},{"id":42,"t":7,"x":"Transformar a Lei em atitudes do dia a dia, e não em recitações"},{"id":43,"t":7,"x":"Dar sentido verdadeiro à Promessa e às cerimónias"},{"id":44,"t":7,"x":"Animar a fé de forma intencional na secção"},{"id":45,"t":7,"x":"Preparar-me pessoalmente para falar de fé com os jovens"},{"id":46,"t":7,"x":"Dar sentido aos símbolos e aos ritos sem ser encenação"},{"id":47,"t":7,"x":"Criar momentos de reflexão e silêncio nas atividades"},{"id":48,"t":8,"x":"Fazer atividades ao ar livre apesar dos custos e da logística"},{"id":49,"t":8,"x":"Ensinar técnicas de campismo e de vida ao ar livre aos jovens"},{"id":50,"t":8,"x":"Passar do serviço pontual a uma ligação real com a comunidade"},{"id":51,"t":8,"x":"Criar parcerias com a paróquia e as instituições locais"},{"id":52,"t":8,"x":"Dar a conhecer o escutismo à comunidade e atrair novos jovens"},{"id":53,"t":8,"x":"Envolver os pais nas atividades da secção"},{"id":54,"t":9,"x":"Manter vivos o grito e a bandeirola da patrulha ao longo do ano"},{"id":55,"t":9,"x":"Que todos tenham e usem a vara pessoal"},{"id":56,"t":9,"x":"Fazer formaturas com sentido e não só por rotina"},{"id":57,"t":9,"x":"Trabalhar o imaginário da secção em todas as atividades"},{"id":58,"t":9,"x":"Manter o Livro de Ouro vivo"},{"id":59,"t":9,"x":"Passar as tradições da patrulha aos mais novos"},{"id":60,"t":10,"x":"Ter material de campismo completo e em bom estado"},{"id":61,"t":10,"x":"Cuidar e arrumar o material depois de cada atividade"},{"id":62,"t":10,"x":"Fazer angariações de fundos sem esgotar os pais"},{"id":63,"t":10,"x":"Cobrar quotas e atividades sem excluir ninguém"},{"id":64,"t":10,"x":"Gerir a caixa da patrulha com os guias"},{"id":65,"t":10,"x":"Ter um orçamento claro para cada atividade"}],"cam":[["Voz e decisão",["Falamos muito, mas as nossas ideias raramente chegam a decisões reais","Os caminheiros ainda não têm voz e voto onde se decide"]],["Fé e Igreja",["Sinto-me distante da posição da Igreja em temas como a afetividade e a sexualidade","Não sei como viver a fé no dia a dia sem parecer imposta"]],["Tempo e vida fora",["Com a faculdade ou o trabalho, quase não tenho tempo para o Clã","O Clã exige muito e a vida lá fora não deixa acompanhar"]],["Pressão para ser dirigente",["Sinto pressão para ser dirigente antes de acabar o meu caminho como caminheiro","Faltam dirigentes no agrupamento e isso acaba por recair sobre nós"]],["A Partida",["Sair do escutismo depois da Partida é visto como abandonar","A Partida devia lançar-me para a vida e não só para ser dirigente"]],["Clã pequeno",["No nosso Clã somos poucos e as mesmas pessoas acumulam todos os cargos","Com poucos no Clã, as ideias repetem-se e custa manter a motivação"]]],"cen":[{"q":"Sentes que o Cenáculo cumpre o seu propósito?","o":["Sim, cumpre","Sim, mas com algumas falhas","Não, não cumpre","Não sei qual é o propósito do Cenáculo"],"m":false,"x":null},{"q":"Que razões te levam a não participar no Cenáculo?","o":["Costumo participar","Acho que no geral o Cenáculo é desinteressante","Sinto que a atividade não tem impacto prático","Sinto que a atividade não é bem comunicada","Outro"],"m":true,"x":-1},{"q":"Que áreas do Cenáculo achas que podem ser melhoradas?","o":["Nada em específico","Os momentos que precedem o ciclo","A elaboração de propostas e o plenário","A exposição dos temas","Outro"],"m":true,"x":-1}],"zonas":[{"id":1,"n":"1.º Encontro","c":"#C768B0","agr":[[87,"Barco"],[316,"Sande S. Martinho"],[323,"Sta. Eufémia Prazins"],[365,"Corvite"],[454,"Longos"],[666,"Taipas"],[830,"Sto. Estêvão Briteiros"],[882,"Sto. Tirso Prazins"],[883,"Sta. Leocádia Briteiros"],[1130,"S. Salvador Briteiros"],[1259,"S. Clemente Sande"]]},{"id":2,"n":"2.º Encontro","c":"#FFD23F","agr":[[28,"S. Torcato"],[145,"Azurém"],[106,"Selho S. Lourenço"],[702,"Mesão Frio"],[322,"Urgeses"],[566,"Creixomil"],[1020,"Atães"],[331,"S. Dâmaso"],[199,"Costa"],[108,"Fermentões"],[532,"Mascotelos"],[814,"Sra. da Conceição"]]},{"id":3,"n":"3.º Encontro","c":"#FF5A5F","agr":[]},{"id":4,"n":"4.º Encontro","c":"#5CCB6B","agr":[]}],"aval":[{"q":"O que achas desta ideia de visita local?","n":"Visita local","l":["Não gostei","Gostei pouco","Assim-assim","Gostei","Adorei"]},{"q":"Sentiste que tiveste oportunidade de partilhar as tuas preocupações?","n":"Partilhar preocupações","l":["Nada","Pouco","Mais ou menos","Bastante","Totalmente"]},{"q":"Qual é a tua expectativa em relação ao Núcleo para os próximos 3 anos?","n":"Expectativa 3 anos","l":["Muito baixa","Baixa","Média","Alta","Muito alta"]}],"seccoes":[["alcateia","Alcateia","Lobitos"],["expedicao","Expedição","Exploradores"],["comunidade","Comunidade","Pioneiros"],["cla","Clã","Caminheiros"],["varias","Várias secções","ou agrupamento"]],"anos":[["0-1","Menos de 1 ano"],["1-2","1 a 2 anos"],["3-5","3 a 5 anos"],["6+","Mais de 5 anos"]],"pts":[[546,541],[1500,483],[1020,210],[1044,758],[83,353],[180,667],[865,494],[1204,442],[374,298],[730,756],[666,309],[1294,220],[332,515],[1046,545],[855,316],[1183,648],[423,674],[1345,568],[711,572],[899,657],[140,508],[512,371],[1012,380],[234,384],[1156,249],[614,670],[744,432],[1317,378],[621,422],[306,673],[786,657],[905,186],[1175,761],[446,480],[233,565],[851,761],[1392,465],[1077,652],[81,620],[352,404],[1120,368],[1149,550],[173,301],[1230,317],[966,482],[913,399],[956,289],[453,580],[1244,545],[930,571],[755,299],[944,745],[511,660],[276,297],[1213,175],[1082,452],[1448,565],[801,559],[1068,293],[146,419],[987,636],[363,604],[1298,473],[564,295],[227,476],[827,413]],"edges":[],"labels":[],"duels":[[18,19],[54,55],[37,36],[4,5],[65,64],[11,10],[28,29],[46,47],[49,48],[32,33],[40,41],[50,51],[7,6],[58,59],[0,1],[30,31],[27,26],[44,45],[61,60],[20,21],[12,13],[43,42],[63,62],[16,17],[8,9],[34,35],[57,56],[24,25],[23,22],[53,52],[38,39],[14,15],[3,2]]};
 var CFG={"url":"https://qkjakaxufkyvpplzzmfh.supabase.co","key":"sb_publishable_36f8PITfrKqa4O2-tNlelw_NIuldxpL"};
 var DEMO=!(CFG.url&&CFG.key);
 var N=D.difs.length, T=D.themes.length, ROUNDS=D.duels.length;
@@ -572,7 +592,7 @@ function choose(side){
   },520);
 }
 function showFinal(){
-  go('final');startVotePoll();
+  go('final');startVotePoll();startAval('dirigente',who.zona,who.agr);
   var z=zonaById[who.zona];
   $('#fz').textContent=z.n;
   var svg=$('#fsky');svg.innerHTML='';
@@ -671,6 +691,51 @@ function castVote(){
     else{$('#vmsg').textContent='Não consegui registar. Tenta outra vez.';$('#vgo').disabled=false}
   }).catch(function(){$('#vmsg').textContent='Sem rede. Tenta outra vez.';$('#vgo').disabled=false});
 }
+/* ----- avaliação final: a tecla A no ecrã do céu abre/fecha; não aparece nada no ecrã ----- */
+var AV={on:false,done:false,perfil:'',zona:0,agr:'',a:[0,0,0],timer:0,sending:false,err:''};
+function avKey(){return 'ceu_aval_'+AV.perfil+'_'+AV.zona}
+function startAval(perfil,zona,agr){
+  AV.perfil=perfil;AV.zona=+zona;AV.agr=agr||'';AV.a=[0,0,0];AV.err='';AV.done=store.get(avKey())==='1';
+  if(DEMO||!AV.zona||AV.timer)return;
+  avalPoll();AV.timer=setInterval(avalPoll,2500);
+}
+function avalPoll(){
+  api('votacao?select=aval&zona=eq.'+AV.zona).then(function(r){
+    var v=r[0];if(!v)return;AV.on=!!v.aval;
+    if(curStep==='aval'){renderAval();return}
+    if(AV.on&&!AV.done&&(curStep==='final'||curStep==='camf'||(curStep==='voto'&&VT.estado!=='aberta')))showAval();
+  }).catch(function(){});
+}
+function showAval(){
+  var z=zonaById[AV.zona];$('#avz').textContent=z?z.n:'';
+  $('#avq').innerHTML=D.aval.map(function(it,i){
+    return '<div class="avq" data-q="'+i+'"><h3>'+(i+1)+'. '+it.q+'</h3><div class="avs" role="group" aria-label="'+it.q+'">'+
+      [1,2,3,4,5].map(function(n){return '<button type="button" data-v="'+n+'" aria-pressed="false" aria-label="'+n+' · '+it.l[n-1]+'">'+n+'</button>'}).join('')+
+      '</div><div class="avl"><span>1 · '+it.l[0]+'</span><span>5 · '+it.l[4]+'</span></div><div class="avc" aria-live="polite"></div></div>';
+  }).join('');
+  go('aval');renderAval();
+}
+function renderAval(){
+  document.querySelectorAll('#avq .avq').forEach(function(box,i){
+    var a=AV.a[i];
+    box.querySelectorAll('.avs button').forEach(function(b){var on=+b.dataset.v===a;b.classList.toggle('sel',on);b.setAttribute('aria-pressed',String(on));b.disabled=AV.done||!AV.on||AV.sending});
+    box.querySelector('.avc').textContent=a?D.aval[i].l[a-1]:'';
+  });
+  var ready=AV.a.every(function(x){return x>0});
+  $('#avgo').hidden=AV.done||!AV.on;$('#avgo').disabled=!(ready&&!AV.sending);
+  $('#avmsg').textContent=AV.done?'Obrigado! A tua opinião ficou registada.':!AV.on?'A avaliação terminou. Obrigado!':(AV.err||'Responde às 3 perguntas. É rápido.');
+}
+function sendAval(){
+  if(AV.done||!AV.on||AV.sending||!AV.a.every(function(x){return x>0}))return;
+  AV.sending=true;AV.err='';renderAval();
+  var body={sessao:DEV,zona:AV.zona,perfil:AV.perfil,agrupamento:AV.agr,q1:AV.a[0],q2:AV.a[1],q3:AV.a[2]};
+  fetch(CFG.url+'/rest/v1/avaliacoes',{method:'POST',headers:hdrs({'Content-Type':'application/json',Prefer:'return=minimal'}),body:JSON.stringify(body)}).then(function(r){
+    AV.sending=false;
+    if(r.ok||r.status===409){AV.done=true;store.set(avKey(),'1')}
+    else AV.err=(r.status===401||r.status===403)?'A avaliação já terminou. Obrigado!':'Não consegui enviar. Tenta outra vez.';
+    renderAval();
+  }).catch(function(){AV.sending=false;AV.err='Sem rede. Tenta outra vez.';renderAval()});
+}
 function postVoto(i,a,b,w){ /* cada escolha segue logo para o ecrã; falhar aqui nunca trava a pessoa */
   if(DEMO||!who.zona)return;
   try{fetch(CFG.url+'/rest/v1/votos_vivos',{method:'POST',keepalive:true,
@@ -757,6 +822,7 @@ function onKey(e){
   else if(k==='i'){VP.pct=!VP.pct;drawVote()}
   else if(k==='c')toggleCam();
   else if(k==='q')toggleQR()
+  else if(k==='a')toggleAval()
   else if(k==='escape'){if($('#cam').classList.contains('on'))toggleCam();else closeVote()}
   else if(/^[0-4]$/.test(k))setFilter(+k)
   else if(k==='f'){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(x){}}
@@ -773,13 +839,28 @@ function askCode(cb){
     e.stopPropagation();
   };
 }
-function ctl(acao,ids){
+function ctl(acao,ids,zona){
   if(DEMO)return Promise.resolve();
   return fetch(CFG.url+'/rest/v1/rpc/ceu_controlo',{method:'POST',headers:hdrs({'Content-Type':'application/json'}),
-    body:JSON.stringify({codigo:VP.code,p_zona:VP.zona||PJ.filter,acao:acao,p_estrelas:ids||[]})}).then(function(r){
+    body:JSON.stringify({codigo:VP.code,p_zona:zona||VP.zona||PJ.filter,acao:acao,p_estrelas:ids||[]})}).then(function(r){
     if(r.ok)return;
     return r.text().then(function(t){var e=new Error(t);e.bad=/codigo/i.test(t);throw e});
   });
+}
+function toggleAval(){ /* abre/fecha a avaliação do encontro escolhido; sem nada no ecrã */
+  var z=PJ.filter;
+  if(!z){toast('Escolhe primeiro um encontro (teclas 1 a 4)');return}
+  if(DEMO)return;
+  var run=function(){
+    api('votacao?select=aval&zona=eq.'+z).then(function(r){
+      var on=!!(r[0]&&r[0].aval);
+      return ctl(on?'aval_fechar':'aval_abrir',[],z);
+    }).catch(function(e){
+      if(e&&e.bad){VP.code='';toast('Código errado');askCode(function(c){VP.code=c;run()})}
+      else toast('Não consegui. Verifica a rede.');
+    });
+  };
+  if(VP.code)run();else askCode(function(c){VP.code=c;run()});
 }
 function startVote(){
   if(VP.on)return;
@@ -1101,7 +1182,7 @@ function camSend(){
   var tries=0;
   (function attempt(){
     fetch(CFG.url+'/rest/v1/caminheiros',{method:'POST',headers:hdrs({'Content-Type':'application/json',Prefer:'return=minimal'}),body:JSON.stringify(body)})
-    .then(function(r){if(!r.ok)throw new Error('http '+r.status);go('camf')})
+    .then(function(r){if(!r.ok)throw new Error('http '+r.status);startAval('caminheiro',CM.zona,CM.agr);go('camf')})
     .catch(function(){tries++;if(tries<3)setTimeout(attempt,1200*tries);else{$('#camMsg').textContent='Não consegui enviar. Verifica a rede e tenta outra vez.';$('#camSend').disabled=false}});
   })();
 }
@@ -1159,6 +1240,8 @@ function init(){
   $('#retry').addEventListener('click',function(){sent=false;send()});
   $('#vlist').addEventListener('click',function(e){var b=e.target.closest('.vo');if(!b||b.disabled||VT.estado!=='aberta'||VT.voted!==null)return;VT.pick=+b.dataset.i;renderVote()});
   $('#vgo').addEventListener('click',castVote);
+  $('#avq').addEventListener('click',function(e){var b=e.target.closest('.avs button');if(!b||b.disabled)return;AV.a[+b.closest('.avq').dataset.q]=+b.dataset.v;renderAval()});
+  $('#avgo').addEventListener('click',sendAval);
   window.addEventListener('hashchange',route);
   route();
 }
